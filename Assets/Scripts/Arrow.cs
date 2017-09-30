@@ -42,7 +42,7 @@ public class Arrow : Projectile {
 	}
 
 	override public void Update(){
-		transform.rotation = Quaternion.identity;
+		//transform.rotation = Quaternion.identity;
 		//transform.Translate (velocity * Time.deltaTime);
 		transform.rotation = myRotation;
 		if (Vector3.Distance (playerUnit.transform.position, transform.position) > 100) {

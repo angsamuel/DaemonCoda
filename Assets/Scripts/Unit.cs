@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour {
 	public GameObject blood;
-
+	public PlayerInputController pic;
 	NPC npc;
 	public bool dead = false;
 	public float speed, dashMultiplier, stamina, staminaMax, staminaRecharge, dashCost;
@@ -14,8 +14,10 @@ public class Unit : MonoBehaviour {
 	public Weapon weapon;
 	Vector3 colliderPosition;
 	Rigidbody2D rb;
+	List<Collider2D> damageSources;
 		
 	void Start(){
+		damageSources = new List<Collider2D> ();
 		rb = gameObject.GetComponent<Rigidbody2D> ();
 		staminaMax = stamina;
 	}
@@ -49,17 +51,24 @@ public class Unit : MonoBehaviour {
 	}
 
 	IEnumerator DashRoutine(){
+		invincible = true;
 		speed = speed * 10;
 		yield return new WaitForSeconds (.04f);
 		speed = speed / 10;
 		dashLocked = false;
+		invincible = false;
 	}
 
 	void OnTriggerEnter2D(Collider2D other) 
 	{ 
 		if (other.gameObject.tag == "damage source") {
-			colliderPosition = other.transform.position;
-			TakeDamage ();
+			Debug.Log ("collider enter");
+			if (!damageSources.Contains (other)) {
+				damageSources.Add (other);
+				StartCoroutine (RemoveFromDamageSources (other));
+				colliderPosition = other.transform.position;
+				TakeDamage ();
+			}
 		} else if (other.gameObject.tag == "weapon") {
 			other.transform.parent = this.transform;
 		} else if (other.gameObject.tag == "npc") {
@@ -67,11 +76,18 @@ public class Unit : MonoBehaviour {
 		}
 	}
 
+	IEnumerator RemoveFromDamageSources(Collider2D o){
+		yield return new WaitForSeconds(0.2f);
+		damageSources.Remove (o);
+	}
+
 	void OnTriggerExit2D(Collider2D other){
 		if (other.gameObject.tag == "npc") {
 			npc = null;
 		}
 	}
+
+
 
 	public void Die(){
 		GetComponent<SpriteRenderer> ().color = Color.red;
@@ -93,6 +109,9 @@ public class Unit : MonoBehaviour {
 	}
 	public void TakeDamage(){
 		if (!dead && !invincible) {
+			if (pic != null) {
+				pic.DamageEffect ();
+			}
 			health--;
 			if (health < 1) {
 				Die ();
@@ -100,6 +119,7 @@ public class Unit : MonoBehaviour {
 				//StartCoroutine (InvisiTimer ());
 			}
 		}
+
 	}
 
 	public void Stop(){

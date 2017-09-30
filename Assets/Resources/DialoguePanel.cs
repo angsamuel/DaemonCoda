@@ -81,8 +81,8 @@ public class DialoguePanel : MonoBehaviour {
 		Debug.Log ("chose" + choice);
 		MakeButtonsDisappear ();
 		if (npc.dialogueIndex + 1 < npc.openers.Count) {
-			Debug.Log (npc.dialogueIndex * 3 + choice);
-			Debug.Log(npc.closers.Count);
+			//Debug.Log (npc.dialogueIndex * 3 + choice);
+			//Debug.Log(npc.closers.Count);
 			string chosenResponse = npc.closers [npc.dialogueIndex * 3 + choice];
 			npc.dialogueIndex += 1;
 			Activate (chosenResponse);

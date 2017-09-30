@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerInputController : MonoBehaviour {
 	public Unit playerUnit;
+	public GameObject redOverlay;
+	public float pulseTime;
 	public Camera mainCamera;
 	public bool aim_enabled = true;
 	bool dashLock, disabled, canAttack = false;
@@ -17,6 +20,7 @@ public class PlayerInputController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		hpIndex = 2;
+		redOverlay.SetActive(false);
 	}
 	
 	// Update is called once per frame
@@ -85,5 +89,23 @@ public class PlayerInputController : MonoBehaviour {
 	public void Enable(){
 		canAttack = false;
 		disabled = false;
+	}
+	public void DamageEffect(){
+		Debug.Log ("damage effect called");
+		StopCoroutine ("Pulse");
+		StartCoroutine (Pulse());
+	}
+	IEnumerator Pulse(){
+		redOverlay.SetActive(true);
+		float t = 0;
+		Color startColor = redOverlay.GetComponent<Image> ().color;
+		while (t <= 1) {
+			yield return null;
+			t += Time.deltaTime / pulseTime;
+			redOverlay.GetComponent<Image> ().color = new Color(startColor.r, startColor.g, startColor.b, 1 - (t/1)); 
+		}
+		redOverlay.GetComponent<Image> ().color = startColor;
+		redOverlay.SetActive (false);
+
 	}
 }
