@@ -42,9 +42,9 @@ public class Archer : MonoBehaviour {
 	IEnumerator FireVolley(){
 		shooting = true;
 		unit.Stop ();
-		int shots = Random.Range (1, 1);
+		int shots = Random.Range (1, 5);
 		for (int i = 0; i < shots; i++) {
-			Shoot (playerUnit.transform.position);
+			Shoot (playerUnit.transform.position + new Vector3(Random.Range(-1.0f,1.0f), Random.Range(-1.0f,1.0f), Random.Range(-1.0f,1.0f)));
 			yield return new WaitForSeconds(0.3f);
 		}
 		choosePosition = false;

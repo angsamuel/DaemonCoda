@@ -67,10 +67,12 @@ public class Commander : UnitController {
 		return !unit_alive || unit.dead;
 	}
 	void MaintainCommanderDistance(){
-		if (Vector3.Distance (playerUnit.transform.position, unit.transform.position) < commanderDistance) {
+		if (Vector3.Distance (playerUnit.transform.position, unit.transform.position) <= commanderDistance) {
 			unit.MoveAway (playerUnit.transform.position);
-		} else if (Vector3.Distance (playerUnit.transform.position, unit.transform.position) > campDistance) {
+		} else if (Vector3.Distance (playerUnit.transform.position, unit.transform.position) >= campDistance) {
 			unit.MoveToward (playerUnit.transform.position);
+		} else {
+			unit.Stop ();
 		}
 	}
 
