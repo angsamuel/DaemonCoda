@@ -4,22 +4,37 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour {
 	public GameObject blood;
+	public GameObject wave;
+	Color waveColor = Color.white;
 	public PlayerInputController pic;
 	NPC npc;
 	public bool dead = false;
 	public float speed, dashMultiplier, stamina, staminaMax, staminaRecharge, dashCost;
+	float waveDelay = 0.5f;
 	public int health;
-	bool invincible, dashLocked = false;
+	bool invincible, dashLocked, inWater, waveRoutineLock = false;
 	bool canTouchAttack = true;
 	public Weapon weapon;
 	Vector3 colliderPosition;
 	Rigidbody2D rb;
 	List<Collider2D> damageSources;
-		
+
 	void Start(){
 		damageSources = new List<Collider2D> ();
 		rb = gameObject.GetComponent<Rigidbody2D> ();
 		staminaMax = stamina;
+	}
+
+	IEnumerator WaveRoutine(){
+		if (wave != null && inWater && waveRoutineLock == false) {
+			waveRoutineLock = true;
+			Wave w = Instantiate (wave, transform.position, Quaternion.identity).GetComponent<Wave>();
+			yield return new WaitForSeconds (waveDelay);
+			waveRoutineLock = false;
+			if (inWater) {
+				StartCoroutine (WaveRoutine ());
+			}
+		}
 	}
 
 	public void Move(float x, float y){
@@ -52,9 +67,9 @@ public class Unit : MonoBehaviour {
 
 	IEnumerator DashRoutine(){
 		invincible = true;
-		speed = speed * 10;
-		yield return new WaitForSeconds (.04f);
-		speed = speed / 10;
+		speed = speed * 5;
+		yield return new WaitForSeconds (.1f);
+		speed = speed / 5;
 		dashLocked = false;
 		invincible = false;
 	}
@@ -73,6 +88,9 @@ public class Unit : MonoBehaviour {
 			other.transform.parent = this.transform;
 		} else if (other.gameObject.tag == "npc") {
 			npc = other.GetComponent<NPC> ();
+		} else if (other.gameObject.tag == "water") {
+			inWater = true;
+			StartCoroutine(WaveRoutine());
 		}
 	}
 
@@ -84,6 +102,8 @@ public class Unit : MonoBehaviour {
 	void OnTriggerExit2D(Collider2D other){
 		if (other.gameObject.tag == "npc") {
 			npc = null;
+		}if (other.gameObject.tag == "water") {
+			inWater = false;
 		}
 	}
 
@@ -94,11 +114,9 @@ public class Unit : MonoBehaviour {
 		dead = true;
 		BoxCollider2D[] myColliders = gameObject.GetComponents<BoxCollider2D>();
 		foreach(BoxCollider2D bc in myColliders) bc.enabled = false;
-		if(blood!=null){
-			Vector3 u = UBP (colliderPosition, transform.position);
-			Instantiate (blood, transform.position, Quaternion.Euler (new Vector3 (Random.Range (0, 360), 90, 0)));
-		}
+
 		transform.rotation = Quaternion.identity;
+		inWater = false;
 		Stop ();
 	}
 	public void AttackWithWeapon(){
@@ -113,6 +131,10 @@ public class Unit : MonoBehaviour {
 				pic.DamageEffect ();
 			}
 			health--;
+			if(blood!=null){
+				Vector3 u = UBP (colliderPosition, transform.position);
+				Instantiate (blood, transform.position, Quaternion.Euler (new Vector3 (Random.Range (0, 360), 90, 0)));
+			}
 			if (health < 1) {
 				Die ();
 			} else {
