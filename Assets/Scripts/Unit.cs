@@ -8,9 +8,8 @@ public class Unit : MonoBehaviour {
 	Color waveColor = Color.white;
 	public PlayerInputController pic;
 	NPC npc;
-	public bool dead = false;
-	public float speed, dashMultiplier, stamina, staminaMax, staminaRecharge, dashCost;
-	float waveDelay = 0.5f;
+	public bool dead, inWaterLevel = false;
+	public float speed, dashMultiplier, stamina, staminaMax, staminaRecharge, dashCost, waveDelay;
 	public int health;
 	bool invincible, dashLocked, inWater, waveRoutineLock = false;
 	bool canTouchAttack = true;
@@ -20,20 +19,31 @@ public class Unit : MonoBehaviour {
 	List<Collider2D> damageSources;
 
 	void Start(){
+		StartCoroutine (WaveRoutine ());
+
 		damageSources = new List<Collider2D> ();
 		rb = gameObject.GetComponent<Rigidbody2D> ();
 		staminaMax = stamina;
 	}
 
 	IEnumerator WaveRoutine(){
-		if (wave != null && inWater && waveRoutineLock == false) {
+		if (wave != null && (inWater || inWaterLevel) && waveRoutineLock == false) {
 			waveRoutineLock = true;
 			Wave w = Instantiate (wave, transform.position, Quaternion.identity).GetComponent<Wave>();
 			yield return new WaitForSeconds (waveDelay);
 			waveRoutineLock = false;
-			if (inWater) {
+			if (inWater || inWaterLevel) {
 				StartCoroutine (WaveRoutine ());
 			}
+		}
+	}
+
+	public IEnumerator PauseMovement(float time){
+		float t = 0;
+		while (t < 1) {
+			t += Time.deltaTime / time;
+			Stop ();
+			yield return null;
 		}
 	}
 
@@ -57,6 +67,7 @@ public class Unit : MonoBehaviour {
 
 	public bool Dash(){
 	   if (!dashLocked && stamina > dashCost) {
+			Debug.Log ("dashing");
 			stamina -= dashCost;
 			dashLocked = true;
 			StartCoroutine (DashRoutine ());
@@ -67,11 +78,18 @@ public class Unit : MonoBehaviour {
 
 	IEnumerator DashRoutine(){
 		invincible = true;
-		speed = speed * 5;
+		speed = speed * dashMultiplier;
 		yield return new WaitForSeconds (.1f);
-		speed = speed / 5;
+		speed = speed / dashMultiplier;
+		rb.velocity = rb.velocity / dashMultiplier;
 		dashLocked = false;
 		invincible = false;
+	}
+	void OnTriggerStay2D(Collider2D other){
+		if (other.gameObject.tag == "water") {
+			inWater = true;
+			StartCoroutine(WaveRoutine());
+		}
 	}
 
 	void OnTriggerEnter2D(Collider2D other) 
@@ -117,6 +135,7 @@ public class Unit : MonoBehaviour {
 
 		transform.rotation = Quaternion.identity;
 		inWater = false;
+		inWaterLevel = false;
 		Stop ();
 	}
 	public void AttackWithWeapon(){
@@ -200,6 +219,10 @@ public class Unit : MonoBehaviour {
 
 	Vector3 UBP(Vector3 p1, Vector3 p2){
 		return (1f / (p1 - p2).magnitude) * (p1 - p2);
+	}
+
+	public Rigidbody2D GetRB(){
+		return rb;
 	}
 
 	public NPC GetNPC(){

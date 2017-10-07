@@ -2,31 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Archer : MonoBehaviour {
+public class Archer : UnitController {
 	public GameObject ArrowPrefab;
-	public Unit unit;
-	public int seeingDistance, attackRangeMin, attackRangeMax;
-	Unit playerUnit;
-	bool choosePosition, inPosition, shooting, playerSeen, choosing = false;
+	public int attackRangeMin, attackRangeMax;
+	bool choosePosition, inPosition, shooting, choosing = false;
 	Vector3 position;
 	public float repositionRestTime;
 
 	// Use this for initialization
 	void Start () {
-		playerUnit = GameObject.Find ("PlayerInputController").GetComponent<PlayerInputController> ().playerUnit;
+		//playerUnit = GameObject.Find ("PlayerInputController").GetComponent<PlayerInputController> ().playerUnit;
+		base.Start();
 	}
 	//choose random spot
 	//shoot volley
 	//repeat
 	
 	// Update is called once per frame
-	void LateUpdate(){
-			if(Vector3.Distance(playerUnit.transform.position, unit.transform.position) < seeingDistance){
-				playerSeen = true;
-			}
-	}
 
 	void Update () {
+		base.Update ();
 		if(playerSeen){
 			if (!choosePosition && !choosing) {
 				StartCoroutine(ChoosePosition ());

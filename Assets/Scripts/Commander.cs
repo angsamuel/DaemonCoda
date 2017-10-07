@@ -112,7 +112,8 @@ public class Commander : UnitController {
 		for (int i = 0; i < squad.Count; i++) {
 			if (Mathf.Abs(Vector3.Distance (squad [i].transform.position, playerUnit.transform.position) - strikeDistance) < .8f) {
 				squad [i].AttackWithWeapon ();
-				squad [i].SetVelocity (playerUnit.GetVelocity());
+				//squad [i].SetVelocity (playerUnit.GetVelocity());
+				StartCoroutine(squad[i].PauseMovement(1));
 			} else{
 				squad [i].MoveToward (playerUnit.transform.position);
 			}

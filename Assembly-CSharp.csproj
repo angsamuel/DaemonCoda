@@ -46,6 +46,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Duelist.cs" />
      <Compile Include="Assets\LevelController.cs" />
      <Compile Include="Assets\Resources\DialoguePanel.cs" />
      <Compile Include="Assets\Resources\DontGoThroughThings.cs" />
