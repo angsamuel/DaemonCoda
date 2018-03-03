@@ -13,8 +13,8 @@ public class PlayerInputController : MonoBehaviour {
 	bool dashLock, disabled, canAttack = false;
 
 	public GameObject staminaBar;
-
-	public List<GameObject> healthBar;
+	public HPDisplay hpDisplay;
+	public StaminaDisplay staminaDisplay;
 	int hpIndex;
 
 	// Use this for initialization
@@ -56,12 +56,14 @@ public class PlayerInputController : MonoBehaviour {
 
 			//playerUnit.weapon.Aim (Camera.main.ScreenToWorldPoint (Input.mousePosition));
 			playerUnit.AimWeapon (Camera.main.ScreenToWorldPoint (Input.mousePosition));
-			staminaBar.transform.localScale = new Vector3 (playerUnit.stamina / 100f, 1, 1); 
 
-			if (hpIndex > playerUnit.health - 1) {
-				healthBar [hpIndex].transform.position = new Vector3 (-1000, -1000, -1000);
-				hpIndex--;
-			}
+
+			UpdateUI ();
+
+		//	if (hpIndex > playerUnit.health - 1) {
+				//healthBar [hpIndex].transform.position = new Vector3 (-1000, -1000, -1000);
+				//hpIndex--;
+	//		}
 
 			if (playerUnit.dead) {
 				SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex);
@@ -69,6 +71,10 @@ public class PlayerInputController : MonoBehaviour {
 		}
 	}
 		
+	public void UpdateUI(){
+		hpDisplay.SetHP (playerUnit.health);
+		staminaDisplay.SetStamina (playerUnit.stamina, playerUnit.staminaMax);
+	}
 	void Attack(){
 		playerUnit.AttackWithWeapon();
 	}
