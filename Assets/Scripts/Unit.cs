@@ -29,7 +29,7 @@ public class Unit : MonoBehaviour {
 	IEnumerator WaveRoutine(){
 		if (wave != null && (inWater || inWaterLevel) && waveRoutineLock == false) {
 			waveRoutineLock = true;
-			Wave w = Instantiate (wave, transform.position, Quaternion.identity).GetComponent<Wave>();
+			Wave w = Instantiate (wave, transform.position + (new Vector3(0,-1.2f,0)), Quaternion.identity).GetComponent<Wave>();
 			yield return new WaitForSeconds (waveDelay);
 			waveRoutineLock = false;
 			if (inWater || inWaterLevel) {

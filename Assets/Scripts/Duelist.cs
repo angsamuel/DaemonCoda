@@ -14,8 +14,7 @@ public class Duelist : UnitController {
 	}
 
 	IEnumerator SelectSpecialAction(){
-		Debug.Log ("ssa");
-		yield return new WaitForSeconds (.25f);
+		yield return new WaitForSeconds (.15f);
 			
 			inSpecialAction = true;
 			unit.Stop ();
@@ -42,7 +41,7 @@ public class Duelist : UnitController {
 			yield return new WaitForSeconds (secondsToWait);
 			inSpecialAction = false;
 			unit.Stop ();
-			yield return new WaitForSeconds (.25f);
+			yield return new WaitForSeconds (.15f);
 
 		StartCoroutine(SelectSpecialAction ());
 	}
@@ -80,8 +79,9 @@ public class Duelist : UnitController {
 			}
 			if (!inSpecialAction && playerSeen) {
 				MaintainDistance ();
-				unit.weapon.Aim (playerUnit.transform.position);
 			}
+				unit.weapon.Aim (playerUnit.transform.position);
+			
 			if (Vector3.Distance (unit.transform.position, playerUnit.transform.position) < strikingDistance) {
 				unit.AttackWithWeapon ();
 				if (!inSpecialAction) {
