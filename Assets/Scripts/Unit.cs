@@ -17,6 +17,7 @@ public class Unit : MonoBehaviour {
 	Vector3 colliderPosition;
 	Rigidbody2D rb;
 	List<Collider2D> damageSources;
+	Weapon pickup;
 
 	void Start(){
 		StartCoroutine (WaveRoutine ());
@@ -24,6 +25,33 @@ public class Unit : MonoBehaviour {
 		damageSources = new List<Collider2D> ();
 		rb = gameObject.GetComponent<Rigidbody2D> ();
 		staminaMax = stamina;
+		weapon.equipped = true;
+		StartCoroutine (PickupDeletion ());
+	}
+
+	IEnumerator PickupDeletion(){
+		while(true){
+			yield return new WaitForSeconds (.1f);
+			pickup = null;
+		}
+	}
+
+	public void Equip(){
+		if (weapon != null) {
+			weapon.GetComponent<BoxCollider2D> ().enabled = true;
+			weapon.StopSwing ();
+			weapon.transform.parent = null;
+			weapon.equipped = false;
+			weapon = null;
+		}
+		if (pickup != null) {
+			pickup.transform.position = transform.position;
+			pickup.transform.parent = transform;
+			weapon = pickup;
+			weapon.equipped = true;
+			weapon.GetComponent<BoxCollider2D> ().enabled = false;
+		}
+
 	}
 
 	IEnumerator WaveRoutine(){
@@ -90,20 +118,25 @@ public class Unit : MonoBehaviour {
 			inWater = true;
 			StartCoroutine(WaveRoutine());
 		}
+
+		if (pic != null && other.gameObject.tag == "weapon") {
+			if (other.GetComponent<Weapon>().equipped == false) {
+				pickup = other.GetComponent<Weapon> ();
+			}
+		} //phone message, email
+		//voice mail in email, downloaded to listen
+
 	}
 
 	void OnTriggerEnter2D(Collider2D other) 
 	{ 
 		if (other.gameObject.tag == "damage source") {
-			Debug.Log ("collider enter");
 			if (!damageSources.Contains (other)) {
 				damageSources.Add (other);
 				StartCoroutine (RemoveFromDamageSources (other));
 				colliderPosition = other.transform.position;
 				TakeDamage ();
 			}
-		} else if (other.gameObject.tag == "weapon") {
-			other.transform.parent = this.transform;
 		} else if (other.gameObject.tag == "npc") {
 			npc = other.GetComponent<NPC> ();
 		} else if (other.gameObject.tag == "water") {
@@ -128,6 +161,9 @@ public class Unit : MonoBehaviour {
 
 
 	public void Die(){
+		weapon.StopSwing ();
+		weapon.equipped = false;
+		weapon.transform.parent = null;
 		GetComponent<SpriteRenderer> ().color = Color.red;
 		dead = true;
 		BoxCollider2D[] myColliders = gameObject.GetComponents<BoxCollider2D>();

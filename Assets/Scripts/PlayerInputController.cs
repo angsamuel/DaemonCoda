@@ -10,7 +10,7 @@ public class PlayerInputController : MonoBehaviour {
 	public float pulseTime;
 	public Camera mainCamera;
 	public bool aim_enabled = true;
-	bool dashLock, disabled, canAttack = false;
+	bool dashLock, disabled, canAttack, canPickup = false;
 
 	public GameObject staminaBar;
 	public HPDisplay hpDisplay;
@@ -22,11 +22,25 @@ public class PlayerInputController : MonoBehaviour {
 		hpIndex = 2;
 		redOverlay.SetActive(false);
 	}
-	
+
+	void EquipWeapon(){
+		playerUnit.Equip ();
+	}
+
 	// Update is called once per frame
 	void Update () {
 		//Dash
 		if (!disabled) {
+			//weapon pickup
+			if (Input.GetAxisRaw ("Pickup") != 0 && canPickup) {
+				Debug.Log ("PICKUP");
+				EquipWeapon ();
+				canPickup = false;
+			} else if(Input.GetAxisRaw ("Pickup") == 0){
+				canPickup = true;
+			}
+
+
 			if (Input.GetAxisRaw ("Dash") != 0 && !dashLock) {
 				playerUnit.Dash ();
 				dashLock = true;

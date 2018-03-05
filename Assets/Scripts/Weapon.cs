@@ -11,6 +11,7 @@ public class Weapon : MonoBehaviour {
 	protected float lethalbuffer;
 	public float aimSpeed;
 	protected Vector3 myTarget;
+	public bool equipped = false;
 	// Use this for initialization
 	protected void Start () {
 		rested = true;
@@ -27,6 +28,11 @@ public class Weapon : MonoBehaviour {
 	public void StartSwing(){
 		rested = false;
 	}
+
+	public void StopSwing(){
+		rested = true;
+	}
+
 
 
 
