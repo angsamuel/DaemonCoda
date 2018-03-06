@@ -121,6 +121,7 @@ public class Commander : UnitController {
 	}
 
 	void EstablishCamp(){
+		Debug.Log ("Establishing Camp");
 		unit.MoveToward (playerUnit.transform.position);
 		MoveSquadWithCommander ();
 

@@ -45,9 +45,15 @@ public class Weapon : MonoBehaviour {
 		if (!rested) {
 			if (swingTracker > 80) {
 				if(bc!=null){bc.enabled = true;}
+				if (GetComponent<BoxCollider2D> () != null) {
+					GetComponent<BoxCollider2D> ().enabled = false;
+				}
 			}
 			if (swingTracker > 280) {
 				if(bc!=null){bc.enabled = false;}
+				if (GetComponent<BoxCollider2D> () != null) {
+					GetComponent<BoxCollider2D> ().enabled = true;
+				}
 			}
 
 			float swingTemp = Time.deltaTime * speed;

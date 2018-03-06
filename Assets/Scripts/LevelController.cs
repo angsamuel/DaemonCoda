@@ -10,7 +10,6 @@ public class LevelController : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
-		Time.timeScale = 0.5f;
 	}
 
 	public void AddEnemyController(UnitController u){

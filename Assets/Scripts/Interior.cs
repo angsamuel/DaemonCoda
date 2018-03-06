@@ -7,10 +7,8 @@ public class Interior : MonoBehaviour {
 	public SpriteRenderer roof;
 	public SpriteRenderer roofFilling;
 	public SpriteRenderer floor;
-	public SpriteRenderer background0;
-	public SpriteRenderer background1;
-	public SpriteRenderer background2;
-	public SpriteRenderer background3;
+	public SpriteRenderer background;
+	public List<SpriteRenderer> otherRoofObjects;
 
 	Collider2D player;
 	// Use this for initialization
@@ -21,11 +19,10 @@ public class Interior : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(player!=null){
-			if(!this.GetComponent<Collider2D>().IsTouching(player) && background0.color.a == 1){
+			if(!this.GetComponent<Collider2D>().IsTouching(player) && background.color.a == 1){
 					ExitFade();
 					Debug.Log("safteyFade");
 					StartCoroutine(ResetSafteyFade());
-				
 			}
 		}
 	}
@@ -35,22 +32,26 @@ public class Interior : MonoBehaviour {
 	}
 
 	void EnterFade(){
-		StartCoroutine (FadeInSprite (background0));
-		StartCoroutine (FadeInSprite (background1));
-		StartCoroutine (FadeInSprite (background2));
-		StartCoroutine (FadeInSprite (background3));
+		StartCoroutine (FadeInSprite (background));
 		StartCoroutine (FadeOutSprite (roof));
 		StartCoroutine (FadeOutSprite (roofFilling));
+		for (int i = 0; i < otherRoofObjects.Count; i++) {
+			if (otherRoofObjects [i] != null) {
+				StartCoroutine (FadeOutSprite (otherRoofObjects [i]));
+			}
+		}
 	}
 	
 
 	void ExitFade(){
-		StartCoroutine (FadeOutSprite (background0));
-		StartCoroutine (FadeOutSprite (background1));
-		StartCoroutine (FadeOutSprite (background2));
-		StartCoroutine (FadeOutSprite (background3));
+		StartCoroutine (FadeOutSprite (background));
 		StartCoroutine (FadeInSprite (roof));
 		StartCoroutine (FadeInSprite (roofFilling));
+		for (int i = 0; i < otherRoofObjects.Count; i++) {
+			if (otherRoofObjects [i] != null) {
+				StartCoroutine (FadeInSprite (otherRoofObjects [i]));
+			}
+		}
 	}
 
 	void OnTriggerEnter2D(Collider2D other) 

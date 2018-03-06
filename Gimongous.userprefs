@@ -10,12 +10,13 @@
       <File FileName="Assets/Scripts/UnitController.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Archer.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Berserker.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/PlayerInputController.cs" Line="28" Column="3" />
+      <File FileName="Assets/Scripts/PlayerInputController.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/WoodCuttingStation.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Weapon.cs" Line="42" Column="3" />
-      <File FileName="Assets/Scripts/NPC.cs" Line="32" Column="25" />
-      <File FileName="Assets/Scripts/Unit.cs" Line="42" Column="24" />
-      <File FileName="Assets/Scripts/LevelController.cs" Line="13" Column="25" />
+      <File FileName="Assets/Scripts/Weapon.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/NPC.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Unit.cs" Line="212" Column="3" />
+      <File FileName="Assets/Scripts/LevelController.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Sword.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

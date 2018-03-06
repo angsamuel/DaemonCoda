@@ -7,7 +7,7 @@ public class Spear : Weapon {
 	public float range;
 	Vector3 frozenTarget;
 	bool hasft,stabComplete = false;
-
+	public GameObject stabTarget;
 
 	// Use this for initialization
 	void Start () {
@@ -26,6 +26,10 @@ public class Spear : Weapon {
 				frozenTarget = myTarget;
 			}
 			swingTracker += Time.deltaTime/timeToStab;
+
+			//Debug.Log (newTarget);
+
+			frozenTarget = stabTarget.transform.position;
 
 			if (swingTracker < 1 && !stabComplete) {
 				transform.position = Vector3.Lerp (transform.parent.transform.position, range * UBP (frozenTarget, transform.parent.transform.position) + transform.parent.transform.position, swingTracker);

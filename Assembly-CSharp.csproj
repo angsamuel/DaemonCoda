@@ -51,8 +51,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Resources\DialoguePanel.cs" />
-     <Compile Include="Assets\Resources\DontGoThroughThings.cs" />
+     <Compile Include="Assets\Mill.cs" />
      <Compile Include="Assets\Scripts\Archer.cs" />
      <Compile Include="Assets\Scripts\Arrow.cs" />
      <Compile Include="Assets\Scripts\Axe.cs" />
@@ -64,6 +63,8 @@
      <Compile Include="Assets\Scripts\Commander.cs" />
      <Compile Include="Assets\Scripts\Crop.cs" />
      <Compile Include="Assets\Scripts\Dialogue.cs" />
+     <Compile Include="Assets\Scripts\DialoguePanel.cs" />
+     <Compile Include="Assets\Scripts\DontGoThroughThings.cs" />
      <Compile Include="Assets\Scripts\Duelist.cs" />
      <Compile Include="Assets\Scripts\FireBall.cs" />
      <Compile Include="Assets\Scripts\Grunt.cs" />

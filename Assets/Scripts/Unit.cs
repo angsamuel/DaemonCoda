@@ -9,7 +9,8 @@ public class Unit : MonoBehaviour {
 	public PlayerInputController pic;
 	NPC npc;
 	public bool dead, inWaterLevel = false;
-	public float speed, dashMultiplier, stamina, staminaMax, staminaRecharge, dashCost, waveDelay;
+	public float speed, stamina, staminaMax, staminaRecharge, dashCost, waveDelay;
+	float dashMultiplier = 2f;
 	public int health;
 	bool invincible, dashLocked, inWater, waveRoutineLock = false;
 	bool canTouchAttack = true;
@@ -18,15 +19,18 @@ public class Unit : MonoBehaviour {
 	Rigidbody2D rb;
 	List<Collider2D> damageSources;
 	Weapon pickup;
-
+	public TrailRenderer tr;
+	public SpriteRenderer bodySprite;
 	void Start(){
 		StartCoroutine (WaveRoutine ());
-
 		damageSources = new List<Collider2D> ();
 		rb = gameObject.GetComponent<Rigidbody2D> ();
 		staminaMax = stamina;
-		weapon.equipped = true;
+		EquipWeapon (weapon);
 		StartCoroutine (PickupDeletion ());
+		if (tr != null) {
+			tr.time = 0.0f;
+		}
 	}
 
 	IEnumerator PickupDeletion(){
@@ -36,22 +40,33 @@ public class Unit : MonoBehaviour {
 		}
 	}
 
-	public void Equip(){
+	public void DequipWeapon(){
 		if (weapon != null) {
-			weapon.GetComponent<BoxCollider2D> ().enabled = true;
 			weapon.StopSwing ();
-			weapon.transform.parent = null;
+			weapon.GetComponent<BoxCollider2D> ().enabled = true;
 			weapon.equipped = false;
+			weapon.transform.parent = null;
 			weapon = null;
 		}
-		if (pickup != null) {
-			pickup.transform.position = transform.position;
-			pickup.transform.parent = transform;
-			weapon = pickup;
+	}
+	public void EquipWeapon(Weapon w){
+		if (w != null) {
+			w.transform.position = transform.position;
+			w.transform.parent = transform;
+			weapon = w;
 			weapon.equipped = true;
 			weapon.GetComponent<BoxCollider2D> ().enabled = false;
 		}
+	}
 
+	public void Equip(){
+		DequipWeapon ();
+		if (pickup != null) {
+			Debug.Log ("have pickup");
+			EquipWeapon (pickup);
+		} else {
+			Debug.Log ("no pickup");
+		}
 	}
 
 	IEnumerator WaveRoutine(){
@@ -65,6 +80,8 @@ public class Unit : MonoBehaviour {
 			}
 		}
 	}
+
+
 
 	public IEnumerator PauseMovement(float time){
 		float t = 0;
@@ -104,14 +121,50 @@ public class Unit : MonoBehaviour {
 		return false;
 	}
 
+	float trMaxTime = 0.5f;
+	float trailEndTime = 0.5f;
+	IEnumerator EndTrail(){
+		float t = trailEndTime;
+		while (t > 0) {
+			yield return null;
+			t -= Time.deltaTime;
+			tr.time = trMaxTime * (t/trailEndTime);
+		}
+	}
+
+	IEnumerator Spin(float timeToSpin){
+		float t = 0;
+		int spinDirection = -1;
+		if (GetComponent<Rigidbody2D> ().velocity.x < 0) {
+			spinDirection = 1;
+		}
+		Vector3 weaponStartRotation = weapon.gameObject.transform.eulerAngles;
+		while (t < timeToSpin) {
+			yield return null;
+			float dt = Time.deltaTime;
+			t += dt;
+			bodySprite.transform.eulerAngles = new Vector3 (0, 0, t / timeToSpin * 360 * spinDirection);
+		}
+		bodySprite.transform.eulerAngles = new Vector3 (0, 0, 0);
+	}
+
+	float dashTime = .25f;
 	IEnumerator DashRoutine(){
 		invincible = true;
+		if (tr != null) {
+			tr.time = trMaxTime;
+		}
+		if (tr != null) {
+			StartCoroutine (EndTrail ());
+		}
 		speed = speed * dashMultiplier;
-		yield return new WaitForSeconds (.1f);
+		StartCoroutine(Spin(dashTime));
+		yield return new WaitForSeconds (dashTime);
 		speed = speed / dashMultiplier;
 		rb.velocity = rb.velocity / dashMultiplier;
 		dashLocked = false;
 		invincible = false;
+
 	}
 	void OnTriggerStay2D(Collider2D other){
 		if (other.gameObject.tag == "water") {
@@ -161,10 +214,9 @@ public class Unit : MonoBehaviour {
 
 
 	public void Die(){
-		weapon.StopSwing ();
-		weapon.equipped = false;
-		weapon.transform.parent = null;
+		DequipWeapon ();
 		GetComponent<SpriteRenderer> ().color = Color.red;
+		bodySprite.color = Color.red;
 		dead = true;
 		BoxCollider2D[] myColliders = gameObject.GetComponents<BoxCollider2D>();
 		foreach(BoxCollider2D bc in myColliders) bc.enabled = false;
