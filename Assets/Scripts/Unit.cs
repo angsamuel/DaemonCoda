@@ -20,7 +20,8 @@ public class Unit : MonoBehaviour {
 	List<Collider2D> damageSources;
 	Weapon pickup;
 	public TrailRenderer tr;
-	public SpriteRenderer bodySprite;
+	public GameObject body;
+
 	void Start(){
 		StartCoroutine (WaveRoutine ());
 		damageSources = new List<Collider2D> ();
@@ -111,8 +112,7 @@ public class Unit : MonoBehaviour {
 	}
 
 	public bool Dash(){
-	   if (!dashLocked && stamina > dashCost) {
-			Debug.Log ("dashing");
+		if (!dead && !dashLocked && stamina > dashCost) {
 			stamina -= dashCost;
 			dashLocked = true;
 			StartCoroutine (DashRoutine ());
@@ -138,14 +138,14 @@ public class Unit : MonoBehaviour {
 		if (GetComponent<Rigidbody2D> ().velocity.x < 0) {
 			spinDirection = 1;
 		}
-		Vector3 weaponStartRotation = weapon.gameObject.transform.eulerAngles;
+
 		while (t < timeToSpin) {
 			yield return null;
 			float dt = Time.deltaTime;
 			t += dt;
-			bodySprite.transform.eulerAngles = new Vector3 (0, 0, t / timeToSpin * 360 * spinDirection);
+			body.transform.eulerAngles = new Vector3 (0, 0, t / timeToSpin * 360 * spinDirection);
 		}
-		bodySprite.transform.eulerAngles = new Vector3 (0, 0, 0);
+		body.transform.eulerAngles = new Vector3 (0, 0, 0);
 	}
 
 	float dashTime = .25f;
@@ -215,8 +215,9 @@ public class Unit : MonoBehaviour {
 
 	public void Die(){
 		DequipWeapon ();
+
 		GetComponent<SpriteRenderer> ().color = Color.red;
-		bodySprite.color = Color.red;
+		body.GetComponent<SpriteRenderer>().color = Color.red;
 		dead = true;
 		BoxCollider2D[] myColliders = gameObject.GetComponents<BoxCollider2D>();
 		foreach(BoxCollider2D bc in myColliders) bc.enabled = false;
@@ -269,8 +270,12 @@ public class Unit : MonoBehaviour {
 
 	void Update(){
 		if(!dead){
+
+
 			transform.rotation = Quaternion.identity;
-			if(weapon != null && weapon.IsRested()){
+			if (weapon != null && weapon.IsRested ()) {
+				stamina += staminaRecharge * Time.deltaTime;
+			} else if (weapon == null) {
 				stamina += staminaRecharge * Time.deltaTime;
 			}
 			if (stamina > staminaMax) {

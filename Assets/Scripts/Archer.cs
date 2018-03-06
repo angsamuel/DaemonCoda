@@ -39,7 +39,8 @@ public class Archer : UnitController {
 		unit.Stop ();
 		int shots = Random.Range (1, 5);
 		for (int i = 0; i < shots; i++) {
-			Shoot (playerUnit.transform.position + new Vector3(Random.Range(-1.0f,1.0f), Random.Range(-1.0f,1.0f), Random.Range(-1.0f,1.0f)));
+			unit.AttackWithWeapon (); //weapon.StartSwing ();
+			//Shoot (playerUnit.transform.position + new Vector3(Random.Range(-1.0f,1.0f), Random.Range(-1.0f,1.0f), Random.Range(-1.0f,1.0f)));
 			yield return new WaitForSeconds(0.3f);
 		}
 		choosePosition = false;

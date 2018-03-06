@@ -19,6 +19,7 @@ public class Crop : MonoBehaviour {
 	void GetCut(){
 		if(!isCut){
 			isCut = true;
+			GameObject.Find ("HarvestController").GetComponent<HarvestController> ().harvestCount += 1;
 			//spawn a bushell
 			//switch to cut sprite
 			GetComponent<SpriteRenderer>().sprite = cutSprite;

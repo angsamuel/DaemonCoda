@@ -21,11 +21,29 @@ public class PlayerInputController : MonoBehaviour {
 	void Start () {
 		hpIndex = 2;
 		redOverlay.SetActive(false);
+		StartCoroutine (EndlessEnforcer ());
 	}
 
 	void EquipWeapon(){
 		playerUnit.Equip ();
 	}
+
+	IEnumerator EndlessEnforcer(){
+		while (true) {
+			if (playerUnit.transform.position.x > 2000) {
+				playerUnit.transform.Translate (-200, 0, 0);
+			} else if (playerUnit.transform.position.x < -2000) {
+				playerUnit.transform.Translate (-200, 0, 0);
+			}
+
+			if (playerUnit.transform.position.y > 2000) {
+				playerUnit.transform.Translate (0, -200, 0);
+			} else if (playerUnit.transform.position.y < -2000) {
+				playerUnit.transform.Translate (0, 200, 0);
+			}
+			yield return new WaitForSeconds (1f);
+		}
+	} 
 
 	// Update is called once per frame
 	void Update () {
@@ -112,7 +130,7 @@ public class PlayerInputController : MonoBehaviour {
 	}
 	public void DamageEffect(){
 		Debug.Log ("damage effect called");
-		StopCoroutine ("Pulse");
+		StopCoroutine (Pulse());
 		StartCoroutine (Pulse());
 	}
 	IEnumerator Pulse(){

@@ -25,7 +25,7 @@ public class Weapon : MonoBehaviour {
 		return rested;
 	}
 
-	public void StartSwing(){
+	public virtual void StartSwing(){
 		rested = false;
 	}
 

@@ -14,7 +14,8 @@ public class Duelist : UnitController {
 	}
 
 	IEnumerator SelectSpecialAction(){
-		yield return new WaitForSeconds (.15f);
+			yield return new WaitForSeconds (.15f);
+		if (!unit.dead) {
 			
 			inSpecialAction = true;
 			unit.Stop ();
@@ -43,7 +44,8 @@ public class Duelist : UnitController {
 			unit.Stop ();
 			yield return new WaitForSeconds (.15f);
 
-		StartCoroutine(SelectSpecialAction ());
+			StartCoroutine (SelectSpecialAction ());
+		}
 	}
 
 	void Charge(){

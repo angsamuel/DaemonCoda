@@ -52,7 +52,7 @@ public class Commander : UnitController {
 	}
 	void AimWeapons(){
 		for (int i = 0; i < squad.Count; i++) {
-			if (!squad [i].dead) {
+			if (!squad [i].dead && squad[i].weapon != null) {
 				squad [i].weapon.Aim (playerUnit.transform.position);
 			}
 		}
