@@ -114,9 +114,7 @@ public class PlayerInputController : MonoBehaviour {
 	void TalkToNPC(){
 		if (playerUnit.GetNPC () != null) {
 			playerUnit.GetNPC ().ActivateDialogue ();
-			Debug.Log ("yes npc");
 		} else {
-			Debug.Log ("no npc");
 		}
 	}
 
@@ -129,7 +127,6 @@ public class PlayerInputController : MonoBehaviour {
 		disabled = false;
 	}
 	public void DamageEffect(){
-		Debug.Log ("damage effect called");
 		StopCoroutine (Pulse());
 		StartCoroutine (Pulse());
 	}

@@ -23,6 +23,7 @@ public class Unit : MonoBehaviour {
 	public GameObject body;
 
 	void Start(){
+		//Time.timeScale = 0.1f;
 		StartCoroutine (WaveRoutine ());
 		EquipWeapon (weapon);
 
