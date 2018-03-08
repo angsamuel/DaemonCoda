@@ -8,11 +8,65 @@ public class Commander : UnitController {
 	bool positionsAssigned, playerSurrounded, campEstablished = false;
 	Vector3 playerOriginalPosition;
 	public int surroundRange, campDistance, commanderDistance, strikeDistance;
+	public GameObject squadMate;
 
 	// Use this for initialization
 	void Start () {
 		base.Start ();
+		squad = new List<Unit> ();
+		//spawn in squadMates
+		SpawnInSquad();
 		positions = new List<Vector3> ();
+	}
+
+	void SpawnInSquad(){
+		GameObject s0 = GameObject.Instantiate (squadMate, unit.transform);
+		s0.transform.localPosition  = new Vector3 (-15, 20, 0);
+		squad.Add (s0.GetComponent<Unit>());
+
+		GameObject s1 = GameObject.Instantiate (squadMate, unit.transform);
+		s1.transform.localPosition  = new Vector3 (0, 20, 0);
+		squad.Add (s1.GetComponent<Unit>());
+
+		GameObject s2 = GameObject.Instantiate (squadMate, unit.transform);
+		s2.transform.localPosition  = new Vector3 (15, 20, 0);
+		squad.Add (s2.GetComponent<Unit>());
+
+		GameObject s3 = GameObject.Instantiate (squadMate, unit.transform);
+		s3.transform.localPosition  = new Vector3 (-15, -20, 0);
+		squad.Add (s3.GetComponent<Unit>());
+
+		GameObject s4 = GameObject.Instantiate (squadMate, unit.transform);
+		s4.transform.localPosition  = new Vector3 (0, -20, 0);
+		squad.Add (s4.GetComponent<Unit>());
+
+		GameObject s5 = GameObject.Instantiate (squadMate, unit.transform);
+		s5.transform.localPosition  = new Vector3 (16, -20, 0);
+		squad.Add (s5.GetComponent<Unit>());
+
+		GameObject s6 = GameObject.Instantiate (squadMate, unit.transform);
+		s6.transform.localPosition  = new Vector3 (-20, -15, 0);
+		squad.Add (s6.GetComponent<Unit>());
+
+		GameObject s7 = GameObject.Instantiate (squadMate, unit.transform);
+		s7.transform.localPosition  = new Vector3 (-20, 0, 0);
+		squad.Add (s7.GetComponent<Unit>());
+
+		GameObject s8 = GameObject.Instantiate (squadMate, unit.transform);
+		s8.transform.localPosition  = new Vector3 (-20, 15, 0);
+		squad.Add (s8.GetComponent<Unit>());
+
+		GameObject s9 = GameObject.Instantiate (squadMate, unit.transform);
+		s9.transform.localPosition  = new Vector3 (20, -15, 0);
+		squad.Add (s9.GetComponent<Unit>());
+
+		GameObject s10 = GameObject.Instantiate (squadMate, unit.transform);
+		s10.transform.localPosition  = new Vector3 (20, 0, 0);
+		squad.Add (s10.GetComponent<Unit>());
+
+		GameObject s11 = GameObject.Instantiate (squadMate, unit.transform);
+		s11.transform.localPosition  = new Vector3 (20, 15, 0);
+		squad.Add (s11.GetComponent<Unit>());
 	}
 	
 	// Update is called once per frame
@@ -121,7 +175,7 @@ public class Commander : UnitController {
 	}
 
 	void EstablishCamp(){
-		Debug.Log ("Establishing Camp");
+		//Debug.Log ("Establishing Camp");
 		unit.MoveToward (playerUnit.transform.position);
 		MoveSquadWithCommander ();
 
@@ -135,11 +189,13 @@ public class Commander : UnitController {
 
 		if (Vector3.Distance (unit.transform.position, playerUnit.transform.position)<campDistance) {
 			campEstablished = true;
-			while (unit.transform.childCount > 0) {
+			while (unit.transform.childCount > 1) {
 				foreach (Transform child in unit.transform) {
-					child.parent = this.gameObject.transform;
-					unit.Stop ();
-					StopSquad ();
+					if (child.tag != "body") {
+						child.parent = this.gameObject.transform;
+						unit.Stop ();
+						StopSquad ();
+					}
 				}
 			}
 		}

@@ -1,23 +1,17 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Grunt.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Duelist.cs">
     <Files>
-      <File FileName="Assets/Scripts/ScrollScript.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Interior.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Crop.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Commander.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Grunt.cs" Line="36" Column="2" />
-      <File FileName="Assets/Scripts/UnitController.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Archer.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Berserker.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/PlayerInputController.cs" Line="115" Column="27" />
-      <File FileName="Assets/Scripts/WoodCuttingStation.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Duelist.cs" Line="85" Column="1" />
+      <File FileName="Assets/Scripts/Bow.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Weapon.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/NPC.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Unit.cs" Line="238" Column="25" />
+      <File FileName="Assets/Scripts/Archer.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/PlayerInputController.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Commander.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Unit.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/LevelController.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Sword.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Duelist.cs" Line="18" Column="20" />
+      <File FileName="Assets/UnitBody.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Grunt.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -24,10 +24,11 @@ public class Unit : MonoBehaviour {
 
 	void Start(){
 		StartCoroutine (WaveRoutine ());
+		EquipWeapon (weapon);
+
 		damageSources = new List<Collider2D> ();
 		rb = gameObject.GetComponent<Rigidbody2D> ();
 		staminaMax = stamina;
-		EquipWeapon (weapon);
 		StartCoroutine (PickupDeletion ());
 		if (tr != null) {
 			tr.time = 0.0f;
