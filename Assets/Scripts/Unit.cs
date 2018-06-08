@@ -9,8 +9,9 @@ public class Unit : MonoBehaviour {
 	public PlayerInputController pic;
 	NPC npc;
 	public bool dead, inWaterLevel = false;
-	public float speed, stamina, staminaMax, staminaRecharge, dashCost, waveDelay;
-	float dashMultiplier = 2f;
+    public float speed, stamina, staminaMax, staminaRecharge, dashCost; 
+    float waveDelay;
+	public float dashMultiplier = 1.5f;
 	public int health;
 	bool invincible, dashLocked, inWater, waveRoutineLock = false;
 	bool canTouchAttack = true;
@@ -150,7 +151,7 @@ public class Unit : MonoBehaviour {
 		body.transform.eulerAngles = new Vector3 (0, 0, 0);
 	}
 
-	float dashTime = .25f;
+	public float dashTime = .25f;
 	IEnumerator DashRoutine(){
 		invincible = true;
 		if (tr != null) {

@@ -59,8 +59,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\HarvestController.cs" />
-    <Compile Include="Assets\Mill.cs" />
     <Compile Include="Assets\Scripts\Archer.cs" />
     <Compile Include="Assets\Scripts\Arrow.cs" />
     <Compile Include="Assets\Scripts\Axe.cs" />
@@ -70,6 +68,7 @@
     <Compile Include="Assets\Scripts\BloodSplatter.cs" />
     <Compile Include="Assets\Scripts\Bow.cs" />
     <Compile Include="Assets\Scripts\Commander.cs" />
+    <Compile Include="Assets\Scripts\ComplexBuilding.cs" />
     <Compile Include="Assets\Scripts\Crop.cs" />
     <Compile Include="Assets\Scripts\Dialogue.cs" />
     <Compile Include="Assets\Scripts\DialoguePanel.cs" />
@@ -78,10 +77,12 @@
     <Compile Include="Assets\Scripts\FireBall.cs" />
     <Compile Include="Assets\Scripts\Grunt.cs" />
     <Compile Include="Assets\Scripts\GSword.cs" />
+    <Compile Include="Assets\Scripts\HarvestController.cs" />
     <Compile Include="Assets\Scripts\House.cs" />
     <Compile Include="Assets\Scripts\HPDisplay.cs" />
     <Compile Include="Assets\Scripts\Interior.cs" />
     <Compile Include="Assets\Scripts\LevelController.cs" />
+    <Compile Include="Assets\Scripts\Mill.cs" />
     <Compile Include="Assets\Scripts\NPC.cs" />
     <Compile Include="Assets\Scripts\PlayerInputController.cs" />
     <Compile Include="Assets\Scripts\Projectile.cs" />
@@ -93,18 +94,19 @@
     <Compile Include="Assets\Scripts\Sword.cs" />
     <Compile Include="Assets\Scripts\TileGenerator.cs" />
     <Compile Include="Assets\Scripts\Unit.cs" />
+    <Compile Include="Assets\Scripts\UnitBody.cs" />
     <Compile Include="Assets\Scripts\UnitController.cs" />
+    <Compile Include="Assets\Scripts\VillageGenerator.cs" />
     <Compile Include="Assets\Scripts\Water.cs" />
     <Compile Include="Assets\Scripts\Wave.cs" />
     <Compile Include="Assets\Scripts\Weapon.cs" />
     <Compile Include="Assets\Scripts\WoodCart.cs" />
     <Compile Include="Assets\Scripts\WoodCuttingStation.cs" />
-    <Compile Include="Assets\UnitBody.cs" />
-    <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>D:/Documents/GitHub/Gimongous/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor.StandardEvents">
-      <HintPath>D:/Documents/GitHub/Gimongous/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
+      <HintPath>D:/Projects/Unity/Gimongous/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.PackageManagerUI.Editor">
+      <HintPath>D:/Projects/Unity/Gimongous/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>D:/Programs/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
