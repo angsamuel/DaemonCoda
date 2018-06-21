@@ -105,6 +105,7 @@
     <Compile Include="Assets\Scripts\Weapon.cs" />
     <Compile Include="Assets\Scripts\WoodCart.cs" />
     <Compile Include="Assets\Scripts\WoodCuttingStation.cs" />
+    <Compile Include="Assets\TownGenerator.cs" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>D:/Projects/Unity/Gimongous/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>

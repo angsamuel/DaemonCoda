@@ -81,7 +81,7 @@ public class Unit : MonoBehaviour {
 			waveRoutineLock = false;
 			if (inWater || inWaterLevel) {
 				StartCoroutine (WaveRoutine ());
-			}
+			} 
 		}
 	}
 

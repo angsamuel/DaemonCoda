@@ -6,7 +6,7 @@ public class LevelGenerator : MonoBehaviour {
     public GameObject streetBlock;
 
     public int level_grid_size = 100;
-    List<StreetCrawler> streetCrawlers;
+    public List<StreetCrawler> streetCrawlers;
     List<Roomie> roomies;
     GameObject[,] levelGrid;
 	
@@ -15,8 +15,26 @@ public class LevelGenerator : MonoBehaviour {
         streetCrawlers = new List<StreetCrawler>();
         roomies = new List<Roomie>();
         levelGrid = new GameObject[level_grid_size, level_grid_size];
+        //Test();
+        Generate();
+    }
 
-        Test();
+    void Generate()
+    {
+        StreetCrawler sc = new StreetCrawler(this, 5, new Vector2(50, 0), 0, streetBlock);
+        streetCrawlers.Add(sc);
+        for (int x = 0; x < 1000; x++)
+        {
+            for (int i = 0; i < streetCrawlers.Count; i++)
+            {
+                streetCrawlers[i].Cycle();
+            }
+
+            if(streetCrawlers.Count == 0)
+            {
+                x = 1000;
+            }
+        }
     }
 	
 	// Update is called once per frame
@@ -26,7 +44,7 @@ public class LevelGenerator : MonoBehaviour {
 
     public void Test()
     {
-        StreetCrawler sc = new StreetCrawler(this, 5, new Vector2(10, 0), 0, streetBlock);
+        StreetCrawler sc = new StreetCrawler(this, 5, new Vector2(50, 0), 0, streetBlock);
         for(int i = 0; i < 9; i++)
         {
             sc.Cycle();
@@ -35,7 +53,12 @@ public class LevelGenerator : MonoBehaviour {
 
     public void PlaceBlock(int x, int y, GameObject block)
     {
-        if(levelGrid[x,y] != null)
+        PlaceBlock(x, y, block, Color.white);
+    }
+
+    public void PlaceBlock(int x, int y, GameObject block, Color c)
+    {
+        if (levelGrid[x, y] != null)
         {
             Destroy(levelGrid[x, y]);
         }
@@ -43,7 +66,10 @@ public class LevelGenerator : MonoBehaviour {
         GameObject newBlock = Instantiate(block, transform);
         newBlock.transform.Translate(new Vector2(x, y));
         levelGrid[x, y] = newBlock;
+        newBlock.GetComponent<SpriteRenderer>().color = c;
     }
+
+   
 
     public bool SpaceIsFree(int x, int y)
     {
