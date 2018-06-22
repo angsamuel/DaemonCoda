@@ -5,7 +5,7 @@ using UnityEngine;
 public class LevelGenerator : MonoBehaviour {
     public GameObject streetBlock;
 
-    public int level_grid_size = 100;
+    public int level_grid_size = 200;
     public List<StreetCrawler> streetCrawlers;
     List<Roomie> roomies;
     GameObject[,] levelGrid;
@@ -16,15 +16,18 @@ public class LevelGenerator : MonoBehaviour {
         roomies = new List<Roomie>();
         levelGrid = new GameObject[level_grid_size, level_grid_size];
         //Test();
-        Generate();
+        StartCoroutine(Generate());
     }
 
-    void Generate()
+    IEnumerator Generate()
     {
-        StreetCrawler sc = new StreetCrawler(this, 5, new Vector2(50, 0), 0, streetBlock);
+        StreetCrawler sc = new StreetCrawler(this, 5, new Vector2(level_grid_size/2, 0), 0, streetBlock);
         streetCrawlers.Add(sc);
         for (int x = 0; x < 1000; x++)
         {
+            Debug.Log(x);
+            yield return new WaitForSeconds(.1f);
+
             for (int i = 0; i < streetCrawlers.Count; i++)
             {
                 streetCrawlers[i].Cycle();
@@ -58,15 +61,21 @@ public class LevelGenerator : MonoBehaviour {
 
     public void PlaceBlock(int x, int y, GameObject block, Color c)
     {
-        if (levelGrid[x, y] != null)
-        {
-            Destroy(levelGrid[x, y]);
-        }
 
-        GameObject newBlock = Instantiate(block, transform);
-        newBlock.transform.Translate(new Vector2(x, y));
-        levelGrid[x, y] = newBlock;
-        newBlock.GetComponent<SpriteRenderer>().color = c;
+        if (x > -1 && y > -1 && x < level_grid_size && y < level_grid_size)
+        {
+
+
+            if (levelGrid[x, y] != null)
+            {
+                Destroy(levelGrid[x, y]);
+            }
+
+            GameObject newBlock = Instantiate(block, transform);
+            newBlock.transform.Translate(new Vector2(x, y));
+            levelGrid[x, y] = newBlock;
+            newBlock.GetComponent<SpriteRenderer>().color = c;
+        }
     }
 
    

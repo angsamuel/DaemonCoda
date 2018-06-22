@@ -34,21 +34,24 @@ public class StreetCrawler {
         prevWidth = width;
         gridPos = pos;
         block = b;
+        direction = orientation;
+        
 
         if (width == 5)
         {
-            streetCrawlerSpawnChance = .4f;
+            streetCrawlerSpawnChance = .5f;
             speed = 15;
 
         } else if (width == 3)
         {
             streetCrawlerSpawnChance = 1f;
-            chanceToTurn = .0f;
+            chanceToTurn = .25f;
             speed = 10;
         }else if(width == 1)
         {
-            streetCrawlerSpawnChance = 0.25f;
-            deadEndChance = 0.0f;
+            streetCrawlerSpawnChance = 0.35f;
+            chanceToTurn = .25f;
+            deadEndChance = 0.5f;
             speed = 5;
         }
 
@@ -58,10 +61,11 @@ public class StreetCrawler {
     {
         Debug.Log("Taking Cycle");
         for (int i = 0; i < speed; i++) {
+
+            if (Build()) {
+                Move();
+            }
             
-            Build();
-            Move();
-            //Birth();
         }
         Mutate();
 
@@ -127,7 +131,7 @@ public class StreetCrawler {
         }
     }
 
-    void Build()
+    bool Build()
     {
         bool vertical = false;
         Vector2 orientationCheck = new Vector2(0, 1);
@@ -163,7 +167,9 @@ public class StreetCrawler {
         if (!goodToBuild)
         {
             levelGenerator.streetCrawlers.Remove(this);
+            return false;
         }
+        return true;
 
     }
 
@@ -184,8 +190,8 @@ public class StreetCrawler {
                     StreetCrawler newCrawler1 = new StreetCrawler(levelGenerator, 3, gridPos, direction, block);
                     StreetCrawler newCrawler2 = new StreetCrawler(levelGenerator, 3, gridPos, direction, block);
 
-                    newCrawler1.MoveBack();
-                    newCrawler2.MoveBack();
+                    newCrawler1.MoveBack(2);
+                    newCrawler2.MoveBack(2);
 
                     //spawn two roads in opposite directions
                     if (direction == 0 || direction == 2)
@@ -209,7 +215,7 @@ public class StreetCrawler {
                 {
                     //spawn one road from selection of directions
                     StreetCrawler newCrawler = new StreetCrawler(levelGenerator, 3, gridPos, direction, block);
-                    newCrawler.MoveBack();
+                    newCrawler.MoveBack(2);
                     newCrawler.direction = GetNewRandomDirection(direction);
                     newCrawler.Move(3);
                     levelGenerator.streetCrawlers.Add(newCrawler);
@@ -224,7 +230,6 @@ public class StreetCrawler {
             bool turned = false;
             float roll1 = Random.Range(0.0f, 1.0f);
             float roll2 = Random.Range(0.0f, 1.0f);
-            Debug.Log(roll2 + ", " + streetCrawlerSpawnChance);
             if (chanceToTurn > roll1)
             {
                 Debug.Log("Turn");
@@ -243,10 +248,16 @@ public class StreetCrawler {
                     roll = Random.Range(0.0f, 1.0f);
                     if (roll < intersectionChance)
                     {
+                        Debug.Log(direction);
                         StreetCrawler newCrawler1 = new StreetCrawler(levelGenerator, 1, gridPos, direction, block);
                         StreetCrawler newCrawler2 = new StreetCrawler(levelGenerator, 1, gridPos, direction, block);
 
 
+                        //newCrawler1.Move(2);
+                        //newCrawler2.MoveBack(2);
+
+                        newCrawler1.MoveBack();
+                        newCrawler2.MoveBack();
 
                         //spawn two roads in opposite directions
                         if (direction == 0 || direction == 2)
@@ -270,6 +281,7 @@ public class StreetCrawler {
                     {
                         //spawn one road from selection of directions
                         StreetCrawler newCrawler = new StreetCrawler(levelGenerator, 1, gridPos, direction, block);
+                        newCrawler.MoveBack();
                         newCrawler.direction = GetNewRandomDirection(direction);
                         newCrawler.Move(2);
                         levelGenerator.streetCrawlers.Add(newCrawler);
@@ -298,7 +310,6 @@ public class StreetCrawler {
             bool turned = false;
             float roll1 = Random.Range(0.0f, 1.0f);
             float roll2 = Random.Range(0.0f, 1.0f);
-            Debug.Log(roll2 + ", " + streetCrawlerSpawnChance);
             if (chanceToTurn > roll1)
             {
                 Debug.Log("Turn");
@@ -320,7 +331,8 @@ public class StreetCrawler {
                         StreetCrawler newCrawler1 = new StreetCrawler(levelGenerator, 1, gridPos, direction, block);
                         StreetCrawler newCrawler2 = new StreetCrawler(levelGenerator, 1, gridPos, direction, block);
 
-
+                        newCrawler1.MoveBack();
+                        newCrawler2.MoveBack();
 
                         //spawn two roads in opposite directions
                         if (direction == 0 || direction == 2)
@@ -333,8 +345,8 @@ public class StreetCrawler {
                             newCrawler1.direction = 0;
                             newCrawler2.direction = 2;
                         }
-                        newCrawler1.Move(2);
-                        newCrawler2.Move(2);
+                        newCrawler1.Move();
+                        newCrawler2.Move();
 
                         levelGenerator.streetCrawlers.Add(newCrawler1);
                         levelGenerator.streetCrawlers.Add(newCrawler2);
@@ -344,8 +356,9 @@ public class StreetCrawler {
                     {
                         //spawn one road from selection of directions
                         StreetCrawler newCrawler = new StreetCrawler(levelGenerator, 1, gridPos, direction, block);
+                        newCrawler.MoveBack();
                         newCrawler.direction = GetNewRandomDirection(direction);
-                        newCrawler.Move(2);
+                        newCrawler.Move();
                         levelGenerator.streetCrawlers.Add(newCrawler);
                     }
 
@@ -354,23 +367,7 @@ public class StreetCrawler {
 
         }
 
-        /*
 
-        //shrink
-        float shrinkRoll = Random.Range(0.0f, 1.0f);
-        if (shrinkRoll < chanceToShrink)
-        {
-            Debug.Log("shrinking");
-            RandomShrink();
-        }
-
-        //turn
-        float turnRoll = Random.Range(0.0f, 1.0f);
-        if(turnRoll < chanceToTurn)
-        {
-           
-            RandomTurn();   
-        }*/
     }
 
    void RandomShrink()
