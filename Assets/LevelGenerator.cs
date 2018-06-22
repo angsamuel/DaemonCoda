@@ -56,7 +56,7 @@ public class LevelGenerator : MonoBehaviour {
 
     public void PlaceBlock(int x, int y, GameObject block)
     {
-        PlaceBlock(x, y, block, Color.white);
+        PlaceBlock(x, y, block, Color.black);
     }
 
     public void PlaceBlock(int x, int y, GameObject block, Color c)
@@ -74,7 +74,9 @@ public class LevelGenerator : MonoBehaviour {
             GameObject newBlock = Instantiate(block, transform);
             newBlock.transform.Translate(new Vector2(x, y));
             levelGrid[x, y] = newBlock;
-            newBlock.GetComponent<SpriteRenderer>().color = c;
+            newBlock.GetComponent<SpriteRenderer>().color = new Color(c.r, c.g, c.b, Random.Range(0.5f, 1.0f));
+            newBlock.GetComponent<SpriteRenderer>().transform.localScale = new Vector2(Random.Range(.125f, .15f), Random.Range(.125f, .15f));
+            
         }
     }
 

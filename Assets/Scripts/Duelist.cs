@@ -16,6 +16,7 @@ public class Duelist : UnitController {
 	IEnumerator SelectSpecialAction(){
 			yield return new WaitForSeconds (.15f);
 		if (!unit.dead) {
+            Debug.Log("not dead");
 			
 			inSpecialAction = true;
 			unit.Stop ();
@@ -90,6 +91,7 @@ public class Duelist : UnitController {
 					unit.Stop ();
 				}
 			}
-		}
+        }
+        
 	}
 }

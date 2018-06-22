@@ -85,6 +85,20 @@ public class Unit : MonoBehaviour {
 		}
 	}
 
+    void SpriteCheck()
+    {
+        if (!dead)
+        {
+            if (rb.velocity.x > 0)
+            {
+                body.transform.localScale = new Vector2(-Mathf.Abs(body.transform.localScale.x), body.transform.localScale.y);
+            }
+            else if (rb.velocity.x < 0)
+            {
+                body.transform.localScale = new Vector2(Mathf.Abs(body.transform.localScale.x), body.transform.localScale.y);
+            }
+        }
+    }
 
 
 	public IEnumerator PauseMovement(float time){
@@ -100,6 +114,8 @@ public class Unit : MonoBehaviour {
 		if (!dead) {
 			rb.velocity = new Vector2(x*speed, y*speed);
 		}
+
+        
 	}
 
 	public void MoveToward(Vector3 position){
@@ -225,7 +241,10 @@ public class Unit : MonoBehaviour {
 		BoxCollider2D[] myColliders = gameObject.GetComponents<BoxCollider2D>();
 		foreach(BoxCollider2D bc in myColliders) bc.enabled = false;
 
-		transform.rotation = Quaternion.identity;
+        GetComponent<Rigidbody2D>().freezeRotation = true;
+        GetComponent<Rigidbody2D>().velocity *= 0;
+
+        transform.rotation = Quaternion.identity;
 		inWater = false;
 		inWaterLevel = false;
 		Stop ();
@@ -274,7 +293,7 @@ public class Unit : MonoBehaviour {
 	void Update(){
 		if(!dead){
 
-
+            SpriteCheck();
 			transform.rotation = Quaternion.identity;
 			if (weapon != null && weapon.IsRested ()) {
 				stamina += staminaRecharge * Time.deltaTime;
