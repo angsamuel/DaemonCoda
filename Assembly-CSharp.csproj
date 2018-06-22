@@ -88,6 +88,7 @@
     <Compile Include="Assets\Scripts\PlayerInputController.cs" />
     <Compile Include="Assets\Scripts\Projectile.cs" />
     <Compile Include="Assets\Scripts\Roomie.cs" />
+    <Compile Include="Assets\Scripts\RoomPlopper.cs" />
     <Compile Include="Assets\Scripts\ScreenFader.cs" />
     <Compile Include="Assets\Scripts\ScrollScript.cs" />
     <Compile Include="Assets\Scripts\Scythe.cs" />

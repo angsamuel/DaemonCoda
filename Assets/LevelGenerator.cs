@@ -25,7 +25,6 @@ public class LevelGenerator : MonoBehaviour {
         streetCrawlers.Add(sc);
         for (int x = 0; x < 1000; x++)
         {
-            Debug.Log(x);
             yield return new WaitForSeconds(.1f);
 
             for (int i = 0; i < streetCrawlers.Count; i++)
@@ -38,6 +37,9 @@ public class LevelGenerator : MonoBehaviour {
                 x = 1000;
             }
         }
+
+        RoomPlopper rm = new RoomPlopper(this, streetBlock, streetBlock);
+        StartCoroutine(rm.PlopRooms());
     }
 	
 	// Update is called once per frame
@@ -80,7 +82,26 @@ public class LevelGenerator : MonoBehaviour {
         }
     }
 
-   
+    public void PlaceFloor(int x, int y, GameObject floor, Color c)
+    {
+
+        if (x > -1 && y > -1 && x < level_grid_size && y < level_grid_size)
+        {
+
+
+            if (levelGrid[x, y] != null)
+            {
+                Destroy(levelGrid[x, y]);
+            }
+
+            GameObject newBlock = Instantiate(floor, transform);
+            newBlock.transform.Translate(new Vector2(x, y));
+            levelGrid[x, y] = newBlock;
+            newBlock.GetComponent<SpriteRenderer>().color = new Color(c.r, c.g, c.b, Random.Range(0.5f, 1.0f));
+        }
+    }
+
+
 
     public bool SpaceIsFree(int x, int y)
     {

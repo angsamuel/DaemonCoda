@@ -6,7 +6,7 @@ public class Bow : Weapon {
 	public GameObject target;
 	public GameObject arrowPrefab;
 	public override void StartSwing(){
-		Shoot (target.transform.position + new Vector3(Random.Range(-.5f,.5f), Random.Range(-.5f,.5f),0));
+		Shoot (target.transform.position + new Vector3(Random.Range(-.05f,.05f), Random.Range(-.05f,.05f),0));
 	}
 
 	void Shoot(Vector3 position){
