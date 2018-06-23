@@ -5,8 +5,8 @@ using UnityEngine;
 public class RoomPlopper {
     LevelGenerator levelGenerator;
     int gridSize = 0;
-    int maxSize = 10;
-    int minSize = 3;
+    int maxSize = 11;
+    int minSize = 4;
     GameObject floor;
     GameObject wall;
 
@@ -21,20 +21,25 @@ public class RoomPlopper {
 	
 	public IEnumerator PlopRooms()
     {
+        
+
         for (int y = 0; y < gridSize; y++)
         {
             for (int x = 0; x < gridSize; x++)
             {
-                if (!levelGenerator.SpaceIsFree(x, y))
+                if (Random.Range(0.0f, 1.0f) > 0.5f)
                 {
-                    List<int> availableDirections = GetAvailableDirections(x,y);
-
-                    if(availableDirections.Count > 0)
+                    if (!levelGenerator.SpaceIsFree(x, y) && levelGenerator.GetTileTag(x, y) == "street")
                     {
-                        int directionChoice = Random.Range(0, availableDirections.Count);
-                        int direction = availableDirections[directionChoice];
-                        Plop(x, y, direction);
-                        yield return new WaitForSeconds(.01f);
+                        List<int> availableDirections = GetAvailableDirections(x, y);
+
+                        if (availableDirections.Count > 0)
+                        {
+                            int directionChoice = Random.Range(0, availableDirections.Count);
+                            int direction = availableDirections[directionChoice];
+                            Plop(x, y, direction);
+                            yield return new WaitForSeconds(0);
+                        }
                     }
                 }
             }
@@ -90,7 +95,7 @@ public class RoomPlopper {
                 {
                     if (!levelGenerator.SpaceIsFree(posX + i + 1, posY + (velY * j)))
                     {
-                        rightBound = i-1;
+                        rightBound = i;
                     }
                 }
 
@@ -100,11 +105,11 @@ public class RoomPlopper {
                 {
                     if (!levelGenerator.SpaceIsFree((posX - i) - 1, posY + (velY * j)))
                     {
-                        leftBound = i-1;
+                        leftBound = i;
                     }
                 }
                 
-                if(rightBound + leftBound < minSize)
+                if(rightBound + leftBound < minSize || !levelGenerator.SpaceIsFree(posX, posY + (velY * j)) || !levelGenerator.SpaceIsFree(posX, posY + (velY * j) + (velY / Mathf.Abs(velY))))
                 {
                     j = maxSize + 1;
                 }
@@ -115,10 +120,9 @@ public class RoomPlopper {
 
             }
 
-            Debug.Log("LEFT: " + leftBound + " " + "RIGHT: " + rightBound + " THIRD: " + thirdBound);
 
             //place tiles if appropriate area found
-            if(thirdBound >= minSize && rightBound + leftBound >= minSize)
+            if(thirdBound >= minSize && rightBound + leftBound >= minSize && leftBound > 0 && rightBound > 0)
             {
                 for (int j = 0; j < thirdBound; j++)
                 {
@@ -142,38 +146,98 @@ public class RoomPlopper {
             
         }
 
-        
+        if (d == 1 || d == 3)
+        {
+            for (int j = 0; j < maxSize; j++)
+            {
+                //explore up
+
+                for (int i = 0; i < upBound; i++)
+                {
+                    if (!levelGenerator.SpaceIsFree(posX + (velX * j), posY + i + 1))
+                    {
+                        upBound = i;
+                    }
+                }
+
+                //explore down
+
+                for (int i = 0; i < downBound; i++)
+                {
+                    if (!levelGenerator.SpaceIsFree(posX + (velX * j), (posY - i) - 1))
+                    {
+                        downBound = i;
+                    }
+                }
+
+                if (rightBound + leftBound < minSize || !levelGenerator.SpaceIsFree(posX + (velX * j), posY) || !levelGenerator.SpaceIsFree(posX + (velY * j) + (velX / Mathf.Abs(velX)), posY))
+                {
+                    j = maxSize + 1;
+                }
+                else
+                {
+                    thirdBound = j - 1;
+                }
+
+            }
+
+            //Debug.Log("LEFT: " + leftBound + " " + "RIGHT: " + rightBound + " THIRD: " + thirdBound);
+
+            //place tiles if appropriate area found
+            if (thirdBound >= minSize && upBound + downBound >= minSize && upBound > 0 && downBound > 0)
+            {
+                for (int j = 0; j < thirdBound; j++)
+                {
+                    //place right
+
+                    for (int i = 0; i < upBound; i++)
+                    {
+                        levelGenerator.PlaceFloor(posX + (velX * j), posY + i, floor, Color.white);
+                    }
+
+                    //explore left
+
+                    for (int i = 0; i < downBound; i++)
+                    {
+
+                        levelGenerator.PlaceFloor(posX + (velX * j), posY - i, floor, Color.white);
+                    }
+
+                }
+            }
+
+        }
+
+
     }
 
     List<int> GetAvailableDirections(int x, int y)
     {
         List<int> output = new List<int>();
-        if (levelGenerator.SpaceIsFree(x-1, y+1))
-        {
+
+
+
             if (levelGenerator.SpaceIsFree(x, y + 1) && levelGenerator.SpaceIsFree(x, y + 2))
             {
                 output.Add(0);
             }
-        }
 
-        if (levelGenerator.SpaceIsFree(x + 1, y) && levelGenerator.SpaceIsFree(x + 2, y))
-        {
-            output.Add(1);
-        }
+            if (levelGenerator.SpaceIsFree(x + 1, y) && levelGenerator.SpaceIsFree(x + 2, y))
+            {
+                output.Add(1);
+            }
 
-        if(levelGenerator.SpaceIsFree(x, y - 1) && levelGenerator.SpaceIsFree(x, y - 1))
-        {
-            output.Add(2);
-        }
-
-        if (levelGenerator.SpaceIsFree(x - 1, y - 1))
-        {
+            if (levelGenerator.SpaceIsFree(x, y - 1) && levelGenerator.SpaceIsFree(x, y - 1))
+            {
+                output.Add(2);
+            }
 
             if (levelGenerator.SpaceIsFree(x - 1, y))
             {
                 output.Add(3);
             }
-        }
+        
+    
 
         return output;
     }

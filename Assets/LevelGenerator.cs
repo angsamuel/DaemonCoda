@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour {
     public GameObject streetBlock;
+    public GameObject floorBlock;
 
     public int level_grid_size = 200;
     public List<StreetCrawler> streetCrawlers;
     List<Roomie> roomies;
     GameObject[,] levelGrid;
+    Coroutine currentGeneration;
+    Coroutine currentPlop;
 	
     // Use this for initialization
 	void Start () {
@@ -16,7 +19,25 @@ public class LevelGenerator : MonoBehaviour {
         roomies = new List<Roomie>();
         levelGrid = new GameObject[level_grid_size, level_grid_size];
         //Test();
-        StartCoroutine(Generate());
+        currentGeneration = StartCoroutine(Generate());
+       
+    }
+
+    public void NewVillage()
+    {
+        StopCoroutine(currentGeneration);
+        StopCoroutine(currentPlop);
+        for(int x = 0; x < level_grid_size; x++)
+        {
+            for(int y = 0; y<level_grid_size; y++)
+            {
+                if(levelGrid[x,y]!= null)
+                {
+                    Destroy(levelGrid[x, y]);
+                }
+            }
+        }
+        currentGeneration = StartCoroutine(Generate());
     }
 
     IEnumerator Generate()
@@ -25,7 +46,7 @@ public class LevelGenerator : MonoBehaviour {
         streetCrawlers.Add(sc);
         for (int x = 0; x < 1000; x++)
         {
-            yield return new WaitForSeconds(.1f);
+            yield return new WaitForSeconds(.01f);
 
             for (int i = 0; i < streetCrawlers.Count; i++)
             {
@@ -38,8 +59,8 @@ public class LevelGenerator : MonoBehaviour {
             }
         }
 
-        RoomPlopper rm = new RoomPlopper(this, streetBlock, streetBlock);
-        StartCoroutine(rm.PlopRooms());
+        RoomPlopper rm = new RoomPlopper(this, floorBlock, floorBlock);
+        currentPlop = StartCoroutine(rm.PlopRooms());
     }
 	
 	// Update is called once per frame
@@ -80,6 +101,23 @@ public class LevelGenerator : MonoBehaviour {
             newBlock.GetComponent<SpriteRenderer>().transform.localScale = new Vector2(Random.Range(.125f, .15f), Random.Range(.125f, .15f));
             
         }
+    }
+
+    public string GetTileTag(int x, int y)
+    {
+        if(x > -1 && y > -1 && x < level_grid_size && y < level_grid_size)
+        {
+            if(levelGrid[x,y] == null)
+            {
+                return "none";
+            }
+            else
+            {
+                return levelGrid[x, y].tag;
+            }
+        }
+
+        return "outofbounds";
     }
 
     public void PlaceFloor(int x, int y, GameObject floor, Color c)

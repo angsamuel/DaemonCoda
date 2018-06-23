@@ -239,7 +239,6 @@ public class StreetCrawler {
             }
             else if(streetCrawlerSpawnChance > roll2)
             {
-                Debug.Log("spawning little one");
                 //spawn smaller roads
                 float roll = Random.Range(0.0f, 1.0f);
                 if (roll < streetCrawlerSpawnChance)
@@ -312,7 +311,6 @@ public class StreetCrawler {
             float roll2 = Random.Range(0.0f, 1.0f);
             if (chanceToTurn > roll1)
             {
-                Debug.Log("Turn");
                 //make a turn
                 RandomTurn();
                 turned = true;
