@@ -9,6 +9,7 @@ public class RoomPlopper {
     int minSize = 4;
     GameObject floor;
     GameObject wall;
+    float doorChance = .1f;
 
 	// Use this for initialization
 	public RoomPlopper(LevelGenerator lg, GameObject f, GameObject w)
@@ -19,7 +20,7 @@ public class RoomPlopper {
         wall = w;
     }
 	
-	public IEnumerator PlopRooms()
+	public void PlopRooms()
     {
         
 
@@ -27,7 +28,7 @@ public class RoomPlopper {
         {
             for (int x = 0; x < gridSize; x++)
             {
-                if (Random.Range(0.0f, 1.0f) > 0.5f)
+                if (Random.Range(0.0f, 1.0f) > 0.75f)
                 {
                     if (!levelGenerator.SpaceIsFree(x, y) && levelGenerator.GetTileTag(x, y) == "street")
                     {
@@ -38,7 +39,7 @@ public class RoomPlopper {
                             int directionChoice = Random.Range(0, availableDirections.Count);
                             int direction = availableDirections[directionChoice];
                             Plop(x, y, direction);
-                            yield return new WaitForSeconds(0);
+                            //yield return new WaitForSeconds(0);
                         }
                     }
                 }
@@ -122,7 +123,7 @@ public class RoomPlopper {
 
 
             //place tiles if appropriate area found
-            if(thirdBound >= minSize && rightBound + leftBound >= minSize && leftBound > 0 && rightBound > 0)
+            if(thirdBound >= minSize && rightBound + leftBound >= minSize && leftBound > 1 && rightBound > 1)
             {
                 for (int j = 0; j < thirdBound; j++)
                 {
@@ -130,18 +131,38 @@ public class RoomPlopper {
 
                     for (int i = 0; i < rightBound; i++)
                     {
+                           
+                        if(i == rightBound - 1 || j == 0 || j == thirdBound - 1)
+                        {
+                           levelGenerator.PlaceWall(posX + i, posY + (velY * j), wall, Color.red);
+                        }
+                        else
+                        {
                             levelGenerator.PlaceFloor(posX + i, posY + (velY * j), floor, Color.white);
+                        }
                     }
 
-                    //explore left
+                    //place left
 
                     for (int i = 0; i < leftBound; i++)
                     {
 
+                        if (i == leftBound - 1 || j == 0 || j == thirdBound - 1)
+                        {
+                            levelGenerator.PlaceWall(posX - i, posY + (velY * j), wall, Color.red);
+                            
+
+                        }
+                        else
+                        {
                             levelGenerator.PlaceFloor(posX - i, posY + (velY * j), floor, Color.white);
+                        }
                     }
 
                 }
+
+                levelGenerator.PlaceFloor(posX + ((rightBound - leftBound)/2), posY, floor, Color.blue);
+                
             }
             
         }
@@ -184,7 +205,7 @@ public class RoomPlopper {
             //Debug.Log("LEFT: " + leftBound + " " + "RIGHT: " + rightBound + " THIRD: " + thirdBound);
 
             //place tiles if appropriate area found
-            if (thirdBound >= minSize && upBound + downBound >= minSize && upBound > 0 && downBound > 0)
+            if (thirdBound >= minSize && upBound + downBound >= minSize && upBound > 1 && downBound > 1)
             {
                 for (int j = 0; j < thirdBound; j++)
                 {
@@ -192,18 +213,35 @@ public class RoomPlopper {
 
                     for (int i = 0; i < upBound; i++)
                     {
-                        levelGenerator.PlaceFloor(posX + (velX * j), posY + i, floor, Color.white);
+                        if (i == upBound - 1 || j == 0 || j == thirdBound - 1)
+                        {
+                            levelGenerator.PlaceWall(posX + (velX * j), posY + i, wall, Color.red);
+                        }
+                        else
+                        {
+                            levelGenerator.PlaceFloor(posX + (velX * j), posY + i, floor, Color.white);
+                        }
+
                     }
 
                     //explore left
 
                     for (int i = 0; i < downBound; i++)
                     {
+                        if (i == downBound - 1 || j == 0 || j == thirdBound - 1)
+                        {
+                            levelGenerator.PlaceWall(posX + (velX * j), posY - i, wall, Color.red);
+                        }
+                        else
+                        {
+                            levelGenerator.PlaceFloor(posX + (velX * j), posY - i, floor, Color.white);
+                        }
 
-                        levelGenerator.PlaceFloor(posX + (velX * j), posY - i, floor, Color.white);
+                       
                     }
 
                 }
+                levelGenerator.PlaceFloor(posX, posY + ((upBound - downBound) / 2), floor, Color.blue);
             }
 
         }

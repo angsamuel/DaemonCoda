@@ -23,6 +23,12 @@ public class Unit : MonoBehaviour {
 	public TrailRenderer tr;
 	public GameObject body;
 
+    Coroutine staminaDelayRoutine;
+    float staminaDelayTime = 2f;
+    bool canRecharge = true;
+
+
+
 	void Start(){
 		//Time.timeScale = 0.1f;
 		StartCoroutine (WaveRoutine ());
@@ -36,6 +42,31 @@ public class Unit : MonoBehaviour {
 			tr.time = 0.0f;
 		}
 	}
+
+    void UseStamina(float cost)
+    {
+        Debug.Log("Use Stamina");
+        stamina -= cost;
+
+        if(stamina < 0)
+        {
+            stamina = 0;
+        }
+
+        if (staminaDelayRoutine != null)
+        {
+            StopCoroutine(staminaDelayRoutine);
+        }
+
+        staminaDelayRoutine = StartCoroutine(DelayStamina());
+    }
+
+    IEnumerator DelayStamina()
+    {
+        canRecharge = false;
+        yield return new WaitForSeconds(staminaDelayTime);
+        canRecharge = true;
+    }
 
 	IEnumerator PickupDeletion(){
 		while(true){
@@ -131,8 +162,8 @@ public class Unit : MonoBehaviour {
 	}
 
 	public bool Dash(){
-		if (!dead && !dashLocked && stamina > dashCost) {
-			stamina -= dashCost;
+		if (!dead && !dashLocked && stamina > 0) {
+            UseStamina(dashCost);
 			dashLocked = true;
 			StartCoroutine (DashRoutine ());
 			return true;
@@ -200,7 +231,8 @@ public class Unit : MonoBehaviour {
 
 	}
 
-	void OnTriggerEnter2D(Collider2D other) 
+
+    void OnTriggerEnter2D(Collider2D other) 
 	{ 
 		if (other.gameObject.tag == "damage source") {
 			if (!damageSources.Contains (other)) {
@@ -250,9 +282,9 @@ public class Unit : MonoBehaviour {
 		Stop ();
 	}
 	public void AttackWithWeapon(){
-		if (!dead && weapon != null && weapon.IsRested () && stamina > weapon.staminaCost) {
+		if (!dead && weapon != null && weapon.IsRested () && stamina > 0) {
 			weapon.StartSwing ();
-			stamina -= weapon.staminaCost;
+            UseStamina(weapon.staminaCost);
 		}
 	}
 	public void TakeDamage(){
@@ -295,16 +327,29 @@ public class Unit : MonoBehaviour {
 
             SpriteCheck();
 			transform.rotation = Quaternion.identity;
-			if (weapon != null && weapon.IsRested ()) {
-				stamina += staminaRecharge * Time.deltaTime;
-			} else if (weapon == null) {
-				stamina += staminaRecharge * Time.deltaTime;
-			}
-			if (stamina > staminaMax) {
-				stamina = staminaMax;
-			}
+            RechargeStamina();
 		}
 	}
+
+    void RechargeStamina()
+    {
+        if (canRecharge)
+        {
+            if (weapon != null && weapon.IsRested())
+            {
+                stamina += staminaRecharge * Time.deltaTime;
+            }
+            else if (weapon == null)
+            {
+                stamina += staminaRecharge * Time.deltaTime;
+            }
+        }
+        if (stamina > staminaMax)
+        {
+            stamina = staminaMax;
+        }
+    }
+
 	public void TouchAttack(Unit u){
 		if (canTouchAttack && !dead && Vector3.Distance(transform.position, u.transform.position) < 1) {
 			u.TakeDamage ();

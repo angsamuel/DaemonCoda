@@ -67,7 +67,10 @@ public class StreetCrawler {
             }
             
         }
-        Mutate();
+        if (width != 5 || gridPos.y < levelGenerator.level_grid_size)
+        {
+            Mutate();
+        }
 
 
     }
@@ -247,7 +250,6 @@ public class StreetCrawler {
                     roll = Random.Range(0.0f, 1.0f);
                     if (roll < intersectionChance)
                     {
-                        Debug.Log(direction);
                         StreetCrawler newCrawler1 = new StreetCrawler(levelGenerator, 1, gridPos, direction, block);
                         StreetCrawler newCrawler2 = new StreetCrawler(levelGenerator, 1, gridPos, direction, block);
 
