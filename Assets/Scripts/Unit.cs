@@ -388,4 +388,37 @@ public class Unit : MonoBehaviour {
 	public NPC GetNPC(){
 		return npc;
 	}
+
+    public void RaycastToTarget(GameObject target) 
+    {
+        /*
+        Debug.DrawLine(transform.position + new Vector3(2,2,2),new Vector3(0,0,0));
+        if (Physics2D.Linecast(transform.position + new Vector3(2, 2, 2), new Vector3(0, 0, 0)))
+        {
+            Debug.Log("spotted!");
+        }
+        */
+
+        
+
+       RaycastHit2D[] hits;
+
+       hits = Physics2D.LinecastAll(transform.position, target.transform.position);
+
+       if(hits.Length > 2 && hits[2].transform.gameObject == target)
+       {
+           Debug.Log("spotted " + hits.Length);
+           Debug.DrawLine(transform.position, target.transform.position, Color.green);
+
+
+        }
+        else
+        {
+            Debug.DrawLine(transform.position, target.transform.position, Color.red);
+        }
+
+
+    }
+
+
 }

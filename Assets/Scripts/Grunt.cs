@@ -13,6 +13,7 @@ public class Grunt : UnitController {
 
 	void Update () {
 		base.Update ();
+        unit.RaycastToTarget(playerUnit.gameObject);
         if (playerSeen)
         {
             if (!unit.dead && unit.weapon != null)
