@@ -18,7 +18,7 @@ public class LevelController : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
-        //StartCoroutine(TableConstructionRoutine());
+        StartCoroutine(TableConstructionRoutine());
 	}
 
 	public void AddEnemyController(UnitController u){
@@ -40,7 +40,7 @@ public class LevelController : MonoBehaviour {
 
     public IEnumerator TableConstructionRoutine()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(10);
         BuildTeamTables();
     }
 

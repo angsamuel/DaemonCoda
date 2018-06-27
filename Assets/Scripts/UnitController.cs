@@ -276,14 +276,16 @@ public class UnitController : MonoBehaviour {
     float scanTimer = .002f;
     IEnumerator ScanRoutine()
     {
+
+
+        float nudge = Random.Range(0.0f, 37.0f);
         
-       
         for (int i = 0; i < 37; i++)
         {
 
-            yield return new WaitForSeconds(.04f);
-            float scanX = unit.transform.position.x + scanRange * Mathf.Cos(Mathf.Deg2Rad * i * 10);
-            float scanY = unit.transform.position.y + scanRange * Mathf.Sin(Mathf.Deg2Rad * i * 10);
+            //yield return new WaitForSeconds(.04f);
+            float scanX = unit.transform.position.x + scanRange * Mathf.Cos(Mathf.Deg2Rad * (i+nudge) * 10);
+            float scanY = unit.transform.position.y + scanRange * Mathf.Sin(Mathf.Deg2Rad * (i+nudge) * 10);
             Vector2 scanPos = new Vector2(scanX, scanY);
 
            
@@ -348,6 +350,7 @@ public class UnitController : MonoBehaviour {
             if (i == 36 && target == null && scanEnabeled)
             {
                 i = 0;
+                nudge = Random.Range(0.0f, 37.0f);
                 yield return new WaitForSeconds(.2f);
             }
             

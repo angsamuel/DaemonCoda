@@ -81,7 +81,7 @@ public class LevelGenerator : MonoBehaviour {
         streetCrawlers.Add(sc);
         for (int x = 0; x < 1000; x++)
         {
-            yield return new WaitForSeconds(.1f);
+            yield return new WaitForSeconds(.01f);
 
             for (int i = 0; i < streetCrawlers.Count; i++)
             {
@@ -98,7 +98,7 @@ public class LevelGenerator : MonoBehaviour {
         rm.PlopRooms();
         Populate();
 
-       StartCoroutine(levelController.TableConstructionRoutine());
+       //StartCoroutine(levelController.TableConstructionRoutine());
     }
 	
 	// Update is called once per frame
