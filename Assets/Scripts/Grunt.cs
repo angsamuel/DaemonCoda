@@ -9,12 +9,9 @@ public class Grunt : UnitController {
         base.Start();
     }
 
-
-
     void Update()
     {
         base.Update();
-        
     }
 
     override public void CustomActions()
@@ -40,6 +37,4 @@ public class Grunt : UnitController {
             }
         }
     }
-
-
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour {
+    public LevelController levelController;
     public GameObject streetBlock;
     public GameObject floorBlock;
     public GameObject wallBlock;
@@ -96,6 +97,8 @@ public class LevelGenerator : MonoBehaviour {
         RoomPlopper rm = new RoomPlopper(this, floorBlock, wallBlock);
         rm.PlopRooms();
         Populate();
+
+       StartCoroutine(levelController.TableConstructionRoutine());
     }
 	
 	// Update is called once per frame

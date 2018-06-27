@@ -23,11 +23,12 @@ public class UnitController : MonoBehaviour {
 		playerUnit = GameObject.Find ("PlayerInputController").GetComponent<PlayerInputController> ().playerUnit;
         StartCoroutine(BreadCrumb());
         StartCoroutine(BreadCrumbCleanup());
+        StartCoroutine(ProximityCheck());
 	}
 	
 	// Update is called once per frame
 	public void Update () {
-        if (!unit.dead)
+        if (!unit.dead && scanEnabeled)
         {
             //CheckForPlayer ();
             LockTarget();
@@ -66,9 +67,54 @@ public class UnitController : MonoBehaviour {
         {
             unit.Stop(.25f);
         }
+    }
+
+    bool proximityCheckEnabeled = true;
+    float proximityWaitTime = 3.0f;
+
+    bool scanEnabeled = false;
+
+    IEnumerator ProximityCheck()
+    {
+        
+        while (proximityCheckEnabeled)
+        {
+            
+            yield return new WaitForSeconds(proximityWaitTime + Random.Range(-1.0f, 1.0f));
+            scanEnabeled = false;
+
+            for (int i = 0; i<levelController.teams.Count; i++)
+            {
+                if(levelController.teams[i] == unit.team)
+                {
+                        List<Unit> possibleTargets = levelController.teamTable[levelController.teams[i]] as List<Unit>;
+                        for(int k = 0; k < possibleTargets.Count; k++)
+                        {
+                            if( Vector3.Distance(possibleTargets[k].transform.position, unit.transform.position) < scanRange * 3)
+                            {
+                                scanEnabeled = true;
+                                Debug.Log("enabling scan");
+                            }
+                        }
+
+
+                }
+            }
+
+            //check player
+            if(scanEnabeled == false)
+            {
+                if (Vector3.Distance(playerUnit.transform.position, unit.transform.position) < scanRange * 3)
+                {
+                    scanEnabeled = true;
+                    Debug.Log("enabling scan");
+                }
+            }
 
 
 
+
+        }
     }
 
 
@@ -299,7 +345,7 @@ public class UnitController : MonoBehaviour {
                 }
             }
 
-            if (i == 36 && target == null)
+            if (i == 36 && target == null && scanEnabeled)
             {
                 i = 0;
                 yield return new WaitForSeconds(.2f);
