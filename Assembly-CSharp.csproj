@@ -62,6 +62,7 @@
     <Compile Include="Assets\Greenery.cs" />
     <Compile Include="Assets\Husk.cs" />
     <Compile Include="Assets\LevelGenerator.cs" />
+    <Compile Include="Assets\Scanner.cs" />
     <Compile Include="Assets\Scripts\Archer.cs" />
     <Compile Include="Assets\Scripts\Arrow.cs" />
     <Compile Include="Assets\Scripts\Axe.cs" />

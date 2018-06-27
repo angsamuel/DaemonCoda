@@ -59,7 +59,6 @@ public class StreetCrawler {
 
     public void Cycle()
     {
-        Debug.Log("Taking Cycle");
         for (int i = 0; i < speed; i++) {
 
             if (Build()) {

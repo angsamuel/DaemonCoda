@@ -21,7 +21,6 @@ public class Husk : UnitController {
         yield return new WaitForSeconds(3);
         while (moving)
         {
-            Debug.Log("wandering");
             unit.Move(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f));
             yield return new WaitForSeconds(Random.Range(1.0f, 3.0f));
 

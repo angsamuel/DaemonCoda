@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Unit : MonoBehaviour {
+    public string team;
 	public GameObject blood;
 	public GameObject wave;
 	Color waveColor = Color.white;
 	public PlayerInputController pic;
 	NPC npc;
-	public bool dead, inWaterLevel = false;
-    public float speed, stamina, staminaMax, staminaRecharge, dashCost; 
+    public bool dead = false;
+    bool inWaterLevel = false;
+    public float speed, stamina, staminaMax, staminaRecharge, dashCost, staminaDelayTime; 
     float waveDelay;
 	public float dashMultiplier = 1.5f;
 	public int health;
@@ -23,8 +25,9 @@ public class Unit : MonoBehaviour {
 	public TrailRenderer tr;
 	public GameObject body;
 
+    float scanRange = 3.0f;
+
     Coroutine staminaDelayRoutine;
-    float staminaDelayTime = 2f;
     bool canRecharge = true;
 
 
@@ -41,11 +44,12 @@ public class Unit : MonoBehaviour {
 		if (tr != null) {
 			tr.time = 0.0f;
 		}
+
 	}
 
     void UseStamina(float cost)
     {
-        Debug.Log("Use Stamina");
+        //Debug.Log("Use Stamina");
         stamina -= cost;
 
         if(stamina < 0)
@@ -309,6 +313,18 @@ public class Unit : MonoBehaviour {
 	public void Stop(){
 		rb.velocity = new Vector2(0, 0);
 	}
+
+    public void Stop(float delay)
+    {
+        StartCoroutine(DelayedStop(delay));
+    }
+
+    IEnumerator DelayedStop(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        Stop();
+    }
+
 	public void SetVelocity(Vector2 vel){
 		rb.velocity = vel;
 	}
@@ -401,24 +417,35 @@ public class Unit : MonoBehaviour {
 
         
 
-       RaycastHit2D[] hits;
+       //RaycastHit2D[] hits;
+        List<RaycastHit2D> hits;
 
-       hits = Physics2D.LinecastAll(transform.position, target.transform.position);
+        hits = new List<RaycastHit2D>(Physics2D.LinecastAll(transform.position, target.transform.position));
+        for(int i = 0; i<hits.Count; i++)
+        {
+            if(hits[i].transform.tag == "weapon" || hits[i].transform.tag == "damage source")
+            {
+                hits.RemoveAt(i);
+                i = i - 1;
+            }
+        }
+        
 
-       if(hits.Length > 2 && hits[2].transform.gameObject == target)
+        
+       if(hits.Count > 2 && hits[2].transform.gameObject == target)
        {
-           Debug.Log("spotted " + hits.Length);
+           //Debug.Log("spotted " + hits.Count);
            Debug.DrawLine(transform.position, target.transform.position, Color.green);
-
-
         }
         else
         {
             Debug.DrawLine(transform.position, target.transform.position, Color.red);
         }
-
-
     }
+
+
+
+
 
 
 }
