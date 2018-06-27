@@ -234,12 +234,14 @@ public class UnitController : MonoBehaviour {
        
         for (int i = 0; i < 37; i++)
         {
+
+            yield return new WaitForSeconds(.04f);
             float scanX = unit.transform.position.x + scanRange * Mathf.Cos(Mathf.Deg2Rad * i * 10);
             float scanY = unit.transform.position.y + scanRange * Mathf.Sin(Mathf.Deg2Rad * i * 10);
             Vector2 scanPos = new Vector2(scanX, scanY);
 
            
-
+             
             //Debug.DrawLine(unit.transform.position, scanPos, Color.green);
             //find target
 
@@ -274,12 +276,12 @@ public class UnitController : MonoBehaviour {
                 {
                     //add hostile target to units
                     possibleTargets.Add(hits[0].transform.GetComponent<Unit>());
-                    //Debug.DrawLine(unit.transform.position, scanPos, Color.green);
+                    Debug.DrawLine(unit.transform.position, scanPos, Color.green);
                 }
             }
             else
             {
-                //Debug.DrawLine(unit.transform.position, scanPos, Color.red);
+                Debug.DrawLine(unit.transform.position, scanPos, Color.red);
             }
 
 
@@ -300,7 +302,7 @@ public class UnitController : MonoBehaviour {
             if (i == 36 && target == null)
             {
                 i = 0;
-                yield return new WaitForSeconds(Random.Range(0.1f, 0.2f));
+                yield return new WaitForSeconds(.2f);
             }
             
         }
