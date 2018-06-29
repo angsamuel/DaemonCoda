@@ -30,9 +30,11 @@ public class Unit : MonoBehaviour {
     Coroutine staminaDelayRoutine;
     bool canRecharge = true;
 
+    public bool isPlayerUnit;
+    int medPaks = 0;
+    int mealPaks = 0;
 
-
-	void Start(){
+    void Start(){
 		//Time.timeScale = 0.1f;
 		StartCoroutine (WaveRoutine ());
 		EquipWeapon (weapon);
@@ -237,7 +239,26 @@ public class Unit : MonoBehaviour {
 
 
     void OnTriggerEnter2D(Collider2D other) 
-	{ 
+	{
+
+        //pickup medPaks, foodPaks, muns
+        if (isPlayerUnit)
+        {
+            if(other.gameObject.tag == "med pak" && canPickupMedPak)
+            {
+                Destroy(other.gameObject);
+				StartCoroutine(GetMedPakTimer());
+                medPaks += 1;
+            }else if(other.gameObject.tag == "meal pak" && canPickupMealPak)
+            {
+                Destroy(other.gameObject);
+				StartCoroutine(GetMealPakTimer());
+                mealPaks += 1;
+            }
+        }
+
+
+
 		if (other.gameObject.tag == "damage source") {
 			if (!damageSources.Contains (other)) {
 				damageSources.Add (other);
@@ -443,7 +464,27 @@ public class Unit : MonoBehaviour {
         }
     }
 
+	bool canPickupMedPak = true;
+	IEnumerator GetMedPakTimer(){
+		canPickupMedPak = false;
+		yield return new WaitForSeconds(.1f);
+		canPickupMedPak = true;
+	}
 
+	bool canPickupMealPak = true;
+	IEnumerator GetMealPakTimer(){
+		canPickupMealPak = false;
+		yield return new WaitForSeconds(.1f);
+		canPickupMealPak = true;
+	}
+
+	public int GetMedPaks(){
+		return medPaks;
+	}
+
+	public int GetMealPaks(){
+		return mealPaks;
+	}
 
 
 

@@ -10,6 +10,8 @@ public class LevelController : MonoBehaviour {
 
     public Hashtable teamTable;
 
+    public PlayerInputController pic;
+
 	void Awake(){
 		enemyControllers = new List<UnitController> ();
         teams = new List<string>();
@@ -19,7 +21,7 @@ public class LevelController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         StartCoroutine(TableConstructionRoutine());
-	}
+    }
 
 	public void AddEnemyController(UnitController u){
 		enemyControllers.Add (u);

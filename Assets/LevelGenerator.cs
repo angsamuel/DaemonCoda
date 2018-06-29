@@ -77,6 +77,11 @@ public class LevelGenerator : MonoBehaviour {
 
     IEnumerator Generate()
     {
+
+        for(int i = 0; i<levelController.enemyControllers.Count; i++)
+        {
+            Destroy(levelController.enemyControllers[i]);
+        }
         StreetCrawler sc = new StreetCrawler(this, 5, new Vector2(level_grid_size/2, 0), 0, streetBlock);
         streetCrawlers.Add(sc);
         for (int x = 0; x < 1000; x++)

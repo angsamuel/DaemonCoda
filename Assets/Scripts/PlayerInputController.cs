@@ -17,10 +17,15 @@ public class PlayerInputController : MonoBehaviour {
 	public StaminaDisplay staminaDisplay;
 	int hpIndex;
 
+    
+
+
+
+
 	// Use this for initialization
 	void Start () {
 		hpIndex = 2;
-		redOverlay.SetActive(false);
+		redOverlay.SetActive(false); 
 		StartCoroutine (EndlessEnforcer ());
 	}
 

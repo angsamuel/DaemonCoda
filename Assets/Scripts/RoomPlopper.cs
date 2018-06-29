@@ -5,8 +5,8 @@ using UnityEngine;
 public class RoomPlopper {
     LevelGenerator levelGenerator;
     int gridSize = 0;
-    int maxSize = 11;
-    int minSize = 4;
+    int maxSize = 12;
+    int minSize = 5;
     GameObject floor;
     GameObject wall;
     float doorChance = .1f;
