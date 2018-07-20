@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class RoomPlopper {
     LevelGenerator levelGenerator;
+    public GameObject room;
+    public GameObject street;
     int gridSize = 0;
     int maxSize = 12;
     int minSize = 5;
     GameObject floor;
     GameObject wall;
-    float doorChance = .1f;
 
 	// Use this for initialization
 	public RoomPlopper(LevelGenerator lg, GameObject f, GameObject w)
@@ -125,6 +126,7 @@ public class RoomPlopper {
             //place tiles if appropriate area found
             if(thirdBound >= minSize && rightBound + leftBound >= minSize && leftBound > 1 && rightBound > 1)
             {
+                Room newRoom = GameObject.Instantiate(room, new Vector3(0,0,0), Quaternion.identity).GetComponent<Room>();
                 for (int j = 0; j < thirdBound; j++)
                 {
                     //place right
@@ -138,7 +140,7 @@ public class RoomPlopper {
                         }
                         else
                         {
-                            levelGenerator.PlaceFloor(posX + i, posY + (velY * j), floor, Color.white);
+                            levelGenerator.PlaceFloor(posX + i, posY + (velY * j), floor, Color.white, newRoom);
                         }
                     }
 
@@ -155,13 +157,20 @@ public class RoomPlopper {
                         }
                         else
                         {
-                            levelGenerator.PlaceFloor(posX - i, posY + (velY * j), floor, Color.white);
+                            levelGenerator.PlaceFloor(posX - i, posY + (velY * j), floor, Color.white, newRoom);
                         }
                     }
 
                 }
+                levelGenerator.PlaceBlock(posX + ((rightBound - leftBound)/2), posY, street);  
 
-                levelGenerator.PlaceFloor(posX + ((rightBound - leftBound)/2), posY, floor, Color.blue);
+                if(levelGenerator.SpaceIsFree(posX + ((rightBound - leftBound)/2), posY-1)){
+                    levelGenerator.PlaceBlock(posX + ((rightBound - leftBound)/2), posY-1, street);    
+                }else{
+                    levelGenerator.PlaceBlock(posX + ((rightBound - leftBound)/2), posY+1, street);
+                }
+                
+               levelGenerator.PlaceDoor(posX + ((rightBound - leftBound)/2), posY);
                 
             }
             
@@ -202,11 +211,12 @@ public class RoomPlopper {
 
             }
 
-            //Debug.Log("LEFT: " + leftBound + " " + "RIGHT: " + rightBound + " THIRD: " + thirdBound);
-
             //place tiles if appropriate area found
             if (thirdBound >= minSize && upBound + downBound >= minSize && upBound > 1 && downBound > 1)
             {
+                //room is big enough to place
+                Room newRoom = GameObject.Instantiate(room, new Vector3(0,0,0), Quaternion.identity).GetComponent<Room>();
+
                 for (int j = 0; j < thirdBound; j++)
                 {
                     //place right
@@ -219,7 +229,7 @@ public class RoomPlopper {
                         }
                         else
                         {
-                            levelGenerator.PlaceFloor(posX + (velX * j), posY + i, floor, Color.white);
+                            levelGenerator.PlaceFloor(posX + (velX * j), posY + i, floor, Color.white, newRoom);
                         }
 
                     }
@@ -234,14 +244,20 @@ public class RoomPlopper {
                         }
                         else
                         {
-                            levelGenerator.PlaceFloor(posX + (velX * j), posY - i, floor, Color.white);
+                            levelGenerator.PlaceFloor(posX + (velX * j), posY - i, floor, Color.white, newRoom);
                         }
 
                        
                     }
 
                 }
-                levelGenerator.PlaceFloor(posX, posY + ((upBound - downBound) / 2), floor, Color.blue);
+                levelGenerator.PlaceBlock(posX, posY + ((upBound - downBound) / 2), street);
+                if(levelGenerator.SpaceIsFree(posX-1, posY + ((upBound - downBound) / 2))){
+                    levelGenerator.PlaceBlock(posX-1, posY + ((upBound - downBound) / 2), street);
+                }else{
+                    levelGenerator.PlaceBlock(posX+1, posY + ((upBound - downBound) / 2), street);
+                }
+                levelGenerator.PlaceDoor(posX, posY + ((upBound - downBound) / 2));
             }
 
         }

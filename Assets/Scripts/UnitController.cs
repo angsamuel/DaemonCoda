@@ -197,7 +197,7 @@ public class UnitController : MonoBehaviour {
 
             for (int i = 0; i < hitsAbove.Count; i++)
             {
-                if (hitsAbove[i].transform.tag == "weapon" || hitsAbove[i].transform.tag == "damage source")
+                if (hitsAbove[i].transform.tag == "weapon" || hitsAbove[i].transform.tag == "damage source" ||  hitsAbove[i].transform.tag == "floor" ||  hitsAbove[i].transform.tag == "Untagged")
                 {
                     hitsAbove.RemoveAt(i);
                     i = i - 1;
@@ -213,7 +213,9 @@ public class UnitController : MonoBehaviour {
             for (int i = 0; i < hits.Count; i++)
             {
                 
-                if (hits[i].transform.tag == "weapon" || hits[i].transform.tag == "damage source")
+                
+
+                if (hits[i].transform.tag == "weapon" || hits[i].transform.tag == "damage source" ||  hits[i].transform.tag == "floor" ||  hits[i].transform.tag == "Untagged")
                 {
                     hits.RemoveAt(i);
                     i = i - 1;
@@ -225,10 +227,11 @@ public class UnitController : MonoBehaviour {
                 }
 
             }
+            Debug.Log(hits.Count);
 
             for (int i = 0; i < hitsBelow.Count; i++)
             {
-                if (hitsBelow[i].transform.tag == "weapon" || hitsBelow[i].transform.tag == "damage source")
+                if (hitsBelow[i].transform.tag == "weapon" || hitsBelow[i].transform.tag == "damage source" ||  hitsBelow[i].transform.tag == "floor" ||  hitsBelow[i].transform.tag == "Untagged")
                 {
                     hitsBelow.RemoveAt(i);
                     i = i - 1;
@@ -303,7 +306,7 @@ public class UnitController : MonoBehaviour {
             for (int h = 0; h < hits.Count; h++)
             {
                 //remove not valid blockers
-                if (hits[h].transform.tag == "weapon" || hits[h].transform.tag == "damage source")
+                if (hits[h].transform.tag == "weapon" || hits[h].transform.tag == "damage source" || hits[h].transform.tag == "floor" || hits[h].transform.tag == "Untagged")
                 {
                     hits.RemoveAt(h);
                     h = h - 1;

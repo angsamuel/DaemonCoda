@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class StreetCrawler {
-    
     GameObject block;
     LevelGenerator levelGenerator;
     int width;
