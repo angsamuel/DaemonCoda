@@ -7,8 +7,8 @@ public class RoomPlopper {
     public GameObject room;
     public GameObject street;
     int gridSize = 0;
-    int maxSize = 12;
-    int minSize = 5;
+    int maxSize = 13;
+    int minSize = 6;
     GameObject floor;
     GameObject wall;
 
@@ -29,7 +29,7 @@ public class RoomPlopper {
         {
             for (int x = 0; x < gridSize; x++)
             {
-                if (Random.Range(0.0f, 1.0f) > 0.75f)
+                if (Random.Range(0.0f, 1.0f) < 0.75f)
                 {
                     if (!levelGenerator.SpaceIsFree(x, y) && levelGenerator.GetTileTag(x, y) == "street")
                     {
@@ -78,10 +78,10 @@ public class RoomPlopper {
                 break;
         }
 
-        int rightBound = maxSize;
-        int leftBound = maxSize;
-        int upBound = maxSize;
-        int downBound = maxSize;
+        int rightBound = maxSize/2;
+        int leftBound = maxSize/2;
+        int upBound = maxSize/2;
+        int downBound = maxSize/2;
         int thirdBound = 0;
 
         bool lock1 = false;
@@ -126,7 +126,7 @@ public class RoomPlopper {
             //place tiles if appropriate area found
             if(thirdBound >= minSize && rightBound + leftBound >= minSize && leftBound > 1 && rightBound > 1)
             {
-                Room newRoom = GameObject.Instantiate(room, new Vector3(0,0,0), Quaternion.identity).GetComponent<Room>();
+                GameObject newRoom = GameObject.Instantiate(room, new Vector3(0,0,0), Quaternion.identity);
                 for (int j = 0; j < thirdBound; j++)
                 {
                     //place right
@@ -215,7 +215,7 @@ public class RoomPlopper {
             if (thirdBound >= minSize && upBound + downBound >= minSize && upBound > 1 && downBound > 1)
             {
                 //room is big enough to place
-                Room newRoom = GameObject.Instantiate(room, new Vector3(0,0,0), Quaternion.identity).GetComponent<Room>();
+                GameObject newRoom = GameObject.Instantiate(room, new Vector3(0,0,0), Quaternion.identity);
 
                 for (int j = 0; j < thirdBound; j++)
                 {

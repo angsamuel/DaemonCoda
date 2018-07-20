@@ -39,12 +39,13 @@ public class StreetCrawler {
         if (width == 5)
         {
             streetCrawlerSpawnChance = .5f;
+            chanceToTurn = 0.25f;
             speed = 15;
 
         } else if (width == 3)
         {
             streetCrawlerSpawnChance = 1f;
-            chanceToTurn = .25f;
+            chanceToTurn = .35f;
             speed = 10;
         }else if(width == 1)
         {
@@ -178,11 +179,20 @@ public class StreetCrawler {
     {
 
         if(width == 5)
-        {
+        { 
+            bool turned = false;
 
             //spawn smaller roads
             float roll = Random.Range(0.0f, 1.0f);
-            if(roll < streetCrawlerSpawnChance)
+
+            if (chanceToTurn > roll)
+            {
+                Debug.Log("Turn");
+                //make a turn
+                RandomTurn();
+                turned = true;
+            }
+            else if(roll < streetCrawlerSpawnChance)
             {
                 //spawn or intersection
                 roll = Random.Range(0.0f, 1.0f);

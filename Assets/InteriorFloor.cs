@@ -13,4 +13,12 @@ public class InteriorFloor : MonoBehaviour {
 	void Update () {
 		
 	}
+
+	void OnTriggerStay2D(Collider2D other){
+		if(room!=null && other.tag == "player unit"){
+			room.FadeToClear();
+		}
+	}
+
+
 }

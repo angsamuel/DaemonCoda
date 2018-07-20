@@ -197,8 +197,9 @@ public class LevelGenerator : MonoBehaviour {
     }
 
 
-    public void PlaceFloor(int x, int y, GameObject floor, Color c, Room r)
+    public void PlaceFloor(int x, int y, GameObject floor, Color c, GameObject ro)
     {
+        Room r = ro.GetComponent<Room>();
 
         if (x > -1 && y > -1 && x < level_grid_size && y < level_grid_size)
         {
@@ -221,13 +222,14 @@ public class LevelGenerator : MonoBehaviour {
             
             
             GameObject newShadeBlock = Instantiate(shadeBlock, transform);
-            float grey = Random.Range(0.0f, 0.1f);
-            newShadeBlock.GetComponent<SpriteRenderer>().color = new Color(grey,grey,grey,Random.Range(0.95f, 1.0f));
+            float grey = Random.Range(0.0f, 0.0f);
+            newShadeBlock.GetComponent<SpriteRenderer>().color = new Color(grey,grey,grey,Random.Range(1.0f, 1.0f));
 
             newShadeBlock.transform.position = newBlock.transform.position;
             r.AddShadow(newShadeBlock);
+            //Debug.Log("size " + r.shadeBlocks.Count);
 
-            
+
             //newBlock.GetComponent<SpriteRenderer>().transform.localScale = new Vector2(Random.Range(.125f, .15f), Random.Range(.125f, .15f));
             //newBlock.GetComponent<SpriteRenderer>().color = new Color(floorColor.r, floorColor.g, floorColor.b, Random.Range(0.5f, 1.0f));
             //newBlock.GetComponent<SpriteRenderer>().transform.localScale = new Vector2(Random.Range(.125f, .15f), Random.Range(.125f, .15f));
