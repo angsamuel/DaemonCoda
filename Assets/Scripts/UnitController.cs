@@ -197,7 +197,8 @@ public class UnitController : MonoBehaviour {
 
             for (int i = 0; i < hitsAbove.Count; i++)
             {
-                if (hitsAbove[i].transform.tag == "weapon" || hitsAbove[i].transform.tag == "damage source" ||  hitsAbove[i].transform.tag == "floor" ||  hitsAbove[i].transform.tag == "Untagged")
+                if (hitsAbove[i].transform.tag == "weapon" || hitsAbove[i].transform.tag == "damage source" ||  hitsAbove[i].transform.tag == "floor" ||  hitsAbove[i].transform.tag == "Untagged" 
+                ||  hitsAbove[i].transform.tag == "med pak" ||  hitsAbove[i].transform.tag == "meal pak")
                 {
                     hitsAbove.RemoveAt(i);
                     i = i - 1;
@@ -215,7 +216,9 @@ public class UnitController : MonoBehaviour {
                 
                 
 
-                if (hits[i].transform.tag == "weapon" || hits[i].transform.tag == "damage source" ||  hits[i].transform.tag == "floor" ||  hits[i].transform.tag == "Untagged")
+                if (hits[i].transform.tag == "weapon" || hits[i].transform.tag == "damage source" ||  hits[i].transform.tag == "floor" ||  hits[i].transform.tag == "Untagged"
+                ||  hits[i].transform.tag == "med pak"
+                ||  hits[i].transform.tag == "meal pak")
                 {
                     hits.RemoveAt(i);
                     i = i - 1;
@@ -231,7 +234,9 @@ public class UnitController : MonoBehaviour {
 
             for (int i = 0; i < hitsBelow.Count; i++)
             {
-                if (hitsBelow[i].transform.tag == "weapon" || hitsBelow[i].transform.tag == "damage source" ||  hitsBelow[i].transform.tag == "floor" ||  hitsBelow[i].transform.tag == "Untagged")
+                if (hitsBelow[i].transform.tag == "weapon" || hitsBelow[i].transform.tag == "damage source" ||  hitsBelow[i].transform.tag == "floor" ||  hitsBelow[i].transform.tag == "Untagged"
+                ||  hitsBelow[i].transform.tag == "med pak"
+                ||  hitsBelow[i].transform.tag == "meal pak")
                 {
                     hitsBelow.RemoveAt(i);
                     i = i - 1;

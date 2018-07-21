@@ -12,6 +12,9 @@ public class LevelGenerator : MonoBehaviour {
     public GameObject floorBlock;
     public GameObject wallBlock;
     public GameObject doorBlock;
+    public GameObject medPak;
+    public GameObject mealPak;
+
     
 
     public Color streetColor;
@@ -28,6 +31,8 @@ public class LevelGenerator : MonoBehaviour {
     Coroutine currentPlop;
 
     float spawnHuskChance = 0.01f;
+    float spawnMedPakChance = 0.01f;
+    float spawnMealPakChance = 0.01f;
     float blockOffset = 1.16f;
     // Use this for initialization
 	void Start () {
@@ -67,6 +72,32 @@ public class LevelGenerator : MonoBehaviour {
                     }
                 }
             }
+        }
+    }
+
+    public void FillWithLoot(){
+        
+        for(int y = 0; y < level_grid_size; y++)
+        {
+            for(int x = 0; x < level_grid_size; x++)
+            {
+                if(levelGrid[x,y] != null && levelGrid[x,y].tag=="floor"){
+                    int medOrFood = Random.Range(0,2);
+                    float roll = Random.Range(0.0f, 1.0f);
+                    if(medOrFood == 0){
+                        if(roll <= spawnMedPakChance){
+                            Instantiate(medPak,levelGrid[x,y].transform.position, Quaternion.identity);
+                        }
+                    }else{
+                        if(roll <= spawnMealPakChance){
+                            Instantiate(mealPak,levelGrid[x,y].transform.position, Quaternion.identity);
+                        }
+                    }
+
+
+                }
+            }
+
         }
     }
 
@@ -120,6 +151,7 @@ public class LevelGenerator : MonoBehaviour {
         rm.room = room;
         rm.PlopRooms();
         Populate();
+        FillWithLoot();
 
        //StartCoroutine(levelController.TableConstructionRoutine());
       
