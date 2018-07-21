@@ -5,6 +5,7 @@ using UnityEngine;
 public class Unit : MonoBehaviour {
     public string team;
 	public GameObject blood;
+	public SpriteRenderer healOverlay;
 	public GameObject wave;
 	Color waveColor = Color.white;
 	public PlayerInputController pic;
@@ -35,11 +36,12 @@ public class Unit : MonoBehaviour {
     int mealPaks = 0;
 
     void Start(){
+		damageSources = new List<Collider2D> ();
 		//Time.timeScale = 0.1f;
 		StartCoroutine (WaveRoutine ());
 		EquipWeapon (weapon);
 
-		damageSources = new List<Collider2D> ();
+		
 		rb = gameObject.GetComponent<Rigidbody2D> ();
 		staminaMax = stamina;
 		StartCoroutine (PickupDeletion ());
@@ -260,7 +262,7 @@ public class Unit : MonoBehaviour {
 
 
 		if (other.gameObject.tag == "damage source") {
-			if (!damageSources.Contains (other)) {
+			if (damageSources != null && !damageSources.Contains (other)) {
 				damageSources.Add (other);
 				StartCoroutine (RemoveFromDamageSources (other));
 				colliderPosition = other.transform.position;
@@ -360,6 +362,10 @@ public class Unit : MonoBehaviour {
 	}
 
 	void Update(){
+		if(weapon!= null){
+			weapon.transform.position = transform.position;
+		}
+
 		if(!dead){
 
             SpriteCheck();
@@ -486,7 +492,32 @@ public class Unit : MonoBehaviour {
 		return mealPaks;
 	}
 
+	public bool healing = false;
+	float healTime = 2.0f;
+	public void Heal(){
+		if(!healing && medPaks > 0 && health < 3){
+			rb.velocity = new Vector3(0,0,0);
+			StartCoroutine(HealRoutine());
+		}
+	}
 
+	IEnumerator HealRoutine(){
+		healing = true;
+		healOverlay.enabled = true;
+		healOverlay.transform.localScale = new Vector2(2.5f, 2.5f);
+		float timeLeft = healTime;
+		while(timeLeft > 0){
+			timeLeft -= Time.deltaTime;
+			healOverlay.transform.localScale = new Vector2(timeLeft / healTime, timeLeft / healTime) * 2.5f;
+			yield return null;
+		}
+		healing = false;
+		if(health < 3){
+			health += 1;
+			medPaks -= 1;
+		}
+		healOverlay.enabled = false;
+	}
 
 
 }

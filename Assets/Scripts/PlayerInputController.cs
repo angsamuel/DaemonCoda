@@ -53,7 +53,7 @@ public class PlayerInputController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//Dash
-		if (!disabled) {
+		if (!disabled && !playerUnit.healing) {
 			//weapon pickup
 			if (Input.GetAxisRaw ("Pickup") != 0 && canPickup) {
 				Debug.Log ("PICKUP");
@@ -94,8 +94,13 @@ public class PlayerInputController : MonoBehaviour {
 			//playerUnit.weapon.Aim (Camera.main.ScreenToWorldPoint (Input.mousePosition));
 			playerUnit.AimWeapon (Camera.main.ScreenToWorldPoint (Input.mousePosition));
 
+			//healing
+			if(Input.GetAxisRaw("Heal") != 0){
+				playerUnit.Heal();
+			}
 
-			UpdateUI ();
+
+			
 
 		//	if (hpIndex > playerUnit.health - 1) {
 				//healthBar [hpIndex].transform.position = new Vector3 (-1000, -1000, -1000);
@@ -106,6 +111,7 @@ public class PlayerInputController : MonoBehaviour {
 				SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex);
 			}
 		}
+		UpdateUI ();
 	}
 		
 	public void UpdateUI(){

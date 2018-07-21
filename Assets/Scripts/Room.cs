@@ -12,7 +12,7 @@ public class Room : MonoBehaviour {
 	int fadeDirection = 1;
 	float alpha = 1.0f;
 	float minAlpha = 0.0f;
-	float fadeIncrement = 0.025f;
+	float fadeIncrement = 0.01f;
 	bool inRoom;
 	public int x;
 

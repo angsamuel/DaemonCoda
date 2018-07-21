@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour {
-        float blockScale = .12f;
-        float colorVariance = .1f;
+    float blockScale = .14f;
+    float colorVariance = .1f;
     public LevelController levelController;
     public GameObject room;
     public GameObject shadeBlock;
@@ -28,14 +28,16 @@ public class LevelGenerator : MonoBehaviour {
     Coroutine currentPlop;
 
     float spawnHuskChance = 0.01f;
-
+    float blockOffset = 1.16f;
     // Use this for initialization
 	void Start () {
         streetCrawlers = new List<StreetCrawler>();
         roomies = new List<Roomie>();
         levelGrid = new GameObject[level_grid_size, level_grid_size];
         //Test();
-        currentGeneration = StartCoroutine(Generate());
+        //currentGeneration = StartCoroutine(Generate());
+        Generate();
+        //transform.localScale = new Vector2(1.2f, 1.2f);
        
     }
 
@@ -47,12 +49,20 @@ public class LevelGenerator : MonoBehaviour {
             {
                 if(levelGrid[x,y] != null)
                 {
-                    if(levelGrid[x,y].tag == "floor" || levelGrid[x,y].tag == "street")
+                    if(levelGrid[x,y].tag == "street")
                     {
                         //spawn husk
-                        if(Random.Range(0.0f, 1.0f) < spawnHuskChance)
-                        {
-                            Instantiate(husk, levelGrid[x, y].transform.position, Quaternion.identity);
+                            if(Random.Range(0.0f, 1.0f) < spawnHuskChance)
+                            {
+                                Instantiate(husk, levelGrid[x, y].transform.position, Quaternion.identity);
+                            }
+                        
+                    }else if(levelGrid[x,y].tag == "floor"){
+                        if(levelGrid[x-1,y].tag != "wall" && levelGrid[x+1,y].tag != "wall" && levelGrid[x,y-1].tag != "wall" && levelGrid[x,y+1].tag != "wall"){
+                            if(Random.Range(0.0f, 1.0f) < spawnHuskChance)
+                            {
+                                Instantiate(husk, levelGrid[x, y].transform.position, Quaternion.identity);
+                            }
                         }
                     }
                 }
@@ -78,10 +88,11 @@ public class LevelGenerator : MonoBehaviour {
                 }
             }
         }
-        currentGeneration = StartCoroutine(Generate());
+        //currentGeneration = StartCoroutine(Generate());
+        Generate();
     }
 
-    IEnumerator Generate()
+    void Generate()
     {
 
         for(int i = 0; i<levelController.enemyControllers.Count; i++)
@@ -92,7 +103,6 @@ public class LevelGenerator : MonoBehaviour {
         streetCrawlers.Add(sc);
         for (int x = 0; x < 1000; x++)
         {
-            yield return new WaitForSeconds(.01f);
 
             for (int i = 0; i < streetCrawlers.Count; i++)
             {
@@ -112,6 +122,7 @@ public class LevelGenerator : MonoBehaviour {
         Populate();
 
        //StartCoroutine(levelController.TableConstructionRoutine());
+      
     }
 	
 	// Update is called once per frame
@@ -156,7 +167,7 @@ public class LevelGenerator : MonoBehaviour {
             }
 
             GameObject newBlock = Instantiate(wall, transform);
-            newBlock.transform.Translate(new Vector2(x, y));
+            newBlock.transform.Translate(new Vector2(x, y) * blockOffset);
             levelGrid[x, y] = newBlock;
             newBlock.GetComponent<SpriteRenderer>().color = wallColor;
 
@@ -185,7 +196,7 @@ public class LevelGenerator : MonoBehaviour {
             }
 
             GameObject newBlock = Instantiate(block, transform);
-            newBlock.transform.Translate(new Vector2(x, y));
+            newBlock.transform.Translate(new Vector2(x, y)  * blockOffset);
             levelGrid[x, y] = newBlock;
             float variance = Random.Range(-colorVariance, colorVariance);
 
@@ -211,11 +222,11 @@ public class LevelGenerator : MonoBehaviour {
             }
 
             GameObject newBlock = Instantiate(floor, transform);
-            newBlock.transform.Translate(new Vector2(x, y));
+            newBlock.transform.Translate(new Vector2(x, y) * blockOffset);
             levelGrid[x, y] = newBlock;
             newBlock.GetComponent<SpriteRenderer>().color = floorColor;
             newBlock.GetComponent<SpriteRenderer>().color = new Color(floorColor.r, floorColor.g, floorColor.b, Random.Range(0.5f, 1.0f));
-            newBlock.GetComponent<SpriteRenderer>().transform.localScale = new Vector2(.12f, .12f);
+            newBlock.GetComponent<SpriteRenderer>().transform.localScale = new Vector2(blockScale, blockScale);
 
             //set interior floor reference to proper room
             newBlock.GetComponent<InteriorFloor>().room = r;
@@ -226,6 +237,7 @@ public class LevelGenerator : MonoBehaviour {
             newShadeBlock.GetComponent<SpriteRenderer>().color = new Color(grey,grey,grey,Random.Range(1.0f, 1.0f));
 
             newShadeBlock.transform.position = newBlock.transform.position;
+            newShadeBlock.transform.localScale = new Vector2(blockScale+.005f,blockScale+.005f);
             r.AddShadow(newShadeBlock);
             //Debug.Log("size " + r.shadeBlocks.Count);
 
@@ -237,7 +249,7 @@ public class LevelGenerator : MonoBehaviour {
     }
     public void PlaceDoor(int x, int y){
         GameObject newDoor = Instantiate(doorBlock, transform);
-        newDoor.transform.Translate(new Vector2(x, y));
+        newDoor.transform.Translate(new Vector2(x, y) * blockOffset);
     
     }
 
