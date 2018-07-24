@@ -29,7 +29,7 @@ public class Room : MonoBehaviour {
 
 	IEnumerator OutOfRoomRoutine(){
 		while(true){
-			yield return new WaitForSeconds(0.5f);
+			yield return new WaitForSeconds(0.25f);
 			FadeToDark();
 		}
 
@@ -69,13 +69,24 @@ public class Room : MonoBehaviour {
 			
 		}
 	}
-
+	int fadingToClear = 0;
 	public void FadeToClear(){
 		fadeDirection = -1;
+		fadingToClear += 1;
+		if(fadingToClear > 3){
+			fadingToClear = 3;
+		}
 	}
 
 	public void FadeToDark(){
-		fadeDirection = 1;
+		if(fadingToClear < 1){
+			fadeDirection = 1;
+		}else{
+			fadingToClear -=1;
+			if(fadingToClear < 0){
+				fadingToClear = 0;
+			}
+		}
 	}
 
 

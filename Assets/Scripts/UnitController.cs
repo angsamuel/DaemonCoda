@@ -111,9 +111,6 @@ public class UnitController : MonoBehaviour {
                 }
             }
 
-
-
-
         }
     }
 
@@ -181,7 +178,62 @@ public class UnitController : MonoBehaviour {
 
     public bool scanning = false;
     protected bool canSeeTarget = false;
-    public void LockTarget()
+
+    bool LinecastTarget(float offsetX, float offsetY){
+        List<RaycastHit2D> hits;
+         hits = new List<RaycastHit2D>(Physics2D.LinecastAll(unit.transform.position + new Vector3(offsetX, offsetY), target.transform.position + new Vector3(offsetX, offsetY)));
+        bool rayReachedTarget = false;
+         for (int i = 0; i < hits.Count; i++)
+            {
+                if (hits[i].transform.tag == "weapon" || hits[i].transform.tag == "damage source" ||  hits[i].transform.tag == "floor" ||  hits[i].transform.tag == "Untagged"
+                ||  hits[i].transform.tag == "med pak"
+                ||  hits[i].transform.tag == "meal pak")
+                {
+                    hits.RemoveAt(i);
+                    i = i - 1;
+                }
+                else if (hits[i].transform.tag == "unit" && hits[i].transform.GetComponent<Unit>().team == unit.team)
+                { 
+                    hits.RemoveAt(i);
+                    i = i - 1;
+                }
+
+            }
+
+            if (hits.Count > 0 && hits[0].transform.gameObject.GetComponent<Unit>() == target)
+            { 
+                Debug.DrawLine(unit.transform.position + new Vector3(offsetX, offsetY), target.transform.position + new Vector3(offsetX, offsetY), Color.green);
+                rayReachedTarget = true;
+            }
+            else
+            {
+                Debug.DrawLine(unit.transform.position + new Vector3(offsetX, offsetY), target.transform.position + new Vector3(offsetX, offsetY), Color.red);
+                rayReachedTarget = false;
+            }
+
+            return rayReachedTarget;
+        }
+        
+        
+
+    void LockTarget(){
+        
+        canSeeTarget = false;
+        if(targetEnabled && target != null && !scanning && !target.dead)
+        {
+
+          canSeeTarget = LinecastTarget(linecastOffsetX, linecastOffsetY) && LinecastTarget(-linecastOffsetX, linecastOffsetY) && LinecastTarget(linecastOffsetX, -linecastOffsetY) && LinecastTarget(-linecastOffsetX, -linecastOffsetY);
+
+
+        }else if(targetEnabled && !scanning)
+        {
+            scanning = true;
+            StartCoroutine(ScanRoutine());
+        }
+    }
+    
+
+    public void LockTargetOld()
     {
         canSeeTarget = false;
         if(targetEnabled && target != null && !scanning && !target.dead)

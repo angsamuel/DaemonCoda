@@ -42,7 +42,7 @@ public class LevelGenerator : MonoBehaviour {
         //Test();
         //currentGeneration = StartCoroutine(Generate());
         Generate();
-        //transform.localScale = new Vector2(1.2f, 1.2f);
+        
        
     }
 
@@ -150,6 +150,9 @@ public class LevelGenerator : MonoBehaviour {
         rm.street = streetBlock;
         rm.room = room;
         rm.PlopRooms();
+
+        transform.localScale = new Vector2(1.2f, 1.2f);
+
         Populate();
         FillWithLoot();
 
