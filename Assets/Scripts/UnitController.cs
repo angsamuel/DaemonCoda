@@ -107,7 +107,7 @@ public class UnitController : MonoBehaviour {
                 if (Vector3.Distance(playerUnit.transform.position, unit.transform.position) < scanRange * 3)
                 {
                     scanEnabeled = true;
-                    Debug.Log("enabling scan");
+                    //Debug.Log("enabling scan");
                 }
             }
 

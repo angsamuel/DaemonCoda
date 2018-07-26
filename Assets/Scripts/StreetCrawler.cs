@@ -39,8 +39,8 @@ public class StreetCrawler {
         if (width == 5)
         {
             streetCrawlerSpawnChance = .5f;
-            chanceToTurn = 0.25f;
-            speed = 15;
+            chanceToTurn = 0.05f;
+            speed = 10;
 
         } else if (width == 3)
         {
@@ -158,11 +158,11 @@ public class StreetCrawler {
 
         if (goodToBuild)
         {
-            levelGenerator.PlaceBlock((int)gridPos.x, (int)gridPos.y, block);
+            levelGenerator.PlaceStreet((int)gridPos.x, (int)gridPos.y, block);
             for (int i = 0; i <= width / 2; i++)
             {
-                levelGenerator.PlaceBlock((int)gridPos.x + (i * (int)orientationCheck.x), (int)gridPos.y + (i * (int)orientationCheck.y), block);
-                levelGenerator.PlaceBlock((int)gridPos.x - (i * (int)orientationCheck.x), (int)gridPos.y - (i * (int)orientationCheck.y), block);
+                levelGenerator.PlaceStreet((int)gridPos.x + (i * (int)orientationCheck.x), (int)gridPos.y + (i * (int)orientationCheck.y), block);
+                levelGenerator.PlaceStreet((int)gridPos.x - (i * (int)orientationCheck.x), (int)gridPos.y - (i * (int)orientationCheck.y), block);
             }
         }
 
@@ -187,7 +187,7 @@ public class StreetCrawler {
 
             if (chanceToTurn > roll)
             {
-                Debug.Log("Turn");
+                //Debug.Log("Turn");
                 //make a turn
                 RandomTurn();
                 turned = true;
@@ -243,7 +243,7 @@ public class StreetCrawler {
             float roll2 = Random.Range(0.0f, 1.0f);
             if (chanceToTurn > roll1)
             {
-                Debug.Log("Turn");
+                //Debug.Log("Turn");
                 //make a turn
                 RandomTurn();
                 turned = true;
@@ -327,7 +327,6 @@ public class StreetCrawler {
             }
             else if (streetCrawlerSpawnChance > roll2)
             {
-                Debug.Log("spawning little one");
                 //spawn smaller roads
                 float roll = Random.Range(0.0f, 1.0f);
                 if (roll < streetCrawlerSpawnChance)

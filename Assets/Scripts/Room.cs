@@ -73,8 +73,8 @@ public class Room : MonoBehaviour {
 	public void FadeToClear(){
 		fadeDirection = -1;
 		fadingToClear += 1;
-		if(fadingToClear > 3){
-			fadingToClear = 3;
+		if(fadingToClear > 5){
+			fadingToClear = 5;
 		}
 	}
 

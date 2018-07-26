@@ -84,13 +84,13 @@ public class Roomie {
                 lockTwo = false;
                 if (levelGenerator.SpaceIsFree(posX, posY) && levelGenerator.SpaceIsFree(posX + 1, posY) && levelGenerator.SpaceIsFree(posX - 1, posY))
                 {
-                    levelGenerator.PlaceBlock(posX, posY, block, Color.red);
+                    levelGenerator.PlaceStreet(posX, posY, block, Color.red);
 
                     for (int i = 1; i <= horzSize / 2; i++)
                     {
                         if (levelGenerator.SpaceIsFree(posX + i, posY) && levelGenerator.SpaceIsFree(posX + i + 1, posY) && !lockOne)
                         {
-                            levelGenerator.PlaceBlock(posX + i, posY, block, Color.red);
+                            levelGenerator.PlaceStreet(posX + i, posY, block, Color.red);
                         }
                         else
                         {
@@ -99,7 +99,7 @@ public class Roomie {
 
                         if (levelGenerator.SpaceIsFree(posX - i, posY) && levelGenerator.SpaceIsFree((posX - i) - 1, posY) && !lockTwo)
                         {
-                            levelGenerator.PlaceBlock(posX - i, posY, block, Color.red);
+                            levelGenerator.PlaceStreet(posX - i, posY, block, Color.red);
                         }
                         else
                         {
@@ -121,13 +121,13 @@ public class Roomie {
 
                 if (levelGenerator.SpaceIsFree(posX, posY) && levelGenerator.SpaceIsFree(posX, posY + 1) && levelGenerator.SpaceIsFree(posX, posY - 1))
                 {
-                    levelGenerator.PlaceBlock(posX, posY, block, Color.red);
+                    levelGenerator.PlaceStreet(posX, posY, block, Color.red);
 
                     for (int i = 1; i <= vertSize / 2; i++)
                     {
                         if (levelGenerator.SpaceIsFree(posX, posY + i) && levelGenerator.SpaceIsFree(posX, posY + i + 1) && !lockOne)
                         {
-                            levelGenerator.PlaceBlock(posX, posY + i, block, Color.red);
+                            levelGenerator.PlaceStreet(posX, posY + i, block, Color.red);
                         }
                         else
                         {
@@ -136,7 +136,7 @@ public class Roomie {
 
                         if (levelGenerator.SpaceIsFree(posX, posY - i) && levelGenerator.SpaceIsFree(posX, (posY - i) - 1) && !lockTwo)
                         {
-                            levelGenerator.PlaceBlock(posX, posY - i, block, Color.red);
+                            levelGenerator.PlaceStreet(posX, posY - i, block, Color.red);
                         }
                         else
                         {

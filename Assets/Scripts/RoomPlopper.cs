@@ -8,7 +8,7 @@ public class RoomPlopper {
     public GameObject street;
     int gridSize = 0;
     int maxSize = 13;
-    int minSize = 6;
+    int minSize = 4;
     GameObject floor;
     GameObject wall;
 
@@ -24,24 +24,21 @@ public class RoomPlopper {
 	public void PlopRooms()
     {
         
-
-        for (int y = 0; y < gridSize; y++)
-        {
-            for (int x = 0; x < gridSize; x++)
+        for(int i = 0; i<(gridSize*gridSize) * 0.75; i++){
+            int x = Random.Range(0,gridSize);
+            int y = Random.Range(0,gridSize);
+            if (Random.Range(0.0f, 1.0f) < 0.75f)
             {
-                if (Random.Range(0.0f, 1.0f) < 0.75f)
+                if (!levelGenerator.SpaceIsFree(x, y) && levelGenerator.GetTileTag(x, y) == "street")
                 {
-                    if (!levelGenerator.SpaceIsFree(x, y) && levelGenerator.GetTileTag(x, y) == "street")
-                    {
-                        List<int> availableDirections = GetAvailableDirections(x, y);
+                    List<int> availableDirections = GetAvailableDirections(x, y);
 
-                        if (availableDirections.Count > 0)
-                        {
-                            int directionChoice = Random.Range(0, availableDirections.Count);
-                            int direction = availableDirections[directionChoice];
-                            Plop(x, y, direction);
-                            //yield return new WaitForSeconds(0);
-                        }
+                    if (availableDirections.Count > 0)
+                    {
+                        int directionChoice = Random.Range(0, availableDirections.Count);
+                        int direction = availableDirections[directionChoice];
+                        Plop(x, y, direction);
+                        //yield return new WaitForSeconds(0);
                     }
                 }
             }
@@ -162,12 +159,12 @@ public class RoomPlopper {
                     }
 
                 }
-                levelGenerator.PlaceBlock(posX + ((rightBound - leftBound)/2), posY, street);  
+                //levelGenerator.PlaceStreet(posX + ((rightBound - leftBound)/2), posY, street);  
 
                 if(levelGenerator.SpaceIsFree(posX + ((rightBound - leftBound)/2), posY-1)){
-                    levelGenerator.PlaceBlock(posX + ((rightBound - leftBound)/2), posY-1, street);    
+                    levelGenerator.PlaceStreet(posX + ((rightBound - leftBound)/2), posY-1, street);    
                 }else{
-                    levelGenerator.PlaceBlock(posX + ((rightBound - leftBound)/2), posY+1, street);
+                    levelGenerator.PlaceStreet(posX + ((rightBound - leftBound)/2), posY+1, street);
                 }
                 
                levelGenerator.PlaceDoor(posX + ((rightBound - leftBound)/2), posY);
@@ -251,11 +248,11 @@ public class RoomPlopper {
                     }
 
                 }
-                levelGenerator.PlaceBlock(posX, posY + ((upBound - downBound) / 2), street);
+                //levelGenerator.PlaceStreet(posX, posY + ((upBound - downBound) / 2), street);
                 if(levelGenerator.SpaceIsFree(posX-1, posY + ((upBound - downBound) / 2))){
-                    levelGenerator.PlaceBlock(posX-1, posY + ((upBound - downBound) / 2), street);
+                    levelGenerator.PlaceStreet(posX-1, posY + ((upBound - downBound) / 2), street);
                 }else{
-                    levelGenerator.PlaceBlock(posX+1, posY + ((upBound - downBound) / 2), street);
+                    levelGenerator.PlaceStreet(posX+1, posY + ((upBound - downBound) / 2), street);
                 }
                 levelGenerator.PlaceDoor(posX, posY + ((upBound - downBound) / 2));
             }

@@ -56,6 +56,7 @@
      <Compile Include="Assets\Husk.cs" />
      <Compile Include="Assets\InteriorFloor.cs" />
      <Compile Include="Assets\LevelGenerator.cs" />
+     <Compile Include="Assets\LevelIntroHandler.cs" />
      <Compile Include="Assets\MealPakPanel.cs" />
      <Compile Include="Assets\MedPakPanel.cs" />
      <Compile Include="Assets\Scanner.cs" />
@@ -83,6 +84,7 @@
      <Compile Include="Assets\Scripts\Interior.cs" />
      <Compile Include="Assets\Scripts\LevelController.cs" />
      <Compile Include="Assets\Scripts\Mill.cs" />
+     <Compile Include="Assets\Scripts\NameWizard.cs" />
      <Compile Include="Assets\Scripts\NPC.cs" />
      <Compile Include="Assets\Scripts\PlayerInputController.cs" />
      <Compile Include="Assets\Scripts\Projectile.cs" />
@@ -108,6 +110,14 @@
      <Compile Include="Assets\Scripts\WoodCuttingStation.cs" />
      <Compile Include="Assets\Shade.cs" />
      <Compile Include="Assets\TownGenerator.cs" />
+     <None Include="Assets\Resources\Words\village_nouns.txt" />
+     <None Include="Assets\Resources\Words\nouns.txt" />
+     <None Include="Assets\Resources\Words\adj.txt" />
+     <None Include="Assets\Resources\Words\last_names.txt" />
+     <None Include="Assets\Resources\Words\all_names.txt" />
+     <None Include="Assets\Resources\Words\female_names.txt" />
+     <None Include="Assets\Resources\Words\village_endings.txt" />
+     <None Include="Assets\Resources\Words\male_names.txt" />
  <Reference Include="UnityEditor.StandardEvents">
  <HintPath>D:/Projects/Unity/Gimongous/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
  </Reference>
