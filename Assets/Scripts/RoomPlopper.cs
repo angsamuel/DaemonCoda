@@ -24,10 +24,10 @@ public class RoomPlopper {
 	public void PlopRooms()
     {
         
-        for(int i = 0; i<(gridSize*gridSize) * 0.75; i++){
+        for(int i = 0; i<(gridSize*gridSize); i++){
             int x = Random.Range(0,gridSize);
             int y = Random.Range(0,gridSize);
-            if (Random.Range(0.0f, 1.0f) < 0.75f)
+            if (Random.Range(0.0f, 1.0f) > 0.0f)
             {
                 if (!levelGenerator.SpaceIsFree(x, y) && levelGenerator.GetTileTag(x, y) == "street")
                 {

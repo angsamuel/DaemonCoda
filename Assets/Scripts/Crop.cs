@@ -19,26 +19,18 @@ public class Crop : MonoBehaviour {
 	void GetCut(){
 		if(!isCut){
 			isCut = true;
-			GameObject.Find ("HarvestController").GetComponent<HarvestController> ().harvestCount += 1;
-			//spawn a bushell
-			//switch to cut sprite
+
 			GetComponent<SpriteRenderer>().sprite = cutSprite;
-				GameObject newBushel = GameObject.Instantiate(bushel, transform.position, Quaternion.identity);
+				GameObject newBushel = GameObject.Instantiate(bushel, transform);
 				newBushel.GetComponent<SpriteRenderer> ().color = GetComponent<SpriteRenderer> ().color;
-				StartCoroutine (FlingBushel(newBushel, flingTime));
+				newBushel.transform.localScale = new Vector3(1,1,1);
+				FlingBushel(newBushel, flingTime);
 		}
 	}
 
-	public IEnumerator FlingBushel(GameObject bushel, float timeToMove)
+	public void FlingBushel(GameObject bushel, float timeToMove)
 	{
-		Vector3 position = bushel.transform.position + new Vector3 (Random.Range (-flingDistance, flingDistance+1), Random.Range (-flingDistance, flingDistance+1), 0);
-		var currentPos = bushel.transform.position;
-		var t = 0f;
-		while (t < 1)
-		{
-			t += Time.deltaTime / timeToMove;
-			bushel.transform.position = Vector3.Lerp(currentPos, position, t);
-			yield return null;
-		}
+		bushel.transform.localPosition = new Vector3(0,0,0);
+		bushel.GetComponent<Rigidbody2D>().velocity = new Vector3(Random.Range(-2.0f,2.0f),Random.Range(-10.0f,10.0f));
 	}
 }

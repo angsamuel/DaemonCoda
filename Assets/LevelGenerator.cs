@@ -157,12 +157,12 @@ public class LevelGenerator : MonoBehaviour {
         rm.street = streetBlock;
         rm.room = room;
         rm.PlopRooms();
-
+        PlacePlants();
         transform.localScale = new Vector2(1.2f, 1.2f);
 
         Populate();
         FillWithLoot();
-        PlacePlants();
+        
 
        //StartCoroutine(levelController.TableConstructionRoutine());
       
@@ -226,21 +226,21 @@ public class LevelGenerator : MonoBehaviour {
         if (x > -1 && y > -1 && x < level_grid_size && y < level_grid_size)
         {
             if(levelGrid[x,y] !=null){
-                Destroy((levelGrid[x,y]);
+                Destroy(levelGrid[x,y]);
             }   
             GameObject newBlock = Instantiate(block, transform);
             newBlock.GetComponent<SpriteRenderer>().color = c;
             newBlock.transform.Translate(new Vector2(x, y) * blockOffset);
             newBlock.transform.localScale = new Vector2(blockScale, blockScale);
-            newBlock.GetComponent<SpriteRenderer>().color = plantColor;
+            newBlock.GetComponent<SpriteRenderer>().color = c;
+            newBlock.GetComponent<SpriteRenderer>().transform.localScale = new Vector2(blockScale, blockScale);
             levelGrid[x,y] = newBlock;
             return newBlock;
         }
         return null;
-
     }
 
-
+    float spawnPlantChance = 0.40f;
      void PlacePlants(){
         for(int y = 0; y < level_grid_size; y++)
         {
@@ -248,7 +248,9 @@ public class LevelGenerator : MonoBehaviour {
             {
                 
                 if(levelGrid[x,y] == null){
-                    PlaceWall(x,y,plants[Random.Range(0,plants.Count)], Color.white);
+                    if(Random.Range(0.0f, 1.0f) < spawnPlantChance){
+                        PlaceBlock(x,y,plants[Random.Range(0,plants.Count)], plantColor);
+                    }
                  //   GameObject newPlant = Instantiate(plants[Random.Range(0,plants.Count)], transform);
                  //   newPlant.transform.Translate(new Vector2(x, y) * blockOffset);
                  //   newPlant.transform.localScale = new Vector2(blockScale, blockScale);
@@ -265,68 +267,23 @@ public class LevelGenerator : MonoBehaviour {
 
     public void PlaceStreet(int x, int y, GameObject block, Color c)
     {
-
-        if (x > -1 && y > -1 && x < level_grid_size && y < level_grid_size)
-        {
-
-
-            if (levelGrid[x, y] != null)
-            {
-                Destroy(levelGrid[x, y]);
-            }
-
-            GameObject newBlock = Instantiate(block, transform);
-            newBlock.transform.Translate(new Vector2(x, y)  * blockOffset);
-            levelGrid[x, y] = newBlock;
-            float variance = Random.Range(-colorVariance, colorVariance);
-
-            newBlock.GetComponent<SpriteRenderer>().color = new Color(streetColor.r + variance, streetColor.g + variance, streetColor.b + variance, 1.0f);
-            //newBlock.GetComponent<SpriteRenderer>().transform.localScale = new Vector2(Random.Range(.125f, .15f), Random.Range(.125f, .15f));
-            newBlock.GetComponent<SpriteRenderer>().transform.localScale = new Vector2(blockScale, blockScale);
-
-        }
+       PlaceBlock(x,y,block,streetColor);
     }
 
 
     public void PlaceFloor(int x, int y, GameObject floor, Color c, GameObject ro)
     {
         Room r = ro.GetComponent<Room>();
+        GameObject newBlock = PlaceBlock(x,y,floor,floorColor);
+        newBlock.GetComponent<InteriorFloor>().room = r;
+        GameObject newShadeBlock = Instantiate(shadeBlock, transform);
+        newShadeBlock.GetComponent<SpriteRenderer>().color = Color.black;
 
-        if (x > -1 && y > -1 && x < level_grid_size && y < level_grid_size)
-        {
-
-
-            if (levelGrid[x, y] != null)
-            {
-                Destroy(levelGrid[x, y]);
-            }
-
-            GameObject newBlock = Instantiate(floor, transform);
-            newBlock.transform.Translate(new Vector2(x, y) * blockOffset);
-            levelGrid[x, y] = newBlock;
-            newBlock.GetComponent<SpriteRenderer>().color = floorColor;
-            newBlock.GetComponent<SpriteRenderer>().color = new Color(floorColor.r, floorColor.g, floorColor.b, 1);
-            newBlock.GetComponent<SpriteRenderer>().transform.localScale = new Vector2(blockScale, blockScale);
-
-            //set interior floor reference to proper room
-            newBlock.GetComponent<InteriorFloor>().room = r;
-            
-            
-            GameObject newShadeBlock = Instantiate(shadeBlock, transform);
-            float grey = Random.Range(0.0f, 0.0f);
-            newShadeBlock.GetComponent<SpriteRenderer>().color = new Color(grey,grey,grey,Random.Range(1.0f, 1.0f));
-
-            newShadeBlock.transform.position = newBlock.transform.position;
-            newShadeBlock.transform.localScale = new Vector2(blockScale,blockScale);
-            r.AddShadow(newShadeBlock);
-            //Debug.Log("size " + r.shadeBlocks.Count);
-
-
-            //newBlock.GetComponent<SpriteRenderer>().transform.localScale = new Vector2(Random.Range(.125f, .15f), Random.Range(.125f, .15f));
-            //newBlock.GetComponent<SpriteRenderer>().color = new Color(floorColor.r, floorColor.g, floorColor.b, Random.Range(0.5f, 1.0f));
-            //newBlock.GetComponent<SpriteRenderer>().transform.localScale = new Vector2(Random.Range(.125f, .15f), Random.Range(.125f, .15f));
-        }
+        newShadeBlock.transform.position = newBlock.transform.position;
+        newShadeBlock.transform.localScale = new Vector2(blockScale,blockScale);
+        r.AddShadow(newShadeBlock);
     }
+
     public void PlaceDoor(int x, int y){
         GameObject newDoor = Instantiate(doorBlock, transform);
         if(levelGrid[x,y] != null){
