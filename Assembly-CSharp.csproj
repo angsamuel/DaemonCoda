@@ -59,6 +59,7 @@
      <Compile Include="Assets\InteriorFloor.cs" />
      <Compile Include="Assets\LevelGenerator.cs" />
      <Compile Include="Assets\LevelIntroHandler.cs" />
+     <Compile Include="Assets\LevelPopulator.cs" />
      <Compile Include="Assets\MealPakPanel.cs" />
      <Compile Include="Assets\MedPakPanel.cs" />
      <Compile Include="Assets\RotationFollowMouse.cs" />

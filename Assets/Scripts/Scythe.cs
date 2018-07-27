@@ -5,11 +5,12 @@ using UnityEngine;
 public class Scythe : Weapon {
 	void Start(){
 		base.Start ();
+		direction = 1;
 		ChangeDirections ();
 	}
 
 	override public void ChangeDirections(){
-		direction = -1;
+		direction = 1;
 	}
 
 	void Update(){

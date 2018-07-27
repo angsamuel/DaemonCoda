@@ -19,7 +19,7 @@ public class FOW : MonoBehaviour {
 
 	void FindVisibleTargets() {
         Collider2D[] targetsInViewRadius = Physics2D.OverlapCircleAll(transform.position, viewRadius, targetMask);
-		Debug.Log(targetsInViewRadius.Length);
+		//Debug.Log(targetsInViewRadius.Length);
 
         Physics2D.autoSyncTransforms = false;
 

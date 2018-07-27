@@ -19,6 +19,7 @@ public class LevelGenerator : MonoBehaviour {
     public GameObject mealPak;
 
     public List<GameObject> plants;
+    public List<GameObject> furniture;
 
     public Color streetColor;
     public Color floorColor;
@@ -30,7 +31,7 @@ public class LevelGenerator : MonoBehaviour {
     public int level_grid_size = 200;
     public List<StreetCrawler> streetCrawlers;
     List<Roomie> roomies;
-    GameObject[,] levelGrid;
+    public GameObject[,] levelGrid;
     Coroutine currentGeneration;
     Coroutine currentPlop;
 
@@ -38,16 +39,15 @@ public class LevelGenerator : MonoBehaviour {
     float spawnMedPakChance = 0.01f;
     float spawnMealPakChance = 0.01f;
     float blockOffset = 1.12f;
+    public LevelPopulator lp;
     // Use this for initialization
 	void Start () {
         villageName = nameWizard.GenerateVillageName();
         streetCrawlers = new List<StreetCrawler>();
         roomies = new List<Roomie>();
         levelGrid = new GameObject[level_grid_size, level_grid_size];
-        //Test();
-        //currentGeneration = StartCoroutine(Generate());
         Generate();
-        
+        lp.Populate();
        
     }
 
@@ -81,7 +81,7 @@ public class LevelGenerator : MonoBehaviour {
             }
         }
     }
-
+    float spawnFurnitureChance = 0.05f;
     public void FillWithLoot(){
         
         for(int y = 0; y < level_grid_size; y++)
@@ -99,6 +99,9 @@ public class LevelGenerator : MonoBehaviour {
                         if(roll <= spawnMealPakChance){
                             Instantiate(mealPak,levelGrid[x,y].transform.position, Quaternion.identity);
                         }
+                    }
+                    if(roll < spawnFurnitureChance){
+                        Instantiate(furniture[Random.Range(0,furniture.Count)],levelGrid[x,y].transform.position + new Vector3(Random.Range(-.5f, .5f), Random.Range(-.5f, .5f)), Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
                     }
 
 
@@ -133,10 +136,6 @@ public class LevelGenerator : MonoBehaviour {
     void Generate()
     {
 
-        for(int i = 0; i<levelController.enemyControllers.Count; i++)
-        {
-            Destroy(levelController.enemyControllers[i]);
-        }
         StreetCrawler sc = new StreetCrawler(this, 5, new Vector2(level_grid_size/2, 0), 0, streetBlock);
         streetCrawlers.Add(sc);
         for (int x = 0; x < 1000; x++)
@@ -160,7 +159,7 @@ public class LevelGenerator : MonoBehaviour {
         PlacePlants();
         transform.localScale = new Vector2(1.2f, 1.2f);
 
-        Populate();
+        //Populate();
         FillWithLoot();
         
 

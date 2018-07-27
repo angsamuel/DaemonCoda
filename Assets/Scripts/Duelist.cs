@@ -21,27 +21,27 @@ public class Duelist : UnitController {
 			
 			inSpecialAction = true;
 			unit.Stop ();
-			float secondsToWait = 1;
+			float secondsToWait = 2;
 			int selection = Random.Range (0, 5);
 			//Debug.Log (selection);
 			switch (selection) {
 			case 0: //dodge move
 				StartCoroutine (DashRandom ());
-				secondsToWait = .1f;
+				secondsToWait = .5f;
 				break;
 			case 1: //swing at player 
 				unit.AttackWithWeapon ();
-				secondsToWait = .1f;
+				secondsToWait = .5f;
 				break;
 			case 3: //approach player and swing (berserker behavior)
 				unit.Dash ();
 				Charge ();
-				secondsToWait = 1f;
+				secondsToWait = 2f;
 				break;
             case 4: //approach player and swing (berserker behavior)
                 unit.Dash();
                 Charge();
-                secondsToWait = 1f;
+                secondsToWait = 2f;
                 break;
             default:
 			break;
@@ -61,7 +61,7 @@ public class Duelist : UnitController {
 	IEnumerator DashRandom(){
 		Vector2 dashLocation = new Vector2 (transform.position.x + Random.Range (-100.0f, 100.0f), transform.position.y + Random.Range (-100.0f, 100.0f));
 		unit.MoveToward (dashLocation);
-		yield return new WaitForSeconds (.1f);
+		yield return new WaitForSeconds (.2f);
 		unit.Dash ();
 		unit.MoveToward (dashLocation);
 	}
@@ -83,6 +83,9 @@ public class Duelist : UnitController {
     {
         if (!unit.dead && target != null)
         {
+			 
+			 Debug.Log(Vector3.Distance (target.transform.position, unit.transform.position));
+
             if (target != null && !inSpecialAction)
             {
                 StartCoroutine(SelectSpecialAction());
@@ -91,7 +94,7 @@ public class Duelist : UnitController {
             {
                 MaintainDistance();
             }
-            unit.weapon.Aim(target.transform.position);
+           
 
             if (Vector3.Distance(unit.transform.position, target.transform.position) < strikingDistance)
             {

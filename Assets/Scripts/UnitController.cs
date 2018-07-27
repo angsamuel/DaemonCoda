@@ -28,9 +28,13 @@ public class UnitController : MonoBehaviour {
 	
 	// Update is called once per frame
 	public void Update () {
+        if(!unit.dead && target != null && unit.weapon != null){
+            unit.weapon.Aim(target.transform.position);
+        }
         if (!unit.dead && scanEnabeled)
         {
             //CheckForPlayer ();
+            StartCoroutine(WanderRoutine());
             LockTarget();
         }
         if (canSeeTarget)
@@ -61,9 +65,11 @@ public class UnitController : MonoBehaviour {
 
         if(target == null)
         {
-            unit.Stop(.25f);
+            if(!wandering){
+                //unit.Stop(.25f);
+            }
         }
-        else if(target.dead)
+        else if(target.dead && !wandering)
         {
             unit.Stop(.25f);
         }
@@ -233,7 +239,7 @@ public class UnitController : MonoBehaviour {
         }
     }
     
-    float scanRange = 10;
+    float scanRange = 8;
     float scanTimer = .002f;
     IEnumerator ScanRoutine()
     {
@@ -319,5 +325,26 @@ public class UnitController : MonoBehaviour {
 
         scanning = false;
     }
+    bool wandering = false;
+    Vector3 wanderPos;
+    Vector3 aimPos;
+    IEnumerator WanderRoutine()
+    {
+        yield return null;
+        if(!wandering){
+            Debug.Log("WANDERING");
+            wandering = true;
+            wanderPos = transform.position + new Vector3(Random.Range(-100,100), Random.Range(-100,100));
+            aimPos = transform.position + new Vector3(Random.Range(-100,100), Random.Range(-100,100));
+            unit.MoveToward(wanderPos);
+            
+            yield return new WaitForSeconds(Random.Range(1.0f, 2.0f));
 
+            unit.Stop();
+            yield return new WaitForSeconds(Random.Range(1.0f, 2.0f));
+            wandering = false;
+        }else if(target == null){
+            unit.AimWeapon(aimPos);
+        }
+    }
 }
