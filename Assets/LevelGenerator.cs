@@ -276,12 +276,12 @@ public class LevelGenerator : MonoBehaviour {
         Room r = ro.GetComponent<Room>();
         GameObject newBlock = PlaceBlock(x,y,floor,floorColor);
         newBlock.GetComponent<InteriorFloor>().room = r;
-        GameObject newShadeBlock = Instantiate(shadeBlock, transform);
-        newShadeBlock.GetComponent<SpriteRenderer>().color = Color.black;
+       // GameObject newShadeBlock = Instantiate(shadeBlock, transform);
+       // newShadeBlock.GetComponent<SpriteRenderer>().color = Color.black;
 
-        newShadeBlock.transform.position = newBlock.transform.position;
-        newShadeBlock.transform.localScale = new Vector2(blockScale,blockScale);
-        r.AddShadow(newShadeBlock);
+       // newShadeBlock.transform.position = newBlock.transform.position;
+       // newShadeBlock.transform.localScale = new Vector2(blockScale,blockScale);
+       // r.AddShadow(newShadeBlock);
     }
 
     public void PlaceDoor(int x, int y){

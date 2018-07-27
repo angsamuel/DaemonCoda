@@ -52,6 +52,8 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Chest.cs" />
+     <Compile Include="Assets\FOW.cs" />
+     <Compile Include="Assets\FOWMesh.cs" />
      <Compile Include="Assets\Greenery.cs" />
      <Compile Include="Assets\Husk.cs" />
      <Compile Include="Assets\InteriorFloor.cs" />
@@ -59,6 +61,7 @@
      <Compile Include="Assets\LevelIntroHandler.cs" />
      <Compile Include="Assets\MealPakPanel.cs" />
      <Compile Include="Assets\MedPakPanel.cs" />
+     <Compile Include="Assets\RotationFollowMouse.cs" />
      <Compile Include="Assets\Scanner.cs" />
      <Compile Include="Assets\Scripts\Archer.cs" />
      <Compile Include="Assets\Scripts\Arrow.cs" />
@@ -109,9 +112,16 @@
      <Compile Include="Assets\Scripts\WoodCart.cs" />
      <Compile Include="Assets\Scripts\WoodCuttingStation.cs" />
      <Compile Include="Assets\Shade.cs" />
+     <Compile Include="Assets\ShadowMesher.cs" />
      <Compile Include="Assets\TownGenerator.cs" />
+     <Compile Include="Assets\ViewAssets\Field Of View\Scripts\FieldOfView.cs" />
+     <Compile Include="Assets\ViewAssets\Field Of View\Scripts\FieldOfViewEditor.cs" />
+     <Compile Include="Assets\ViewAssets\Field Of View\Scripts\Hideable.cs" />
+     <Compile Include="Assets\ViewAssets\Field Of View\Scripts\IHideable.cs" />
+     <Compile Include="Assets\ViewAssets\RotateToMouse.cs" />
      <None Include="Assets\Resources\Words\village_nouns.txt" />
      <None Include="Assets\Resources\Words\nouns.txt" />
+     <None Include="Assets\ViewAssets\Field Of View\LICENSE.txt" />
      <None Include="Assets\Resources\Words\adj.txt" />
      <None Include="Assets\Resources\Words\last_names.txt" />
      <None Include="Assets\Resources\Words\all_names.txt" />

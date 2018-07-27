@@ -8,10 +8,10 @@ public class LevelIntroHandler : MonoBehaviour {
 	public Text villageNameText;
 	public LevelGenerator lg;
 
-	float textFadeInTime = 2.0f;
-	float pauseTime = 1.0f;
-	float pauseTime2 = 1.0f;
-	float fadeOutTime = 1.0f;
+	public float textFadeInTime = 2.0f;
+	public float pauseTime = 1.0f;
+	public float pauseTime2 = 1.0f;
+	public float fadeOutTime = 1.0f;
 	// Use this for initialization
 
 	IEnumerator Intro(){

@@ -294,7 +294,6 @@ public class Unit : MonoBehaviour {
 	public void Die(){
 		DequipWeapon ();
 
-		GetComponent<SpriteRenderer> ().color = Color.red;
 		body.GetComponent<SpriteRenderer>().color = Color.red;
 		dead = true;
 		BoxCollider2D[] myColliders = gameObject.GetComponents<BoxCollider2D>();
