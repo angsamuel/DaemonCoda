@@ -11,7 +11,14 @@ public class Grunt : UnitController {
 
     void Update()
     {
-        base.Update();
+        //base.Update();
+        //if(target!=null){
+        //    Debug.Log("has target");
+        //}
+    }
+
+    void LateUpdate(){
+        base.LateUpdate();
     }
 
     override public void CustomActions()

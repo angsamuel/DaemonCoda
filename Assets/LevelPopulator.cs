@@ -5,6 +5,7 @@ using UnityEngine;
 public class LevelPopulator : MonoBehaviour {
 	public List<GameObject> enemies;
 	public List<float> enemyProbs;
+	public GameObject patrolUnit;
 	public LevelGenerator lg;
 	public float enemySpawnChance = 0.01f;
 	// Use this for initialization
@@ -29,19 +30,37 @@ public class LevelPopulator : MonoBehaviour {
 						for(int i = 0; i<enemies.Count; i++){
 							currentWeight+=enemyProbs[i];
 							if(currentWeight > roll){
+								roll = 2;
 								GameObject newEn = Instantiate(enemies[i], transform);
-								newEn.transform.position = lg.levelGrid[x,y].transform.position;
+								newEn.transform.position = lg.levelGrid[x,y].transform.position + new Vector3(Random.Range(-0.25f, 0.25f),Random.Range(-0.25f, 0.25f));
 							}
 						}
 					}
 				}
 			}
 		}
+		CreateSquads();
 	}
 
 
 	public void CreateSquads(){
+		for(int i = 0; i<lg.patrolRoutes.Count; i++){
 
+			if(lg.patrolRoutes[i].checkpoints.Count > 2){
+
+				int startCheckPoint = Random.Range(0, lg.patrolRoutes[i].checkpoints.Count);
+
+				int squadMembers = Random.Range(3, 7);
+				//spawn squad members, give each their index, and patrolRoute
+				for(int j = 0; j<squadMembers; j++){
+					UnitController newSquaddie = Instantiate(patrolUnit, lg.patrolRoutes[i].checkpoints[startCheckPoint].transform.position, Quaternion.identity).GetComponent<UnitController>();
+					newSquaddie.transform.Translate(new Vector3(Random.Range(-1.0f,1.0f), Random.Range(-1.0f,1.0f)));
+					newSquaddie.AssignToPatrol(lg.patrolRoutes[i], startCheckPoint);
+				}
+
+
+			}
+		}
 	}
 
 }

@@ -9,6 +9,9 @@ public class LevelGenerator : MonoBehaviour {
     float blockScale = .14f;
     float colorVariance = .0f;
     public LevelController levelController;
+    public GameObject patrolRoute;
+    [HideInInspector] public List<PatrolRoute> patrolRoutes = new List<PatrolRoute>();
+    public GameObject checkpoint;
     public GameObject room;
     public GameObject shadeBlock;
     public GameObject streetBlock;
@@ -40,6 +43,7 @@ public class LevelGenerator : MonoBehaviour {
     float spawnMealPakChance = 0.01f;
     float blockOffset = 1.12f;
     public LevelPopulator lp;
+
     // Use this for initialization
 	void Start () {
         villageName = nameWizard.GenerateVillageName();
@@ -48,10 +52,21 @@ public class LevelGenerator : MonoBehaviour {
         levelGrid = new GameObject[level_grid_size, level_grid_size];
         Generate();
         lp.Populate();
-       
     }
 
-   
+   public PatrolRoute CreatePatrolRoute(){
+       PatrolRoute pr = Instantiate(patrolRoute, transform).GetComponent<PatrolRoute>();
+       patrolRoutes.Add(pr);
+       return pr;
+   }
+
+   public void CreateCheckpoint(PatrolRoute pr, int x, int y){
+       if(levelGrid[x,y] !=null){
+            GameObject newCheckPoint = Instantiate(checkpoint, levelGrid[x,y].transform);
+            newCheckPoint.transform.localPosition = new Vector3(0,0,0);
+            pr.checkpoints.Add(newCheckPoint);
+       }
+   }
 
     public void Populate()
     {
@@ -162,7 +177,9 @@ public class LevelGenerator : MonoBehaviour {
         //Populate();
         FillWithLoot();
         
-
+        GameObject player = GameObject.Find("PlayerInputController");
+        player.transform.position = levelGrid[level_grid_size/2,0].transform.position;
+        player.transform.Translate(new Vector2(0,-8));
        //StartCoroutine(levelController.TableConstructionRoutine());
       
     }
@@ -259,14 +276,14 @@ public class LevelGenerator : MonoBehaviour {
         }
     }
 
-    public void PlaceStreet(int x, int y, GameObject block)
+    public GameObject PlaceStreet(int x, int y, GameObject block)
     {
-        PlaceStreet(x, y, block, Color.black);
+        return PlaceStreet(x, y, block, Color.black);
     }
 
-    public void PlaceStreet(int x, int y, GameObject block, Color c)
+    public GameObject PlaceStreet(int x, int y, GameObject block, Color c)
     {
-       PlaceBlock(x,y,block,streetColor);
+       return PlaceBlock(x,y,block,streetColor);
     }
 
 

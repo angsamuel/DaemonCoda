@@ -2,7 +2,7 @@
 
 public class Hideable : MonoBehaviour, IHideable {
 
-    public void OnFOVEnter() {
+    virtual public void OnFOVEnter() {
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
         if(sr != null){
             sr.enabled = true;
@@ -20,7 +20,7 @@ public class Hideable : MonoBehaviour, IHideable {
             }
         }
     }
-    public void OnFOVLeave() {
+    virtual public void OnFOVLeave() {
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
         if(sr != null){
             sr.enabled = false;

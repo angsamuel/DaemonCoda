@@ -62,7 +62,10 @@
      <Compile Include="Assets\LevelPopulator.cs" />
      <Compile Include="Assets\MealPakPanel.cs" />
      <Compile Include="Assets\MedPakPanel.cs" />
+     <Compile Include="Assets\PatrolRoute.cs" />
+     <Compile Include="Assets\ReverseHideable.cs" />
      <Compile Include="Assets\RotationFollowMouse.cs" />
+     <Compile Include="Assets\Route.cs" />
      <Compile Include="Assets\Scanner.cs" />
      <Compile Include="Assets\Scripts\Archer.cs" />
      <Compile Include="Assets\Scripts\Arrow.cs" />

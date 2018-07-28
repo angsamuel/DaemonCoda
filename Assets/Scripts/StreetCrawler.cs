@@ -56,21 +56,36 @@ public class StreetCrawler {
         }
 
     }
-
+    int cycleCount = 0;
+    int moveCount = 0;
+    PatrolRoute pr;
     public void Cycle()
     {
-        for (int i = 0; i < speed; i++) {
-
-            if (Build()) {
-                Move();
-            }
-            
+        moveCount = 0;
+        if(width > 1 && cycleCount < 1){
+            pr = levelGenerator.CreatePatrolRoute();
         }
+
+        
+        
+        for (int i = 0; i < speed; i++) {
+           
+            if (Build()) {
+                if(width > 1 && pr != null && ((moveCount < 1 && cycleCount < 1) || (moveCount == speed -1))){
+                    levelGenerator.CreateCheckpoint(pr, (int)gridPos.x, (int)gridPos.y);
+                }
+                Move();
+                moveCount += 1;
+            }
+             
+        }
+
+        
         if (width != 5 || gridPos.y < levelGenerator.level_grid_size)
         {
             Mutate();
         }
-
+        cycleCount += 1;
 
     }
 

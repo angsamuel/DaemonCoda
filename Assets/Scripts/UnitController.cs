@@ -13,13 +13,19 @@ public class UnitController : MonoBehaviour {
 
     protected List<Vector2> breadCrumbs;
 
-    public Unit target;
 
+    PatrolRoute pr;
+    public int prIndex;
+
+    public Unit target;
+    public bool husked = false;
 	// Use this for initialization
 	public void Start () {
         breadCrumbs = new List<Vector2>();
 		levelController = GameObject.Find ("LevelController").GetComponent<LevelController> ();
-		levelController.AddEnemyController (this);
+        if(!husked){
+		    levelController.AddEnemyController (this);
+        }
 		playerUnit = GameObject.Find ("PlayerInputController").GetComponent<PlayerInputController> ().playerUnit;
         StartCoroutine(BreadCrumb());
         StartCoroutine(BreadCrumbCleanup());
@@ -27,15 +33,64 @@ public class UnitController : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	public void Update () {
+
+    public void SetTeam(string t){
+        unit.team = t;
+    }
+
+    [HideInInspector] public bool canPatrol = false;
+    public void AssignToPatrol(PatrolRoute patrolRoute, int patrolIndex){
+        pr = patrolRoute;
+        pr.unitControllers.Add(this);
+        canPatrol = true;
+        NextCheckpoint(patrolIndex);
+    }
+
+    public void NextCheckpoint(int checkPointIndex, int newPosition){
+        prIndex = checkPointIndex;
+        Debug.Log(checkPointIndex + " outta " + pr.checkpoints.Count);
+        
+        patrolPosition = pr.checkpoints[prIndex].transform.position + new Vector3(Random.Range(-1.5f, 1.5f), Random.Range(-1.5f, 1.5f));
+    }
+
+    Vector3 patrolPosition;
+    void  Patrol(){
+        //get new patrol position
+
+        unit.MoveToward(patrolPosition);
+        //Debug.Log(patrolPosition + ", " + pr.checkpoints[prIndex].transform.position);
+        unit.AimWeapon(pr.checkpoints[prIndex].transform.position);
+        //if reached position, let route know
+        if(Vector3.Distance(unit.transform.position, patrolPosition) <= 0.1f){
+            unit.Stop();
+            pr.CheckIn();
+            canPatrol = false;
+        } 
+    }
+
+
+
+	public void LateUpdate () {
+
+
         if(!unit.dead && target != null && unit.weapon != null){
             unit.weapon.Aim(target.transform.position);
         }
+
+        if(canPatrol && pr != null && target == null){
+            Patrol();
+        }
+
+
         if (!unit.dead && scanEnabeled)
         {
             //CheckForPlayer ();
-            StartCoroutine(WanderRoutine());
-            LockTarget();
+            if(pr == null){
+                StartCoroutine(WanderRoutine());
+            }
+            if(!husked){
+                LockTarget();
+            }
         }
         if (canSeeTarget)
         {
@@ -76,7 +131,7 @@ public class UnitController : MonoBehaviour {
     }
 
     bool proximityCheckEnabeled = true;
-    float proximityWaitTime = 3.0f;
+    float proximityWaitTime = 1.5f;
 
     bool scanEnabeled = false;
 
@@ -86,36 +141,40 @@ public class UnitController : MonoBehaviour {
         while (proximityCheckEnabeled)
         {
             
-            yield return new WaitForSeconds(proximityWaitTime + Random.Range(-1.0f, 1.0f));
+            
             scanEnabeled = false;
 
-            for (int i = 0; i<levelController.teams.Count; i++)
-            {
-                if(levelController.teams[i] == unit.team)
-                {
-                        List<Unit> possibleTargets = levelController.teamTable[levelController.teams[i]] as List<Unit>;
-                        for(int k = 0; k < possibleTargets.Count; k++)
-                        {
-                            if( Vector3.Distance(possibleTargets[k].transform.position, unit.transform.position) < scanRange * 3)
-                            {
-                                scanEnabeled = true;
-                                Debug.Log("enabling scan");
-                            }
-                        }
+            // for (int i = 0; i<levelController.teams.Count; i++)
+            // {
+            //     if(levelController.teams[i] == unit.team)
+            //     {
+            //             List<Unit> possibleTargets = levelController.teamTable[levelController.teams[i]] as List<Unit>;
+            //             for(int k = 0; k < possibleTargets.Count; k++)
+            //             {
+            //                 if( Vector3.Distance(possibleTargets[k].transform.position, unit.transform.position) < scanRange * 3)
+            //                 {
+            //                     scanEnabeled = true;
+            //                     Debug.Log("enabling scan");
+            //                 }
+            //             }
 
 
-                }
-            }
+            //     }
+            // }
+
+
 
             //check player
             if(scanEnabeled == false)
             {
-                if (Vector3.Distance(playerUnit.transform.position, unit.transform.position) < scanRange * 3)
+                if (Vector3.Distance(playerUnit.transform.position, unit.transform.position) < scanRange * 3f)
                 {
                     scanEnabeled = true;
                     //Debug.Log("enabling scan");
                 }
             }
+
+            yield return new WaitForSeconds(proximityWaitTime + Random.Range(-1.0f, 1.0f));
 
         }
     }
@@ -332,7 +391,6 @@ public class UnitController : MonoBehaviour {
     {
         yield return null;
         if(!wandering){
-            Debug.Log("WANDERING");
             wandering = true;
             wanderPos = transform.position + new Vector3(Random.Range(-100,100), Random.Range(-100,100));
             aimPos = transform.position + new Vector3(Random.Range(-100,100), Random.Range(-100,100));

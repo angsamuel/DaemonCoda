@@ -75,8 +75,8 @@ public class Duelist : UnitController {
 		}
 	}
 	// Update is called once per frame
-	void Update () {
-		base.Update ();
+	void LateUpdate () {
+		base.LateUpdate ();
 	}
 
     override public void CustomActions()
@@ -84,7 +84,6 @@ public class Duelist : UnitController {
         if (!unit.dead && target != null)
         {
 			 
-			 Debug.Log(Vector3.Distance (target.transform.position, unit.transform.position));
 
             if (target != null && !inSpecialAction)
             {

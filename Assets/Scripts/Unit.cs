@@ -164,7 +164,7 @@ public class Unit : MonoBehaviour {
 	}
 
 	public void MoveAway(Vector3 position){
-		if (!dead) {
+		if (!dead && rb!=null) {
 			rb.velocity = UBP(transform.position, position) * speed;
 		}
 	}
@@ -297,7 +297,7 @@ public class Unit : MonoBehaviour {
 		body.GetComponent<SpriteRenderer>().color = Color.red;
 		dead = true;
 		BoxCollider2D[] myColliders = gameObject.GetComponents<BoxCollider2D>();
-		foreach(BoxCollider2D bc in myColliders) bc.enabled = false;
+		//foreach(BoxCollider2D bc in myColliders) bc.enabled = false;
 
         GetComponent<Rigidbody2D>().freezeRotation = true;
         GetComponent<Rigidbody2D>().velocity *= 0;
@@ -420,6 +420,9 @@ public class Unit : MonoBehaviour {
 	}
 
 	Vector3 UBP(Vector3 p1, Vector3 p2){
+		if((p1 - p2).magnitude == 0){
+			new Vector3(0,0);
+		}
 		return (1f / (p1 - p2).magnitude) * (p1 - p2);
 	}
 
