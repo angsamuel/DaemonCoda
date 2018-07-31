@@ -7,7 +7,7 @@ public class LevelPopulator : MonoBehaviour {
 	public List<float> enemyProbs;
 	public GameObject patrolUnit;
 	public LevelGenerator lg;
-	public float enemySpawnChance = 0.01f;
+	public float enemySpawnChance = 0.005f;
 	// Use this for initialization
 	void Start () {
 		
@@ -19,8 +19,8 @@ public class LevelPopulator : MonoBehaviour {
 	}
 
 	public void Populate(){
-		for(int x = 0; x<lg.level_grid_size; x++){
-			for(int y = 0; y<lg.level_grid_size; y++){
+		for(int x = 5; x<lg.level_grid_size - 5; x++){
+			for(int y = 5; y<lg.level_grid_size - 5; y++){
 				//if tile is appropriate, spawn unit
 				if(lg.GetTileTag(x,y) == "street" || lg.GetTileTag(x,y) == "floor"){
 					if(Random.Range(0.0f, 1.0f) < enemySpawnChance){
@@ -48,7 +48,7 @@ public class LevelPopulator : MonoBehaviour {
 
 			if(lg.patrolRoutes[i].checkpoints.Count > 2){
 
-				int startCheckPoint = Random.Range(0, lg.patrolRoutes[i].checkpoints.Count);
+				int startCheckPoint = 0;
 
 				int squadMembers = Random.Range(3, 7);
 				//spawn squad members, give each their index, and patrolRoute

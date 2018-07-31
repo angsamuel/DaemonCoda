@@ -4,6 +4,7 @@ using UnityEngine;
 
 //can manage waypoints
 public class LevelController : MonoBehaviour {
+    public LevelGenerator levelGenerator;
 	public float alertRadius;
 	public List<UnitController> enemyControllers;
     public List<string> teams;
@@ -11,11 +12,13 @@ public class LevelController : MonoBehaviour {
     public Hashtable teamTable;
 
     public PlayerInputController pic;
-
+    Unit playerUnit;
+    float leaveLevelDistance = 0;
 	void Awake(){
 		enemyControllers = new List<UnitController> ();
         teams = new List<string>();
         teamTable = new Hashtable();
+        playerUnit = pic.playerUnit;
         
 	}
 	// Use this for initialization
@@ -37,7 +40,6 @@ public class LevelController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		
 	}
 
     public IEnumerator TableConstructionRoutine()

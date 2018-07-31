@@ -6,6 +6,8 @@ public class LevelGenerator : MonoBehaviour {
     public string villageName;
     public NameWizard nameWizard;
 
+    public GameObject leaveLevelBarrier;
+
     float blockScale = .14f;
     float colorVariance = .0f;
     public LevelController levelController;
@@ -52,6 +54,34 @@ public class LevelGenerator : MonoBehaviour {
         levelGrid = new GameObject[level_grid_size, level_grid_size];
         Generate();
         lp.Populate();
+        ScaleLeaveLevelBarrier();
+    }
+
+    void ScaleLeaveLevelBarrier(){
+        switch(level_grid_size){
+            case 50:
+                leaveLevelBarrier.transform.localScale = new Vector3(9,9,1);
+                leaveLevelBarrier.transform.localPosition = new Vector3(28,28);
+                break;
+            case 75:
+                leaveLevelBarrier.transform.localScale = new Vector3(12,12,1);
+                leaveLevelBarrier.transform.localPosition = new Vector3(41.5f,41.5f);
+                break;
+            case 100:
+                leaveLevelBarrier.transform.localScale = new Vector3(15,15,1);
+                leaveLevelBarrier.transform.localPosition = new Vector3(55,55);
+                break;
+            case 125:
+                leaveLevelBarrier.transform.localScale = new Vector3(17.5f,17.5f,1);
+                leaveLevelBarrier.transform.localPosition = new Vector3(69.5f,69.5f);
+                break;
+            case 150:
+                leaveLevelBarrier.transform.localScale = new Vector3(20,20,1);
+                leaveLevelBarrier.transform.localPosition = new Vector3(83,83);
+                break;
+            default:
+                break;
+        }
     }
 
    public PatrolRoute CreatePatrolRoute(){

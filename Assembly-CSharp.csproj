@@ -58,7 +58,7 @@
      <Compile Include="Assets\Husk.cs" />
      <Compile Include="Assets\InteriorFloor.cs" />
      <Compile Include="Assets\LevelGenerator.cs" />
-     <Compile Include="Assets\LevelIntroHandler.cs" />
+     <Compile Include="Assets\LevelIntroOutroHandler.cs" />
      <Compile Include="Assets\LevelPopulator.cs" />
      <Compile Include="Assets\MealPakPanel.cs" />
      <Compile Include="Assets\MedPakPanel.cs" />

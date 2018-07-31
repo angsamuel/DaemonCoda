@@ -46,26 +46,33 @@ public class UnitController : MonoBehaviour {
         NextCheckpoint(patrolIndex);
     }
 
-    public void NextCheckpoint(int checkPointIndex, int newPosition){
+    public void NextCheckpoint(int checkPointIndex){
         prIndex = checkPointIndex;
         Debug.Log(checkPointIndex + " outta " + pr.checkpoints.Count);
         
-        patrolPosition = pr.checkpoints[prIndex].transform.position + new Vector3(Random.Range(-1.5f, 1.5f), Random.Range(-1.5f, 1.5f));
+        patrolPosition = pr.checkpoints[prIndex].transform.position;// + new Vector3(Random.Range(-1.5f, 1.5f), Random.Range(-1.5f, 1.5f));
+    }
+
+    public void SetPatrolPosition(Vector3 pp){
+        patrolPosition = pp;
     }
 
     Vector3 patrolPosition;
     void  Patrol(){
-        //get new patrol position
+            unit.AimWeapon(pr.checkpoints[prIndex].transform.position);
+            if(canPatrol && pr != null){
+            //get new patrol position
 
-        unit.MoveToward(patrolPosition);
-        //Debug.Log(patrolPosition + ", " + pr.checkpoints[prIndex].transform.position);
-        unit.AimWeapon(pr.checkpoints[prIndex].transform.position);
-        //if reached position, let route know
-        if(Vector3.Distance(unit.transform.position, patrolPosition) <= 0.1f){
-            unit.Stop();
-            pr.CheckIn();
-            canPatrol = false;
-        } 
+            unit.MoveToward(patrolPosition);
+            //Debug.Log(patrolPosition + ", " + pr.checkpoints[prIndex].transform.position);
+            unit.AimWeapon(pr.checkpoints[prIndex].transform.position);
+            //if reached position, let route know
+            if(Vector3.Distance(unit.transform.position, patrolPosition) <= 0.05f){
+                unit.Stop();
+                pr.CheckIn();
+                canPatrol = false;
+            } 
+        }
     }
 
 
@@ -77,7 +84,7 @@ public class UnitController : MonoBehaviour {
             unit.weapon.Aim(target.transform.position);
         }
 
-        if(canPatrol && pr != null && target == null){
+        if(pr!= null && target == null){
             Patrol();
         }
 
@@ -298,7 +305,7 @@ public class UnitController : MonoBehaviour {
         }
     }
     
-    float scanRange = 8;
+    float scanRange = 6;
     float scanTimer = .002f;
     IEnumerator ScanRoutine()
     {
@@ -369,7 +376,15 @@ public class UnitController : MonoBehaviour {
                 {
                     minIndex = j;
                     minDist = dist;
+
+                    //assign target
                     target = possibleTargets[j];
+                    //alert squadmates 
+                    if(pr != null){
+                        for(int s = 0; s<pr.unitControllers.Count; s++){
+                            pr.unitControllers[s].target = target;
+                        }
+                    }
                 }
             }
 
