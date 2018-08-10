@@ -19,9 +19,10 @@ public class Unit : MonoBehaviour {
 	bool invincible, dashLocked, inWater, waveRoutineLock = false;
 	bool canTouchAttack = true;
 	public Weapon weapon;
+	public Shield shield;
 	Vector3 colliderPosition;
 	Rigidbody2D rb;
-	List<Collider2D> damageSources;
+	List<int> damageSources;
 	Weapon pickup;
 	public TrailRenderer tr;
 	public GameObject body;
@@ -36,7 +37,7 @@ public class Unit : MonoBehaviour {
     int mealPaks = 0;
 
     void Start(){
-		damageSources = new List<Collider2D> ();
+		damageSources = new List<int> ();
 		//Time.timeScale = 0.1f;
 		StartCoroutine (WaveRoutine ());
 		EquipWeapon (weapon);
@@ -139,18 +140,17 @@ public class Unit : MonoBehaviour {
         }
     }
 
-
+	bool canMove = true;
 	public IEnumerator PauseMovement(float time){
 		float t = 0;
-		while (t < 1) {
-			t += Time.deltaTime / time;
-			Stop ();
-			yield return null;
-		}
+		canMove = false;
+		Stop();
+		yield return new WaitForSeconds(time);
+		canMove = true;
 	}
 
 	public void Move(float x, float y){
-		if (!dead) {
+		if (!dead && canMove) {
 			rb.velocity = new Vector2(x*speed, y*speed);
 		}
 
@@ -158,14 +158,16 @@ public class Unit : MonoBehaviour {
 	}
 
 	public void MoveToward(Vector3 position){
-		if (!dead) {
+		if (!dead && canMove) {
 			rb.velocity = UBP(position, transform.position) * speed;
 		}
 	}
 
 	public void MoveAway(Vector3 position){
-		if (!dead && rb!=null) {
-			rb.velocity = UBP(transform.position, position) * speed;
+		if (!dead && rb!=null && canMove) {
+			if(transform.position != position){
+				rb.velocity = UBP(transform.position, position) * speed;
+			}
 		}
 	}
 
@@ -206,7 +208,7 @@ public class Unit : MonoBehaviour {
 		body.transform.eulerAngles = new Vector3 (0, 0, 0);
 	}
 
-	public float dashTime = .25f;
+	float dashTime = .5f;
 	IEnumerator DashRoutine(){
 		invincible = true;
 		if (tr != null) {
@@ -215,10 +217,10 @@ public class Unit : MonoBehaviour {
 		if (tr != null) {
 			StartCoroutine (EndTrail ());
 		}
-		speed = speed * dashMultiplier;
+		//speed = speed * dashMultiplier;
 		StartCoroutine(Spin(dashTime));
 		yield return new WaitForSeconds (dashTime);
-		speed = speed / dashMultiplier;
+		//speed = speed / dashMultiplier;
 		rb.velocity = rb.velocity / dashMultiplier;
 		dashLocked = false;
 		invincible = false;
@@ -262,11 +264,13 @@ public class Unit : MonoBehaviour {
 
 
 		if (other.gameObject.tag == "damage source") {
-			if (damageSources != null && !damageSources.Contains (other)) {
-				damageSources.Add (other);
-				StartCoroutine (RemoveFromDamageSources (other));
+			if (damageSources != null && !damageSources.Contains (other.gameObject.GetComponent<Blade>().id)) {
+				damageSources.Add (other.gameObject.GetComponent<Blade>().id);
+				StartCoroutine (RemoveFromDamageSources (other.gameObject.GetComponent<Blade>().id));
 				colliderPosition = other.transform.position;
-				TakeDamage ();
+				if(weapon == null || weapon.gameObject.transform.GetChild(0).GetComponent<Blade>().id != other.gameObject.GetComponent<Blade>().id){
+					TakeDamage ();
+				}
 			}
 		} else if (other.gameObject.tag == "npc") {
 			npc = other.GetComponent<NPC> ();
@@ -276,7 +280,7 @@ public class Unit : MonoBehaviour {
 		}
 	}
 
-	IEnumerator RemoveFromDamageSources(Collider2D o){
+	IEnumerator RemoveFromDamageSources(int o){
 		yield return new WaitForSeconds(0.2f);
 		damageSources.Remove (o);
 	}
@@ -409,6 +413,19 @@ public class Unit : MonoBehaviour {
 		if (weapon != null && !dead) {
 			weapon.Aim (position);
 		}
+	}
+
+	public void AimShield(Vector3 position){
+		if (shield != null && !dead) {
+			shield.Aim (position);
+			Color c = shield.transform.GetChild(0).GetComponent<SpriteRenderer>().color;
+			shield.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(c.r, c.g, c.b, 1);
+		}
+	}
+
+	public void LowerShield(){
+		Color c = shield.transform.GetChild(0).GetComponent<SpriteRenderer>().color;
+			shield.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(c.r, c.g, c.b, 0);
 	}
 
 	public void DropWeapon(){

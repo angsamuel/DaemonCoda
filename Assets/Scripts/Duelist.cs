@@ -16,40 +16,29 @@ public class Duelist : UnitController {
 	IEnumerator SelectSpecialAction(){
         inSpecialAction = true;
 	    yield return null;
+		Debug.Log("action");
 		if (!unit.dead && target != null) {
             Debug.Log("not dead");
 			
 			inSpecialAction = true;
 			unit.Stop ();
 			float secondsToWait = 2;
-			int selection = Random.Range (0, 5);
-			//Debug.Log (selection);
-			switch (selection) {
-			case 0: //dodge move
+			int selection = Random.Range (0, 4);
+
+			if(selection == 0){
 				StartCoroutine (DashRandom ());
-				secondsToWait = .5f;
-				break;
-			case 1: //swing at player 
-				unit.AttackWithWeapon ();
-				secondsToWait = .5f;
-				break;
-			case 3: //approach player and swing (berserker behavior)
-				unit.Dash ();
-				Charge ();
+				secondsToWait = 1f;
+			}else{
+				Charge();
+				unit.Dash();
 				secondsToWait = 2f;
-				break;
-            case 4: //approach player and swing (berserker behavior)
-                unit.Dash();
-                Charge();
-                secondsToWait = 2f;
-                break;
-            default:
-			break;
 			}
 			yield return new WaitForSeconds (secondsToWait);
-			inSpecialAction = false;
 			unit.Stop ();
 			yield return new WaitForSeconds (.25f);
+			inSpecialAction = false;
+
+			
 		}
 	}
 
@@ -65,42 +54,56 @@ public class Duelist : UnitController {
 		unit.Dash ();
 		unit.MoveToward (dashLocation);
 	}
-	void MaintainDistance(){
+	bool MaintainDistance(){
 		if (Vector3.Distance (target.transform.position, unit.transform.position) <= duelistDistanceMin) {
 			unit.MoveAway (target.transform.position);
+			return false;
 		} else if (Vector3.Distance (target.transform.position, unit.transform.position) >= duelistDistanceMax) {
 			unit.MoveToward (target.transform.position);
+			return false;
 		} else {
 			unit.Stop ();
+			return true;
 		}
 	}
 	// Update is called once per frame
 	void LateUpdate () {
 		base.LateUpdate ();
 	}
+	float weaponCooldown = 1f;
+
+	bool canAttack = true;
+
+	IEnumerator WeaponCooldown(){
+		canAttack = false;
+		yield return new WaitForSeconds(weaponCooldown);
+		canAttack = true;
+	}
 
     override public void CustomActions()
     {
         if (!unit.dead && target != null)
         {
-			 
-
-            if (target != null && !inSpecialAction)
+			
+            if (target != null && !inSpecialAction && MaintainDistance())
             {
                 StartCoroutine(SelectSpecialAction());
             }
-            if (!inSpecialAction && target != null)
-            {
-                MaintainDistance();
-            }
+            // if (!inSpecialAction && target != null)
+            // {
+            //     MaintainDistance();
+            // }
            
 
             if (Vector3.Distance(unit.transform.position, target.transform.position) < strikingDistance)
             {
-                unit.AttackWithWeapon();
+				if(canAttack){
+					unit.AttackWithWeapon();
+					StartCoroutine(WeaponCooldown());
+				}
                 if (!inSpecialAction)
                 {
-                    unit.Stop();
+                    //unit.Stop();
                 }
             }
         }

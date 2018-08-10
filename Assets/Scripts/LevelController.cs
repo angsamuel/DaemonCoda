@@ -30,10 +30,13 @@ public class LevelController : MonoBehaviour {
 		enemyControllers.Add (u);
 	}
 
-	public void AlertNearbyEnemies(Vector3 position){
+	public void AlertNearbyEnemies(Vector3 position, string team, Unit target){
 		for (int i = 0; i < enemyControllers.Count; i++) {
 			if (Vector3.Distance (position, enemyControllers[i].unit.transform.position) < alertRadius) {
-				enemyControllers [i].Alert ();
+                if(enemyControllers[i].unit.team == team && !enemyControllers[i].HasPatrolRoute()){
+                    enemyControllers [i].target = target;
+                }
+
 			}
 		}
 	}
@@ -81,5 +84,9 @@ public class LevelController : MonoBehaviour {
             teamTable.Add(teams[i],unitLists[i]);
         }
 
+    }
+
+    public Unit GetPlayerUnit(){
+        return playerUnit;
     }
 }

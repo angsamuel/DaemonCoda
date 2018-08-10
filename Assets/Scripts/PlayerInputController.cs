@@ -92,7 +92,14 @@ public class PlayerInputController : MonoBehaviour {
 			}
 
 			//playerUnit.weapon.Aim (Camera.main.ScreenToWorldPoint (Input.mousePosition));
-			playerUnit.AimWeapon (Camera.main.ScreenToWorldPoint (Input.mousePosition));
+			
+			
+			if(Input.GetAxisRaw("RaiseShield") !=  0){
+				playerUnit.AimShield (Camera.main.ScreenToWorldPoint (Input.mousePosition));
+			}else{
+				playerUnit.AimWeapon (Camera.main.ScreenToWorldPoint (Input.mousePosition));
+				playerUnit.LowerShield ();
+			}
 
 			//healing
 			if(Input.GetAxisRaw("Heal") != 0){

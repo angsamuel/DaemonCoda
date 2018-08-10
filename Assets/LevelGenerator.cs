@@ -126,7 +126,7 @@ public class LevelGenerator : MonoBehaviour {
             }
         }
     }
-    float spawnFurnitureChance = 0.05f;
+    float spawnFurnitureChance = 0.00f;
     public void FillWithLoot(){
         
         for(int y = 0; y < level_grid_size; y++)
@@ -286,7 +286,7 @@ public class LevelGenerator : MonoBehaviour {
         return null;
     }
 
-    float spawnPlantChance = 0.40f;
+    float spawnPlantChance = 0.10f;
      void PlacePlants(){
         for(int y = 0; y < level_grid_size; y++)
         {

@@ -7,8 +7,8 @@ public class RoomPlopper {
     public GameObject room;
     public GameObject street;
     int gridSize = 0;
-    int maxSize = 13;
-    int minSize = 4;
+    int maxSize = 12;
+    int minSize = 6;
     GameObject floor;
     GameObject wall;
 

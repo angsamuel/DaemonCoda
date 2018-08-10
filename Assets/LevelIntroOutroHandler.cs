@@ -46,8 +46,30 @@ public class LevelIntroOutroHandler : MonoBehaviour {
 			
 			yield return null;
 		}
+		fadeInMask.color = new Color(0,0,0, 0); 
 		yield return null;
 	}
+
+	IEnumerator Outro(){
+		fadeInMask.color = new Color(0,0,0,0);
+		float t = 0.0f;
+		while(t<fadeOutTime){
+			t += Time.deltaTime;
+			
+			fadeInMask.color = new Color(0,0,0,(t/fadeOutTime)); 
+			
+			yield return null;
+		}
+		fadeInMask.color = new Color(0,0,0,1); 
+		yield return null;
+		//change scene
+	}
+
+	public void LeaveLevel(){
+		Debug.Log("leaving level");
+		StartCoroutine(Outro());
+	}
+
 	void Start () {
 		
 		StartCoroutine(Intro());	

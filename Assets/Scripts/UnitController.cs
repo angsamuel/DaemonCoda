@@ -38,6 +38,8 @@ public class UnitController : MonoBehaviour {
         unit.team = t;
     }
 
+    
+
     [HideInInspector] public bool canPatrol = false;
     public void AssignToPatrol(PatrolRoute patrolRoute, int patrolIndex){
         pr = patrolRoute;
@@ -46,12 +48,16 @@ public class UnitController : MonoBehaviour {
         NextCheckpoint(patrolIndex);
     }
 
+    public bool HasPatrolRoute(){
+        return(pr != null);
+    }
+
     public void NextCheckpoint(int checkPointIndex){
         prIndex = checkPointIndex;
-        Debug.Log(checkPointIndex + " outta " + pr.checkpoints.Count);
-        
-        patrolPosition = pr.checkpoints[prIndex].transform.position;// + new Vector3(Random.Range(-1.5f, 1.5f), Random.Range(-1.5f, 1.5f));
-    }
+        if(pr != null){
+            patrolPosition = pr.checkpoints[prIndex].transform.position;// + new Vector3(Random.Range(-1.5f, 1.5f), Random.Range(-1.5f, 1.5f));
+        }
+    }   
 
     public void SetPatrolPosition(Vector3 pp){
         patrolPosition = pp;
@@ -61,24 +67,27 @@ public class UnitController : MonoBehaviour {
     void  Patrol(){
             unit.AimWeapon(pr.checkpoints[prIndex].transform.position);
             if(canPatrol && pr != null){
-            //get new patrol position
+                //get new patrol position
 
-            unit.MoveToward(patrolPosition);
-            //Debug.Log(patrolPosition + ", " + pr.checkpoints[prIndex].transform.position);
-            unit.AimWeapon(pr.checkpoints[prIndex].transform.position);
-            //if reached position, let route know
-            if(Vector3.Distance(unit.transform.position, patrolPosition) <= 0.05f){
-                unit.Stop();
-                pr.CheckIn();
-                canPatrol = false;
+                unit.MoveToward(patrolPosition);
+                //Debug.Log(patrolPosition + ", " + pr.checkpoints[prIndex].transform.position);
+                unit.AimWeapon(pr.checkpoints[prIndex].transform.position);
+                //if reached position, let route know
+                if(Vector3.Distance(unit.transform.position, patrolPosition) <= 0.25f){
+                    unit.Stop();
+                    pr.CheckIn();
+                    canPatrol = false;
             } 
         }
     }
 
 
-
 	public void LateUpdate () {
-
+        if(pr != null && target != null){
+            for(int s = 0; s<pr.unitControllers.Count; s++){
+                pr.unitControllers[s].target = target;
+            }
+        }
 
         if(!unit.dead && target != null && unit.weapon != null){
             unit.weapon.Aim(target.transform.position);
@@ -92,13 +101,15 @@ public class UnitController : MonoBehaviour {
         if (!unit.dead && scanEnabeled)
         {
             //CheckForPlayer ();
-            if(pr == null){
+            if(pr == null && !canSeeTarget){
                 StartCoroutine(WanderRoutine());
             }
             if(!husked){
                 LockTarget();
             }
         }
+
+
         if (canSeeTarget)
         {
             if (target != null)
@@ -174,7 +185,7 @@ public class UnitController : MonoBehaviour {
             //check player
             if(scanEnabeled == false)
             {
-                if (Vector3.Distance(playerUnit.transform.position, unit.transform.position) < scanRange * 3f)
+                if (Vector3.Distance(playerUnit.transform.position, unit.transform.position) < scanRange * 4f)
                 {
                     scanEnabeled = true;
                     //Debug.Log("enabling scan");
@@ -221,12 +232,15 @@ public class UnitController : MonoBehaviour {
     {
         while (true)
         {
-            yield return new WaitForSeconds(0.5f);
+            //Debug.Log(breadCrumbs.Count);
+            yield return new WaitForSeconds(0.25f);
             if (breadCrumbs.Count > 0)
             {
                 breadCrumbs.RemoveAt(0);
-            }
-           
+            }else if(target != null && !canSeeTarget){
+                target = null;
+                pr = null;
+            }  
         }
     }
 
@@ -234,8 +248,7 @@ public class UnitController : MonoBehaviour {
 		if (!playerSeen) {
 			if (Vector3.Distance (playerUnit.transform.position, unit.transform.position) < seeingDistance) {
 				playerSeen = true;
-				levelController.AlertNearbyEnemies (transform.position);
-
+				levelController.AlertNearbyEnemies (transform.position, unit.team, levelController.GetPlayerUnit());
 			}
 		}
 	}
@@ -249,7 +262,7 @@ public class UnitController : MonoBehaviour {
 
 
     public bool scanning = false;
-    protected bool canSeeTarget = false;
+    public bool canSeeTarget = false;
 
     bool LinecastTarget(float offsetX, float offsetY){
         List<RaycastHit2D> hits;
@@ -300,104 +313,93 @@ public class UnitController : MonoBehaviour {
 
         }else if(targetEnabled && !scanning)
         {
-            scanning = true;
-            StartCoroutine(ScanRoutine());
+            if(!scanning){
+                StartCoroutine(ScanRoutine());
+            }
         }
     }
     
     float scanRange = 6;
-    float scanTimer = .002f;
     IEnumerator ScanRoutine()
     {
+        if(!scanning){
+            scanning = true;
 
-
-        float nudge = Random.Range(0.0f, 37.0f);
-        
-        for (int i = 0; i < 37; i++)
-        {
-
-            //yield return new WaitForSeconds(.04f);
-            float scanX = unit.transform.position.x + scanRange * Mathf.Cos(Mathf.Deg2Rad * (i+nudge) * 10);
-            float scanY = unit.transform.position.y + scanRange * Mathf.Sin(Mathf.Deg2Rad * (i+nudge) * 10);
-            Vector2 scanPos = new Vector2(scanX, scanY);
-
-           
-             
-            //Debug.DrawLine(unit.transform.position, scanPos, Color.green);
-            //find target
-
-
-            List<RaycastHit2D> hits;
-            List<Unit> possibleTargets = new List<Unit>();
-
-            hits = new List<RaycastHit2D>(Physics2D.LinecastAll(unit.transform.position, scanPos));
-
-            //remove hits that target couldn't hide behind;
-            for (int h = 0; h < hits.Count; h++)
+            float nudge = Random.Range(0.0f, 45f);
+            
+            for (int i = 0; i < 8; i++)
             {
-                //remove not valid blockers
-                if (hits[h].transform.tag == "weapon" || hits[h].transform.tag == "damage source" || hits[h].transform.tag == "floor" || hits[h].transform.tag == "Untagged" || hits[h].transform.tag == "street")
-                {
-                    hits.RemoveAt(h);
-                    h = h - 1;
-                }
-                else if ( (hits[h].transform.tag == "unit" || hits[h].transform.tag == "player unit") && hits[h].transform.GetComponent<Unit>().team == unit.team)
-                {
-                    hits.RemoveAt(h);
-                    h = h - 1;
-                }
-            }
 
+                //yield return new WaitForSeconds(.04f);
+                float scanX = unit.transform.position.x + scanRange * Mathf.Cos(Mathf.Deg2Rad * (i+nudge) * 45);
+                float scanY = unit.transform.position.y + scanRange * Mathf.Sin(Mathf.Deg2Rad * (i+nudge) * 45);
+                Vector2 scanPos = new Vector2(scanX, scanY);
 
-            if (hits.Count > 0 && (hits[0].transform.tag == "unit" || hits[0].transform.tag == "player unit"))
-            {
-                //Debug.Log("spotted " + hits.Count);
+            
                 
-                if(hits[0].transform.GetComponent<Unit>().team != unit.team && !hits[0].transform.GetComponent<Unit>().dead)
+                //Debug.DrawLine(unit.transform.position, scanPos, Color.green);
+                //find target
+
+
+                List<RaycastHit2D> hits;
+                List<Unit> possibleTargets = new List<Unit>();
+
+                hits = new List<RaycastHit2D>(Physics2D.LinecastAll(unit.transform.position, scanPos));
+
+                //remove hits that target couldn't hide behind;
+                for (int h = 0; h < hits.Count; h++)
                 {
-                    //add hostile target to units
-                    possibleTargets.Add(hits[0].transform.GetComponent<Unit>());
-                    Debug.DrawLine(unit.transform.position, scanPos, Color.green);
+                    //remove not valid blockers
+                    if (hits[h].transform.tag == "weapon" || hits[h].transform.tag == "damage source" || hits[h].transform.tag == "floor" || hits[h].transform.tag == "Untagged" || hits[h].transform.tag == "street")
+                    {
+                        hits.RemoveAt(h);
+                        h = h - 1;
+                    }
+                    else if ( (hits[h].transform.tag == "unit" || hits[h].transform.tag == "player unit") && hits[h].transform.GetComponent<Unit>().team == unit.team)
+                    {
+                        hits.RemoveAt(h);
+                        h = h - 1;
+                    }
                 }
-            }
-            else
-            {
-                Debug.DrawLine(unit.transform.position, scanPos, Color.red);
-            }
 
 
-            //find closest reachable target
-            int minIndex = 0;
-            float minDist = scanRange;
-            for (int j = 0; j < possibleTargets.Count; j++)
-            {
-                float dist = Vector3.Distance(unit.transform.position, possibleTargets[j].transform.position);
-                if (dist < minDist)
+                if (hits.Count > 0 && (hits[0].transform.tag == "unit" || hits[0].transform.tag == "player unit"))
                 {
-                    minIndex = j;
-                    minDist = dist;
+                    //Debug.Log("spotted " + hits.Count);
+                    
+                    if(hits[0].transform.GetComponent<Unit>().team != unit.team && !hits[0].transform.GetComponent<Unit>().dead)
+                    {
+                        //add hostile target to units
+                        possibleTargets.Add(hits[0].transform.GetComponent<Unit>());
+                        Debug.DrawLine(unit.transform.position, scanPos, Color.green);
+                    }
+                }
+                else
+                {
+                    Debug.DrawLine(unit.transform.position, scanPos, Color.red);
+                }
 
-                    //assign target
-                    target = possibleTargets[j];
-                    //alert squadmates 
+
+                //find closest reachable target
+                int minIndex = 0;
+                float minDist = scanRange;
+
+                if(possibleTargets.Count > 0){
+                    target = possibleTargets[0];
+                    canSeeTarget = true;
                     if(pr != null){
                         for(int s = 0; s<pr.unitControllers.Count; s++){
                             pr.unitControllers[s].target = target;
+                            pr.unitControllers[s].canSeeTarget = true;
                         }
                     }
+
                 }
+                
             }
-
-            if (i == 36 && target == null && scanEnabeled)
-            {
-                i = 0;
-                nudge = Random.Range(0.0f, 37.0f);
-                yield return new WaitForSeconds(.2f);
-            }
-            
+            yield return new WaitForSeconds(Random.Range(.15f, .35f));
+            scanning = false;
         }
-
-        scanning = false;
     }
     bool wandering = false;
     Vector3 wanderPos;
