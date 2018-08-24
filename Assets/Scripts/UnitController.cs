@@ -325,7 +325,7 @@ public class UnitController : MonoBehaviour {
         if(!scanning){
             scanning = true;
 
-            float nudge = Random.Range(0.0f, 45f);
+            float nudge = Random.Range(-180.0f, 180.0f);
             
             for (int i = 0; i < 8; i++)
             {

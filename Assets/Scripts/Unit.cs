@@ -12,7 +12,9 @@ public class Unit : MonoBehaviour {
 	NPC npc;
     public bool dead = false;
     bool inWaterLevel = false;
-    public float speed, stamina, staminaMax, staminaRecharge, dashCost, staminaDelayTime; 
+    public float speed, stamina, staminaMax, staminaRecharge, dashCost; 
+	float staminaDelayTime = 1.5f;
+	float staminaDepletionDelayTime = 3.0f;
     float waveDelay;
 	public float dashMultiplier = 1.5f;
 	public int health;
@@ -51,12 +53,13 @@ public class Unit : MonoBehaviour {
 		}
 
 	}
+	public bool WeaponRested(){
+		return (weapon == null || weapon.rested == true);
+	}
 
-    void UseStamina(float cost)
+    public void UseStamina(float cost)
     {
-        //Debug.Log("Use Stamina");
         stamina -= cost;
-
         if(stamina < 0)
         {
             stamina = 0;
@@ -73,7 +76,11 @@ public class Unit : MonoBehaviour {
     IEnumerator DelayStamina()
     {
         canRecharge = false;
-        yield return new WaitForSeconds(staminaDelayTime);
+		if(stamina < 1){
+			yield return new WaitForSeconds(staminaDepletionDelayTime);
+		}else{
+        	yield return new WaitForSeconds(staminaDelayTime);
+		}
         canRecharge = true;
     }
 
@@ -141,7 +148,12 @@ public class Unit : MonoBehaviour {
     }
 
 	bool canMove = true;
-	public IEnumerator PauseMovement(float time){
+	public void PauseMovement(float time){
+		if(canMove){
+			StartCoroutine(PauseMovementRoutine(time));
+		}
+	}
+	IEnumerator PauseMovementRoutine(float time){
 		float t = 0;
 		canMove = false;
 		Stop();
@@ -311,8 +323,22 @@ public class Unit : MonoBehaviour {
 		inWaterLevel = false;
 		Stop ();
 	}
+	bool canAttack = true;
+	Coroutine par;
+	public void PauseAttack(float s){
+		if(canAttack == true){
+			par = StartCoroutine(PauseAttackRoutine(s));
+		}
+	}
+	IEnumerator PauseAttackRoutine(float s){
+		canAttack = false;
+		yield return new WaitForSeconds(s);
+		canAttack = true;
+	}
+
 	public void AttackWithWeapon(){
-		if (!dead && weapon != null && weapon.IsRested () && stamina > 0) {
+		Debug.Log(canAttack);
+		if (!dead && weapon != null && weapon.IsRested () && stamina > 0 && canAttack) {
 			weapon.StartSwing ();
             UseStamina(weapon.staminaCost);
 		}
@@ -416,16 +442,15 @@ public class Unit : MonoBehaviour {
 	}
 
 	public void AimShield(Vector3 position){
-		if (shield != null && !dead) {
+		if (shield != null && !dead && stamina > 0) {		
 			shield.Aim (position);
-			Color c = shield.transform.GetChild(0).GetComponent<SpriteRenderer>().color;
-			shield.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(c.r, c.g, c.b, 1);
+		}else{
+			LowerShield();
 		}
 	}
 
 	public void LowerShield(){
-		Color c = shield.transform.GetChild(0).GetComponent<SpriteRenderer>().color;
-			shield.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(c.r, c.g, c.b, 0);
+		shield.Lower();
 	}
 
 	public void DropWeapon(){

@@ -51,6 +51,7 @@ public class PlayerInputController : MonoBehaviour {
 	} 
 
 	// Update is called once per frame
+	bool blocking = false;
 	void Update () {
 		//Dash
 		if (!disabled && !playerUnit.healing) {
@@ -62,7 +63,6 @@ public class PlayerInputController : MonoBehaviour {
 			} else if(Input.GetAxisRaw ("Pickup") == 0){
 				canPickup = true;
 			}
-
 
 			if (Input.GetAxisRaw ("Dash") != 0 && !dashLock) {
 				playerUnit.Dash ();
@@ -78,7 +78,7 @@ public class PlayerInputController : MonoBehaviour {
 			mainCamera.transform.position = new Vector3 (playerUnit.transform.position.x, playerUnit.transform.position.y, mainCamera.transform.position.z);
 			
 			//Weapon aiming
-			if (Input.GetAxisRaw ("Attack") != 0 && canAttack) {
+			if (Input.GetAxisRaw ("Attack") != 0 && canAttack && !blocking) {
 				Attack ();
 				canAttack = false;
 			} else if (Input.GetAxisRaw ("Attack") == 0) {
@@ -88,17 +88,17 @@ public class PlayerInputController : MonoBehaviour {
 			//action
 			if (Input.GetAxisRaw ("Action") != 0) {
 				TalkToNPC ();
-				Debug.Log ("wow");
 			}
 
 			//playerUnit.weapon.Aim (Camera.main.ScreenToWorldPoint (Input.mousePosition));
 			
-			
-			if(Input.GetAxisRaw("RaiseShield") !=  0){
+			if(Input.GetAxisRaw("RaiseShield") !=  0 && playerUnit.WeaponRested()){
 				playerUnit.AimShield (Camera.main.ScreenToWorldPoint (Input.mousePosition));
+				blocking = true;
 			}else{
 				playerUnit.AimWeapon (Camera.main.ScreenToWorldPoint (Input.mousePosition));
 				playerUnit.LowerShield ();
+				blocking = false;
 			}
 
 			//healing

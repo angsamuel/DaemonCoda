@@ -5,7 +5,7 @@ using UnityEngine;
 public class Weapon : MonoBehaviour {
 	public BoxCollider2D bc;
 	public float speed, staminaCost;
-	protected bool rested;
+	[HideInInspector] public bool rested;
 	protected float swingTracker = 0;
 	protected int direction = 1;
 	protected float lethalbuffer;
@@ -38,9 +38,21 @@ public class Weapon : MonoBehaviour {
 	virtual protected void Update () {
 		AttackCheck ();
 	}
+	bool disabled = false;
+	public void Disable(float seconds){
+		if(disabled = false){
+			StartCoroutine(DisableRoutine(seconds));
+		}
+	}
+
+	IEnumerator DisableRoutine(float seconds){
+		disabled = true;
+		yield return new WaitForSeconds(seconds);
+		disabled = false;
+	}
 
 	virtual protected void AttackCheck(){
-		if (!rested) {
+		if (!rested && !disabled) {
 			if (swingTracker > 90) {
 				if(bc!=null){bc.enabled = true;}
 				if (GetComponent<BoxCollider2D> () != null) {
@@ -69,6 +81,12 @@ public class Weapon : MonoBehaviour {
 		}
 	}
 
+	public void Bounce(){
+		swingTracker = 0;
+		rested = true;
+		ChangeDirections();
+	}
+
 	virtual public void ChangeDirections(){
 		direction = -direction;
 
@@ -81,6 +99,8 @@ public class Weapon : MonoBehaviour {
 			transform.rotation = Quaternion.Slerp (transform.rotation, nRotation, Time.deltaTime * aimSpeed);
 		}
 	}
+
+
 
 	virtual public void Strike(){
 

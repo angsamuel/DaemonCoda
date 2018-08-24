@@ -30,7 +30,8 @@ public class Grunt : UnitController {
             if (distance < strikingDistance && distance > backupDistance)
             {
                 unit.AttackWithWeapon();
-                StartCoroutine(unit.PauseMovement(1f));
+                unit.PauseMovement(1.5f);
+                unit.PauseAttack(1.5f);
                 unit.Stop();
             }
             else if (Vector3.Distance(unit.transform.position, target.transform.position) <= backupDistance)
