@@ -31,15 +31,12 @@ public class Shield : MonoBehaviour {
 	
 	virtual public void Aim(Vector3 target){
 		myTarget = target;
-		if (IsRested()) {
 			Quaternion nRotation = Quaternion.LookRotation (Vector3.forward, target - transform.position);
 			transform.rotation = Quaternion.Slerp (transform.rotation, nRotation, Time.deltaTime * aimSpeed);
 
 			GetComponent<BoxCollider2D>().enabled = true;
 			Color c = plate.transform.GetComponent<SpriteRenderer>().color;
 			plate.GetComponent<SpriteRenderer>().color = new Color(c.r, c.g, c.b, 1);
-
-		}
 	}
 
 	void OnTriggerEnter2D(Collider2D other){

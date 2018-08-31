@@ -248,9 +248,7 @@ public class Unit : MonoBehaviour {
 			if (other.GetComponent<Weapon>().equipped == false) {
 				pickup = other.GetComponent<Weapon> ();
 			}
-		} //phone message, email
-		//voice mail in email, downloaded to listen
-
+		} 
 	}
 
 
@@ -313,7 +311,6 @@ public class Unit : MonoBehaviour {
 		body.GetComponent<SpriteRenderer>().color = Color.red;
 		dead = true;
 		BoxCollider2D[] myColliders = gameObject.GetComponents<BoxCollider2D>();
-		//foreach(BoxCollider2D bc in myColliders) bc.enabled = false;
 
         GetComponent<Rigidbody2D>().freezeRotation = true;
         GetComponent<Rigidbody2D>().velocity *= 0;
@@ -407,7 +404,7 @@ public class Unit : MonoBehaviour {
     {
         if (canRecharge)
         {
-            if (weapon != null && weapon.IsRested())
+            if (weapon != null && weapon.IsRested() && (shield == null || shield.IsRested()))
             {
                 stamina += staminaRecharge * Time.deltaTime;
             }

@@ -63,7 +63,6 @@ public class PlayerInputController : MonoBehaviour {
 			} else if(Input.GetAxisRaw ("Pickup") == 0){
 				canPickup = true;
 			}
-
 			if (Input.GetAxisRaw ("Dash") != 0 && !dashLock) {
 				playerUnit.Dash ();
 				dashLock = true;

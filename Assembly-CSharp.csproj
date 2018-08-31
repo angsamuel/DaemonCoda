@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Chest.cs" />
+     <Compile Include="Assets\CrestGenerator.cs" />
      <Compile Include="Assets\CustomizationPanelHandler.cs" />
      <Compile Include="Assets\FOW.cs" />
      <Compile Include="Assets\FOWMesh.cs" />
@@ -121,6 +122,7 @@
      <Compile Include="Assets\Scripts\ScreenFader.cs" />
      <Compile Include="Assets\Scripts\ScrollScript.cs" />
      <Compile Include="Assets\Scripts\Scythe.cs" />
+     <Compile Include="Assets\Scripts\Settlement.cs" />
      <Compile Include="Assets\Scripts\Spear.cs" />
      <Compile Include="Assets\Scripts\StaminaDisplay.cs" />
      <Compile Include="Assets\Scripts\StreetCrawler.cs" />
@@ -136,6 +138,7 @@
      <Compile Include="Assets\Scripts\WoodCart.cs" />
      <Compile Include="Assets\Scripts\WoodCuttingStation.cs" />
      <Compile Include="Assets\SelectProfileHandler.cs" />
+     <Compile Include="Assets\SettlementGenerator.cs" />
      <Compile Include="Assets\Shade.cs" />
      <Compile Include="Assets\ShadowMesher.cs" />
      <Compile Include="Assets\Shield.cs" />

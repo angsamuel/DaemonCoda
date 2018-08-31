@@ -9,11 +9,11 @@ public class ShaderEffect_CRT : MonoBehaviour {
 //	public Color scanlineColor = Color.black;
 //	public bool tVBulge = true;
 	private Material material_Displacement;
-	public Material material_Scanlines;
+	private Material material_Scanlines;
 	
 	void Awake ()
 	{
-		//material_Scanlines = new Material( Shader.Find("Hidden/Scanlines") );
+		material_Scanlines = new Material( Shader.Find("Hidden/Scanlines") );
 	}
 
 	void OnRenderImage (RenderTexture source, RenderTexture destination)

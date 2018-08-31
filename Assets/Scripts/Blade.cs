@@ -20,7 +20,6 @@ public class Blade : MonoBehaviour {
 
 	public void Bounce(){
 		weapon.Bounce();
-		weapon.owner.UseStamina(bounceCost);
 		weapon.Disable(1.5f);
 		StartCoroutine(NoDamage());
 	}
