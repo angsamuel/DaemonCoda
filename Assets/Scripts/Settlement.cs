@@ -1,16 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿
 public class Settlement {
 	public string name;
 	public int size;
 	public string modifier;
-	public List<int> crestIndexes;
-	public List<Vector3> crestRotations;
-	public List<Color> crestColors;
+	public string weather;
+	public int crestSeed;
+	public int distance;
+
 	public Settlement(){
-
-
+		name = "";
+		size = 0;
+		modifier = "";
+		weather = "";
+		crestSeed = 0;
+		distance = 0;
 	}
 }

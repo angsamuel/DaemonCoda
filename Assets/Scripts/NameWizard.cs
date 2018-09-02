@@ -97,7 +97,7 @@ public class NameWizard : MonoBehaviour
 
 	public string GenerateVillageName()
 	{
-		int f = Random.Range(0, 10);
+		int f = Random.Range(0, 9);
 		string name = "";
 		switch (f)
 		{
@@ -108,7 +108,7 @@ public class NameWizard : MonoBehaviour
 			name = RandomName() + RandomVillageEnding();
 			break;
 		case 2:
-			name = RandomName() + "\'s " + RandomAdjective() + " " + RandomVillageNoun();
+			name = RandomName() + " " + RandomName();
 			break;
 		case 3:
 			name = RandomName() + "\'s " + RandomVillageNoun();
@@ -126,10 +126,7 @@ public class NameWizard : MonoBehaviour
 			name = RandomVillageNoun() + " of " + RandomName();
 			break;
 		case 8:
-			name = RandomAdjective() + " and " + RandomAdjective();
-			break;
-		case 9:
-			name = RandomName() + " " + RandomName();
+			name = RandomAdjective() + " " + RandomName();
 			break;
 		default:
 			name = "";
