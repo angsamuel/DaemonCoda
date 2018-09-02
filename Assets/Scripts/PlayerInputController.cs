@@ -17,7 +17,7 @@ public class PlayerInputController : MonoBehaviour {
 	public StaminaDisplay staminaDisplay;
 	int hpIndex;
 
-    
+    public bool enabeled;
 
 
 
@@ -53,6 +53,7 @@ public class PlayerInputController : MonoBehaviour {
 	// Update is called once per frame
 	bool blocking = false;
 	void Update () {
+		if(enabeled){
 		//Dash
 		if (!disabled && !playerUnit.healing) {
 			//weapon pickup
@@ -117,6 +118,7 @@ public class PlayerInputController : MonoBehaviour {
 				SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex);
 			}
 		}
+	}
 		UpdateUI ();
 	}
 		

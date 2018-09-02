@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Grunt : UnitController {
     public float backupDistance;
+
+    bool firstAgro = true;
     // Use this for initialization
     void Start() {
         base.Start();
@@ -25,6 +27,14 @@ public class Grunt : UnitController {
     {
         if (!unit.dead && unit.weapon != null)
         {
+
+            if(firstAgro){
+                unit.PauseMovement(1f);
+                unit.PauseAttack(1f);
+                firstAgro = false;
+            }
+
+
             unit.weapon.Aim(target.transform.position);
             float distance = Vector3.Distance(unit.transform.position, target.transform.position);
             if (distance < strikingDistance && distance > backupDistance)

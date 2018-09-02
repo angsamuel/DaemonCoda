@@ -113,10 +113,10 @@ public class Unit : MonoBehaviour {
 	public void Equip(){
 		DequipWeapon ();
 		if (pickup != null) {
-			Debug.Log ("have pickup");
+			//Debug.Log ("have pickup");
 			EquipWeapon (pickup);
 		} else {
-			Debug.Log ("no pickup");
+			//Debug.Log ("no pickup");
 		}
 	}
 
@@ -334,7 +334,7 @@ public class Unit : MonoBehaviour {
 	}
 
 	public void AttackWithWeapon(){
-		Debug.Log(canAttack);
+		//Debug.Log(canAttack);
 		if (!dead && weapon != null && weapon.IsRested () && stamina > 0 && canAttack) {
 			weapon.StartSwing ();
             UseStamina(weapon.staminaCost);

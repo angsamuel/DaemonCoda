@@ -30,8 +30,8 @@ public class LevelGenerator : MonoBehaviour {
     public Color floorColor;
     public Color wallColor;
     public Color plantColor;
+    public Color doorColor;
 
-    public GameObject husk;
 
     public int level_grid_size = 200;
     public List<StreetCrawler> streetCrawlers;
@@ -98,34 +98,7 @@ public class LevelGenerator : MonoBehaviour {
        }
    }
 
-    public void Populate()
-    {
-        for(int y = 0; y < level_grid_size; y++)
-        {
-            for(int x = 0; x < level_grid_size; x++)
-            {
-                if(levelGrid[x,y] != null)
-                {
-                    if(levelGrid[x,y].tag == "street")
-                    {
-                        //spawn husk
-                            if(Random.Range(0.0f, 1.0f) < spawnHuskChance)
-                            {
-                                Instantiate(husk, levelGrid[x, y].transform.position, Quaternion.identity);
-                            }
-                        
-                    }else if(levelGrid[x,y].tag == "floor"){
-                        if(levelGrid[x-1,y].tag != "wall" && levelGrid[x+1,y].tag != "wall" && levelGrid[x,y-1].tag != "wall" && levelGrid[x,y+1].tag != "wall"){
-                            if(Random.Range(0.0f, 1.0f) < spawnHuskChance)
-                            {
-                                Instantiate(husk, levelGrid[x, y].transform.position, Quaternion.identity);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+ 
     float spawnFurnitureChance = 0.00f;
     public void FillWithLoot(){
         
@@ -335,6 +308,7 @@ public class LevelGenerator : MonoBehaviour {
         if(levelGrid[x,y] != null){
             Destroy(levelGrid[x,y]);
         }
+        newDoor.GetComponent<SpriteRenderer>().color = doorColor;
         levelGrid[x,y] = newDoor;
         newDoor.GetComponent<SpriteRenderer>().transform.localScale = new Vector2(blockScale, blockScale);
         newDoor.transform.Translate(new Vector2(x, y) * blockOffset);

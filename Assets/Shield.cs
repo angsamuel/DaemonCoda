@@ -6,6 +6,7 @@ public class Shield : MonoBehaviour {
 	float staminaCost = 30;
 	protected Vector3 myTarget;
 	public GameObject plate;
+	public GameObject sparks;
 	public Unit owner;
 	bool rested = true;
 	float aimSpeed = 5f;
@@ -40,10 +41,10 @@ public class Shield : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D other){
-		Debug.Log("COLLISION");
 		if(other.tag == "damage source" || other.tag == "disabled damage source"){
 			Debug.Log("USING STAMINA");
 			owner.UseStamina(staminaCost);
+			Instantiate(sparks, plate.transform);
 		}
 	}
 

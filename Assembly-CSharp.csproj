@@ -143,6 +143,7 @@
      <Compile Include="Assets\Shade.cs" />
      <Compile Include="Assets\ShadowMesher.cs" />
      <Compile Include="Assets\Shield.cs" />
+     <Compile Include="Assets\Sparks.cs" />
      <Compile Include="Assets\TownGenerator.cs" />
      <None Include="Assets\Resources\Words\village_nouns.txt" />
      <None Include="Assets\Realistic Glitches Lite\Assets\Shaders\Distortion2D__FullOnly.shader" />

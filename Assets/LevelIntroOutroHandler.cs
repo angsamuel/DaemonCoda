@@ -7,6 +7,7 @@ public class LevelIntroOutroHandler : MonoBehaviour {
 	public Image fadeInMask;
 	public Text villageNameText;
 	public LevelGenerator lg;
+	public PlayerInputController pic;
 
 	public float textFadeInTime = 2.0f;
 	public float pauseTime = 1.0f;
@@ -15,6 +16,7 @@ public class LevelIntroOutroHandler : MonoBehaviour {
 	// Use this for initialization
 
 	IEnumerator Intro(){
+		pic.enabeled = false;
 		villageNameText.color = new Color(1,1,1,0);
 		fadeInMask.color = new Color(0,0,0,1);
 		yield return new WaitForSeconds(0.5f);
@@ -26,6 +28,8 @@ public class LevelIntroOutroHandler : MonoBehaviour {
 			villageNameText.color = new Color(1,1,1,t/textFadeInTime);
 			yield return null;
 		}
+		pic.transform.Translate(new Vector2(0,-1000));
+
 		t = 0.0f;
 		while(t<pauseTime){
 			t+= Time.deltaTime;
@@ -37,7 +41,8 @@ public class LevelIntroOutroHandler : MonoBehaviour {
 			t+= Time.deltaTime;
 			yield return null;
 		}
-
+		pic.enabeled = true;
+		pic.transform.Translate(new Vector2(0,1000));
 		t = 0.0f;
 		while(t<fadeOutTime){
 			t += Time.deltaTime;

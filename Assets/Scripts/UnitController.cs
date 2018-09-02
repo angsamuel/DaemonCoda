@@ -10,7 +10,8 @@ public class UnitController : MonoBehaviour {
 	public float strikingDistance;
 	public int seeingDistance;
 	protected bool playerSeen = false;
-
+    float wanderSpeed = 3.5f;
+    float attackSpeed = 0;
     protected List<Vector2> breadCrumbs;
 
 
@@ -30,6 +31,8 @@ public class UnitController : MonoBehaviour {
         StartCoroutine(BreadCrumb());
         StartCoroutine(BreadCrumbCleanup());
         StartCoroutine(ProximityCheck());
+        attackSpeed = unit.speed;
+        unit.speed = wanderSpeed;
 	}
 	
 	// Update is called once per frame
@@ -114,6 +117,7 @@ public class UnitController : MonoBehaviour {
         {
             if (target != null)
             {
+                unit.speed = attackSpeed;
                 CustomActions();
             }
         }
@@ -304,7 +308,6 @@ public class UnitController : MonoBehaviour {
 
     void LockTarget(){
         
-        canSeeTarget = false;
         if(targetEnabled && target != null && !scanning && !target.dead)
         {
 
@@ -325,7 +328,7 @@ public class UnitController : MonoBehaviour {
         if(!scanning){
             scanning = true;
 
-            float nudge = Random.Range(-180.0f, 180.0f);
+            float nudge = Random.Range(0f, 360.0f);
             
             for (int i = 0; i < 8; i++)
             {

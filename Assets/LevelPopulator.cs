@@ -54,7 +54,7 @@ public class LevelPopulator : MonoBehaviour {
 				//spawn squad members, give each their index, and patrolRoute
 				for(int j = 0; j<squadMembers; j++){
 					UnitController newSquaddie = Instantiate(patrolUnit, lg.patrolRoutes[i].checkpoints[startCheckPoint].transform.position, Quaternion.identity).GetComponent<UnitController>();
-					newSquaddie.transform.Translate(new Vector3(2,2));
+					newSquaddie.transform.Translate(new Vector3(0,2));
 					newSquaddie.AssignToPatrol(lg.patrolRoutes[i], startCheckPoint);
 				}
 
