@@ -16,7 +16,7 @@ public class Duelist : UnitController {
 	IEnumerator SelectSpecialAction(){
         inSpecialAction = true;
 	    yield return null;
-		Debug.Log("action");
+		//Debug.Log("action");
 		if (!unit.dead && target != null) {
             Debug.Log("not dead");
 			

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class LevelIntroOutroHandler : MonoBehaviour {
 	public Image fadeInMask;
@@ -66,7 +67,12 @@ public class LevelIntroOutroHandler : MonoBehaviour {
 			yield return null;
 		}
 		fadeInMask.color = new Color(0,0,0,1); 
-		yield return null;
+		pic.playerUnit.transform.position = new Vector3(10000,10000,10000);
+		yield return new WaitForSeconds(.5f);
+		//generate new menues in selection
+
+		PlayerPrefs.SetString(PlayerPrefs.GetString("profile") + "settlements saved", ""); 
+		SceneManager.LoadScene("LevelSelect");
 		//change scene
 	}
 

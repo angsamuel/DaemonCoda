@@ -42,7 +42,7 @@ public class Shield : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other){
 		if(other.tag == "damage source" || other.tag == "disabled damage source"){
-			Debug.Log("USING STAMINA");
+			//Debug.Log("USING STAMINA");
 			owner.UseStamina(staminaCost);
 			Instantiate(sparks, plate.transform);
 		}

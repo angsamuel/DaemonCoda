@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
 
 public class LevelSelectManager : MonoBehaviour {
 	public SettlementGenerator sg;
@@ -28,6 +30,9 @@ public class LevelSelectManager : MonoBehaviour {
 	public GameObject framePanel;
 	public GameObject coverPanel;
 
+	public GameObject travelButton;
+	public Text notEnoughFoodText;
+	public GameObject entirePanel;
 
 	int mealPaks;
 
@@ -50,6 +55,24 @@ public class LevelSelectManager : MonoBehaviour {
 
 	int travelSelection = -1;
 
+	void LoadSettlementsFromPlayerPrefs(){
+		string profile = PlayerPrefs.GetString("profile");
+
+		for(int i = 0; i<3; i++){
+			Settlement newSett = new Settlement();
+			newSett.name = PlayerPrefs.GetString(profile + i.ToString() + "name");
+			newSett.size = PlayerPrefs.GetInt(profile + i.ToString() + "size");
+			newSett.modifier = PlayerPrefs.GetString(profile + i.ToString() + "modifier");
+			newSett.weather = PlayerPrefs.GetString(profile + i.ToString() + "weather");
+			newSett.crestSeed = PlayerPrefs.GetInt(profile + i.ToString() + "crestSeed");
+			newSett.distance = PlayerPrefs.GetInt(profile + i.ToString() + "distance");
+
+
+			settlements.Add(newSett);
+		}
+	}
+
+
 	void LoadSettlements(){
 		framePosition = framePanel.transform.position;
 		travelPosition = travelPanel.transform.position;
@@ -58,15 +81,16 @@ public class LevelSelectManager : MonoBehaviour {
 		travelPanel.transform.position = new Vector3(1000,1000,1000);
 
 		if(PlayerPrefs.GetString(PlayerPrefs.GetString("profile") + "settlements saved")!=""){
-			//load villages in player prefs
+			//load settlments from player prefs
+			LoadSettlementsFromPlayerPrefs();
 		}else{
-			//generate 3 new villages
+			//generate 3 new settlements
 			GenerateNewSelections();
-			for(int i = 0; i<3; i++){
-				buttonOptions[i].text = settlements[i].name;
-			}
-			
-			//FillUI(0);
+			PlayerPrefs.SetString(PlayerPrefs.GetString("profile") + "settlements saved", "saved from level select"); 
+		}
+
+		for(int i = 0; i<3; i++){
+			buttonOptions[i].text = settlements[i].name;
 		}
 	}
 
@@ -80,18 +104,51 @@ public class LevelSelectManager : MonoBehaviour {
 		travelPanel.transform.position = new Vector3(1000,1000,1000);
 	}
 
+	public void FinalizeTravel(){
+		mealPaks -= s.distance;
+		
+		//save mealpaks
+		PlayerPrefs.SetInt(PlayerPrefs.GetString("profile") + "mealPaks", mealPaks);
+		entirePanel.transform.position = new Vector3(1000,1000,1000);
+		StartCoroutine(LoadNextLevel());
+		//spawn overlay in
+
+
+	}
+
+	IEnumerator LoadNextLevel(){
+		//add playerprefs
+
+		//s is our settlement
+		string profile = PlayerPrefs.GetString("profile");
+		PlayerPrefs.SetString(profile + "settlement name", s.name);
+		PlayerPrefs.SetInt(profile + "settlement size", s.size);
+		PlayerPrefs.SetString(profile + "settlement modifier", s.modifier);
+		PlayerPrefs.SetString(profile + "settlement weather", s.weather);
+		PlayerPrefs.SetInt(profile + "settlement crest seed", s.crestSeed);
+
+		PlayerPrefs.SetInt(profile + "mealPaks", mealPaks);
+
+		yield return new WaitForSeconds(.5f);
+
+		SceneManager.LoadScene("Testing");
+
+	}
+
+	Settlement s;
 
 	public void FillUI(int slot){
 		travelSelection = slot;
 		coverPanel.transform.position = new Vector3(1000,1000,1000);
 		framePanel.transform.position = framePosition;
 
-		Settlement s = settlements[slot];
+		s = settlements[slot];
 		nameText.text = s.name;
 		modifierText.text = s.modifier;
 		weatherText.text = s.weather;
 		distanceText.text = s.distance.ToString();
 		mealPakText.text = mealPaks.ToString();
+
 		if(s.distance > mealPaks){
 			signText.text = ">";
 			signText.color = error;
@@ -115,6 +172,12 @@ public class LevelSelectManager : MonoBehaviour {
 			mealPakLabel.color = success;
 		}
 
+		if(s.distance > mealPaks){
+			travelButton.active = false;
+		}else{
+			travelButton.active = true;
+		}
+
 		string size = "";
 		if(s.size == 0){
 			size = "Colony";
@@ -134,22 +197,23 @@ public class LevelSelectManager : MonoBehaviour {
 
 	void GenerateNewSelections(){
 		for(int i = 0; i<3; i++){
-			Settlement s = sg.GenerateSettlement();
-			settlements.Add(s);
-			SaveSettlement(s, i);
-			s.distance = Random.Range(i+1, (i+1)*3);
+			Settlement newSett = sg.GenerateSettlement();
+			settlements.Add(newSett);
+			SaveSettlement(newSett, i);
+			newSett.distance = Random.Range(i+1, (i+1)*3);
 		}
 	}
 
-	void SaveSettlement(Settlement s, int i){
+	void SaveSettlement(Settlement sett, int i){
 		string profile = PlayerPrefs.GetString("profile");
 		string slot = i.ToString();
 		string front = profile+slot;
-		PlayerPrefs.SetString(front+"name", s.name);
-		PlayerPrefs.SetInt(front+"size", s.size);
-		PlayerPrefs.SetString(front+"modifier", s.modifier);
-		PlayerPrefs.SetString(front+"weather", s.weather);
-		PlayerPrefs.SetInt(front+"crestSeed", s.crestSeed);
+		PlayerPrefs.SetString(front+"name", sett.name);
+		PlayerPrefs.SetInt(front+"distance",sett.distance);
+		PlayerPrefs.SetInt(front+"size", sett.size);
+		PlayerPrefs.SetString(front+"modifier", sett.modifier);
+		PlayerPrefs.SetString(front+"weather", sett.weather);
+		PlayerPrefs.SetInt(front+"crestSeed", sett.crestSeed);
 	}
 
 }

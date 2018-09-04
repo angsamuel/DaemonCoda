@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour {
+    public bool loadFromPlayerPrefs = false;
     public string villageName;
     public NameWizard nameWizard;
 
@@ -47,14 +48,35 @@ public class LevelGenerator : MonoBehaviour {
     public LevelPopulator lp;
 
     // Use this for initialization
+
 	void Start () {
-        villageName = nameWizard.GenerateVillageName();
+        //load in info
+        LoadPlayerPrefs();
+
+
+        if(villageName == null || villageName == ""){
+            villageName = nameWizard.GenerateVillageName();
+        }
         streetCrawlers = new List<StreetCrawler>();
         roomies = new List<Roomie>();
         levelGrid = new GameObject[level_grid_size, level_grid_size];
         Generate();
         lp.Populate();
         ScaleLeaveLevelBarrier();
+    }
+
+
+    void LoadPlayerPrefs(){
+        if(loadFromPlayerPrefs){
+            string profile = PlayerPrefs.GetString("profile");
+            level_grid_size = 50 + (PlayerPrefs.GetInt(profile + "settlement size") * 25);
+            villageName = PlayerPrefs.GetString(profile + "settlement name");
+
+
+
+
+
+        }
     }
 
     void ScaleLeaveLevelBarrier(){
@@ -99,9 +121,8 @@ public class LevelGenerator : MonoBehaviour {
    }
 
  
-    float spawnFurnitureChance = 0.00f;
+    float spawnFurnitureChance = 0.05f;
     public void FillWithLoot(){
-        
         for(int y = 0; y < level_grid_size; y++)
         {
             for(int x = 0; x < level_grid_size; x++)
@@ -121,8 +142,6 @@ public class LevelGenerator : MonoBehaviour {
                     if(roll < spawnFurnitureChance){
                         Instantiate(furniture[Random.Range(0,furniture.Count)],levelGrid[x,y].transform.position + new Vector3(Random.Range(-.5f, .5f), Random.Range(-.5f, .5f)), Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
                     }
-
-
                 }
             }
 
@@ -295,12 +314,6 @@ public class LevelGenerator : MonoBehaviour {
         Room r = ro.GetComponent<Room>();
         GameObject newBlock = PlaceBlock(x,y,floor,floorColor);
         newBlock.GetComponent<InteriorFloor>().room = r;
-       // GameObject newShadeBlock = Instantiate(shadeBlock, transform);
-       // newShadeBlock.GetComponent<SpriteRenderer>().color = Color.black;
-
-       // newShadeBlock.transform.position = newBlock.transform.position;
-       // newShadeBlock.transform.localScale = new Vector2(blockScale,blockScale);
-       // r.AddShadow(newShadeBlock);
     }
 
     public void PlaceDoor(int x, int y){

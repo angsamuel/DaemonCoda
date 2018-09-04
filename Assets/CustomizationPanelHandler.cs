@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class CustomizationPanelHandler : MonoBehaviour {
 	public Scrollbar red;
@@ -11,8 +12,7 @@ public class CustomizationPanelHandler : MonoBehaviour {
 	public Image playerImage;
 	// Use this for initialization
 	void Start () {
-		
-		
+
 	}
 	
 	// Update is called once per frame
@@ -22,9 +22,17 @@ public class CustomizationPanelHandler : MonoBehaviour {
 
 
 	public void StartNewGame(){
-		PlayerPrefs.SetFloat(PlayerPrefs.GetString("profile") + "R", red.value);
-		PlayerPrefs.SetFloat(PlayerPrefs.GetString("profile") +"G", green.value);
-		PlayerPrefs.SetFloat(PlayerPrefs.GetString("profile") +"B", blue.value);
-		PlayerPrefs.SetString(PlayerPrefs.GetString("profile") +"name", nameText.text);
+
+		string profile = PlayerPrefs.GetString("profile");
+
+		PlayerPrefs.SetFloat(profile + "R", red.value);
+		PlayerPrefs.SetFloat(profile +"G", green.value);
+		PlayerPrefs.SetFloat(profile +"B", blue.value);
+		Debug.Log(PlayerPrefs.GetString("Profile"));
+
+		PlayerPrefs.SetString("profile" + profile, nameText.text);
+
+		Debug.Log(PlayerPrefs.GetString("profile"));
+		SceneManager.LoadScene("LevelSelect");	
 	}
 }

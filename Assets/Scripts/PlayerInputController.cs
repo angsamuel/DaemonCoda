@@ -27,6 +27,14 @@ public class PlayerInputController : MonoBehaviour {
 		hpIndex = 2;
 		redOverlay.SetActive(false); 
 		StartCoroutine (EndlessEnforcer ());
+
+		//set player color
+		string profile = PlayerPrefs.GetString("profile");
+
+		float r = PlayerPrefs.GetFloat(profile + "R");
+		float g = PlayerPrefs.GetFloat(profile + "G");
+		float b = PlayerPrefs.GetFloat(profile + "B");
+		playerUnit.body.GetComponent<SpriteRenderer>().color = new Color(r,g,b);
 	}
 
 	void EquipWeapon(){
@@ -115,7 +123,15 @@ public class PlayerInputController : MonoBehaviour {
 	//		}
 
 			if (playerUnit.dead) {
-				SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex);
+				string profile = PlayerPrefs.GetString("profile");
+				PlayerPrefs.SetString(profile + "settlements saved", "");
+				PlayerPrefs.SetString("profile" + profile, "");
+				SceneManager.LoadScene ("MainMenu");
+
+
+
+
+
 			}
 		}
 	}
@@ -134,6 +150,7 @@ public class PlayerInputController : MonoBehaviour {
 		if (playerUnit.GetNPC () != null) {
 			playerUnit.GetNPC ().ActivateDialogue ();
 		} else {
+			//do nothing I guess
 		}
 	}
 

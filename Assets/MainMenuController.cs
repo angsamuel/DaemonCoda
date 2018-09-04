@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class MainMenuController : MonoBehaviour {
 	public GameObject centerPanel;
@@ -8,6 +10,12 @@ public class MainMenuController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		PlayerPrefs.SetString("profile", "");
+		
+		//PlayerPrefs.SetString("profile0", "");
+		//PlayerPrefs.SetString("profile1", "");
+		//PlayerPrefs.SetString("profile2", "");
+		//PlayerPrefs.SetString("profile3", "");
+		//PlayerPrefs.SetString("profile4", "");
 	}
 	
 	// Update is called once per frame
@@ -25,4 +33,12 @@ public class MainMenuController : MonoBehaviour {
 		HideAllPanels();
 		panels[i].transform.position = centerPanel.transform.position;
 	}
+
+
+
+	void LoadExistingGame(){
+
+	}
+
+
 }
