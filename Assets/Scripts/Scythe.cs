@@ -8,6 +8,7 @@ public class Scythe : Weapon {
 		direction = 1;
 		ChangeDirections ();
 	}
+	
 	public int scytheDirection = -1;
 	override public void ChangeDirections(){
 		direction = scytheDirection;
