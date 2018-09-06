@@ -302,7 +302,7 @@ public class UnitController : MonoBehaviour {
         }
     }
     
-    float scanRange = 6;
+    float scanRange = 7;
     IEnumerator ScanRoutine()
     {
         if(!scanning){

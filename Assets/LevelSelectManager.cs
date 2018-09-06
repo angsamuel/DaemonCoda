@@ -132,7 +132,7 @@ public class LevelSelectManager : MonoBehaviour {
 
 		yield return new WaitForSeconds(.5f);
 
-		SceneManager.LoadScene("Testing");
+		SceneManager.LoadScene("Level");
 
 	}
 
@@ -199,9 +199,9 @@ public class LevelSelectManager : MonoBehaviour {
 	void GenerateNewSelections(){
 		for(int i = 0; i<3; i++){
 			Settlement newSett = sg.GenerateSettlement();
+			newSett.distance = Random.Range(i+1, (i+1)*3);
 			settlements.Add(newSett);
 			SaveSettlement(newSett, i);
-			newSett.distance = Random.Range(i+1, (i+1)*3);
 		}
 	}
 

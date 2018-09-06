@@ -44,23 +44,24 @@ public class LevelPopulator : MonoBehaviour {
 		Random.seed = System.Environment.TickCount;
 	}
 
-
+	public float squadChance;
 	public void CreateSquads(){
 		for(int i = 0; i<lg.patrolRoutes.Count; i++){
+			if(Random.Range(0.0f, 1.0f) <= squadChance){
+				if(lg.patrolRoutes[i].checkpoints.Count > 2){
 
-			if(lg.patrolRoutes[i].checkpoints.Count > 2){
+					int startCheckPoint = 1;
 
-				int startCheckPoint = 1;
+					int squadMembers = Random.Range(3, 6);
+					//spawn squad members, give each their index, and patrolRoute
+					for(int j = 0; j<squadMembers; j++){
+						UnitController newSquaddie = Instantiate(patrolUnit, lg.patrolRoutes[i].checkpoints[startCheckPoint].transform.position, Quaternion.identity).GetComponent<UnitController>();
+						newSquaddie.transform.Translate(new Vector3(0,2));
+						newSquaddie.AssignToPatrol(lg.patrolRoutes[i], startCheckPoint);
+					}
 
-				int squadMembers = Random.Range(3, 6);
-				//spawn squad members, give each their index, and patrolRoute
-				for(int j = 0; j<squadMembers; j++){
-					UnitController newSquaddie = Instantiate(patrolUnit, lg.patrolRoutes[i].checkpoints[startCheckPoint].transform.position, Quaternion.identity).GetComponent<UnitController>();
-					newSquaddie.transform.Translate(new Vector3(0,2));
-					newSquaddie.AssignToPatrol(lg.patrolRoutes[i], startCheckPoint);
+
 				}
-
-
 			}
 		}
 	}

@@ -52,6 +52,23 @@ public class Unit : MonoBehaviour {
 			tr.time = 0.0f;
 		}
 
+		//spawn new weapon for playerUnit
+		if(isPlayerUnit && weapon == null){
+			//spawn weapon according to index
+			int armoryIndex = PlayerPrefs.GetInt(PlayerPrefs.GetString("profile") + "armoryIndex");
+			if(armoryIndex != -1){
+				Armory armory = GameObject.Find("Armory").GetComponent<Armory>();
+				GameObject newWeapon = Instantiate(armory.weapons[armoryIndex], transform);
+				EquipWeapon(newWeapon.GetComponent<Weapon>());
+			}
+		}
+
+
+		if(weapon != null && isPlayerUnit){
+			PlayerPrefs.SetInt(PlayerPrefs.GetString("profile") + "armoryIndex", weapon.armoryIndex);
+		}else if(isPlayerUnit){
+			PlayerPrefs.SetInt(PlayerPrefs.GetString("profile") + "armoryIndex", -1);
+		}
 	}
 	public bool WeaponRested(){
 		return (weapon == null || weapon.rested == true);
@@ -115,8 +132,16 @@ public class Unit : MonoBehaviour {
 		if (pickup != null) {
 			//Debug.Log ("have pickup");
 			EquipWeapon (pickup);
+			if(isPlayerUnit){
+				PlayerPrefs.SetInt(PlayerPrefs.GetString("profile") + "armoryIndex", pickup.armoryIndex);
+			}
+
+
 		} else {
 			//Debug.Log ("no pickup");
+			if(isPlayerUnit){
+				PlayerPrefs.SetInt(PlayerPrefs.GetString("profile") + "armoryIndex", -1);
+			}
 		}
 	}
 

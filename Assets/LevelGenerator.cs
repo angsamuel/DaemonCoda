@@ -117,7 +117,7 @@ public class LevelGenerator : MonoBehaviour {
    }
 
  
-    float spawnFurnitureChance = 0.05f;
+    float spawnFurnitureChance = 0.025f;
     public void FillWithLoot(){
         for(int y = 0; y < level_grid_size; y++)
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour {
+	public int armoryIndex;
 	public BoxCollider2D bc;
 	public float speed, staminaCost;
 	[HideInInspector] public bool rested;
