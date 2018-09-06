@@ -52,7 +52,8 @@ public class LevelGenerator : MonoBehaviour {
 	void Start () {
         //load in info
         LoadPlayerPrefs();
-
+        string profile = PlayerPrefs.GetString("profile");
+        int crestSeed = PlayerPrefs.GetInt(profile + "settlement crest seed");
 
         if(villageName == null || villageName == ""){
             villageName = nameWizard.GenerateVillageName();
@@ -60,8 +61,8 @@ public class LevelGenerator : MonoBehaviour {
         streetCrawlers = new List<StreetCrawler>();
         roomies = new List<Roomie>();
         levelGrid = new GameObject[level_grid_size, level_grid_size];
-        Generate();
-        lp.Populate();
+        Generate(crestSeed);
+        lp.Populate(crestSeed);
         ScaleLeaveLevelBarrier();
     }
 
@@ -71,11 +72,6 @@ public class LevelGenerator : MonoBehaviour {
             string profile = PlayerPrefs.GetString("profile");
             level_grid_size = 50 + (PlayerPrefs.GetInt(profile + "settlement size") * 25);
             villageName = PlayerPrefs.GetString(profile + "settlement name");
-
-
-
-
-
         }
     }
 
@@ -167,12 +163,12 @@ public class LevelGenerator : MonoBehaviour {
             }
         }
         //currentGeneration = StartCoroutine(Generate());
-        Generate();
+        Generate(System.Environment.TickCount);
     }
 
-    void Generate()
+    void Generate(int seed)
     {
-
+        Random.seed = seed;
         StreetCrawler sc = new StreetCrawler(this, 5, new Vector2(level_grid_size/2, 0), 0, streetBlock);
         streetCrawlers.Add(sc);
         for (int x = 0; x < 1000; x++)
@@ -202,7 +198,9 @@ public class LevelGenerator : MonoBehaviour {
         GameObject player = GameObject.Find("PlayerInputController");
         player.transform.position = levelGrid[level_grid_size/2,0].transform.position;
         player.transform.Translate(new Vector2(0,-8));
-       //StartCoroutine(levelController.TableConstructionRoutine());
+        //StartCoroutine(levelController.TableConstructionRoutine());
+        Random.seed = System.Environment.TickCount;
+
       
     }
 	

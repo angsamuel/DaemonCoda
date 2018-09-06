@@ -123,6 +123,7 @@ public class LevelSelectManager : MonoBehaviour {
 		string profile = PlayerPrefs.GetString("profile");
 		PlayerPrefs.SetString(profile + "settlement name", s.name);
 		PlayerPrefs.SetInt(profile + "settlement size", s.size);
+		PlayerPrefs.SetInt(profile + "settlement distance", s.distance);
 		PlayerPrefs.SetString(profile + "settlement modifier", s.modifier);
 		PlayerPrefs.SetString(profile + "settlement weather", s.weather);
 		PlayerPrefs.SetInt(profile + "settlement crest seed", s.crestSeed);

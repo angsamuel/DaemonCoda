@@ -166,26 +166,6 @@ public class UnitController : MonoBehaviour {
             
             scanEnabeled = false;
 
-            // for (int i = 0; i<levelController.teams.Count; i++)
-            // {
-            //     if(levelController.teams[i] == unit.team)
-            //     {
-            //             List<Unit> possibleTargets = levelController.teamTable[levelController.teams[i]] as List<Unit>;
-            //             for(int k = 0; k < possibleTargets.Count; k++)
-            //             {
-            //                 if( Vector3.Distance(possibleTargets[k].transform.position, unit.transform.position) < scanRange * 3)
-            //                 {
-            //                     scanEnabeled = true;
-            //                     Debug.Log("enabling scan");
-            //                 }
-            //             }
-
-
-            //     }
-            // }
-
-
-
             //check player
             if(scanEnabeled == false)
             {
@@ -400,10 +380,13 @@ public class UnitController : MonoBehaviour {
                 }
                 
             }
-            yield return new WaitForSeconds(Random.Range(.15f, .35f));
+
+            yield return new WaitForSeconds(Random.Range(.25f, .5f));
             scanning = false;
         }
     }
+
+
     bool wandering = false;
     Vector3 wanderPos;
     Vector3 aimPos;

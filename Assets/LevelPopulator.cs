@@ -18,7 +18,8 @@ public class LevelPopulator : MonoBehaviour {
 		
 	}
 
-	public void Populate(){
+	public void Populate(int seed){
+		Random.seed = seed;
 		for(int x = 5; x<lg.level_grid_size - 5; x++){
 			for(int y = 5; y<lg.level_grid_size - 5; y++){
 				//if tile is appropriate, spawn unit
@@ -40,6 +41,7 @@ public class LevelPopulator : MonoBehaviour {
 			}
 		}
 		CreateSquads();
+		Random.seed = System.Environment.TickCount;
 	}
 
 
