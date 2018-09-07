@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour {
+	Rigidbody2D rb;
 	public int armoryIndex;
 	public BoxCollider2D bc;
+	public float timeToSwing = 1;
 	public float speed, staminaCost;
 	[HideInInspector] public bool rested;
 	protected float swingTracker = 0;
@@ -16,6 +18,10 @@ public class Weapon : MonoBehaviour {
 	// Use this for initialization
 	protected void Start () {
 		rested = true;
+		if(timeToSwing <= 0){
+			timeToSwing = 1;
+		}
+		rb = GetComponent<Rigidbody2D>();
 		if(bc!=null){bc.enabled = false;}
 		if(aimSpeed == 0){
 			aimSpeed = 5;
@@ -26,13 +32,38 @@ public class Weapon : MonoBehaviour {
 		return rested;
 	}
 
-	public virtual void StartSwing(){
+	public virtual void StartSwingOld(){
 		rested = false;
+	}
+
+	Coroutine swingRoutine;
+	bool swinging = false;
+	public virtual void StartSwing(){
+		if(!swinging && !disabled){
+			swingRoutine = StartCoroutine(SwingRoutine());
+		}
+	}
+		
+	IEnumerator SwingRoutine(){
+		swinging = true;
+		rb.angularVelocity = 360 / timeToSwing;
+		yield return new WaitForSeconds(timeToSwing/4);
+		bc.enabled = true;
+		yield return new WaitForSeconds(timeToSwing/2);
+		bc.enabled = false;
+		yield return new WaitForSeconds(timeToSwing/4);
+		swinging = false;
+		rb.angularVelocity = 0;
 	}
 
 	public void StopSwing(){
 		rested = true;
 		swingTracker = 0;
+
+		//new swing
+		rb.angularVelocity = 0;
+		swinging = false
+		bc.enabled = false;
 	}
 	
 	// Update is called once per frame
@@ -78,7 +109,7 @@ public class Weapon : MonoBehaviour {
 				ChangeDirections ();
 			}
 		} else {
-			if(bc!=null){bc.enabled = false;}
+			//if(bc!=null){bc.enabled = false;}
 		}
 	}
 
@@ -95,7 +126,7 @@ public class Weapon : MonoBehaviour {
 
 	virtual public void Aim(Vector3 target){
 		myTarget = target;
-		if (IsRested()) {
+		if (IsRested() && !swinging) {
 			Quaternion nRotation = Quaternion.LookRotation (Vector3.forward, target - transform.position);
 			transform.rotation = Quaternion.Slerp (transform.rotation, nRotation, Time.deltaTime * aimSpeed);
 		}
