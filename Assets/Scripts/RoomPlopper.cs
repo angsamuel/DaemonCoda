@@ -126,7 +126,9 @@ public class RoomPlopper {
                 GameObject newRoom = GameObject.Instantiate(room, new Vector3(0,0,0), Quaternion.identity);
                 
                 //int interiorLayout = Random.Range(0,4);
-                int interiorLayout = 1;
+                
+
+
                 for (int j = 0; j < thirdBound; j++)
                 {
                     //place right
@@ -160,21 +162,33 @@ public class RoomPlopper {
                     }
                 }
 
+                int interiorLayout = Random.Range(0,4);
                 //place interior walls
                 if(interiorLayout == 1 && rightBound+leftBound>6 ){ //line accross
                     for(int i = 0; i<leftBound; i++){
                         levelGenerator.PlaceWall(posX - i, posY + (velY*(thirdBound/2)), wall, Color.white);
-                     }
+                    }
                     for(int i = 0; i<rightBound; i++){
                          levelGenerator.PlaceWall(posX + i, posY + (velY*(thirdBound/2)), wall, Color.white);
                     }
                     levelGenerator.PlaceDoor(Random.Range(posX - leftBound + 3, posX + rightBound-2), posY + (velY*(thirdBound/2)));
-                 }
-
-
-
-
-
+                }else if(interiorLayout == 2 && rightBound+leftBound>6 && leftBound > 2 && rightBound > 2){
+                    for(int i = 0; i<leftBound; i++){
+                        levelGenerator.PlaceWall(posX - i, posY + (velY*(thirdBound/2)), wall, Color.white);
+                    }
+                    for(int i = 0;i<thirdBound/2; i++){
+                        levelGenerator.PlaceWall(posX, (posY + ((thirdBound/2) * velY)) + (i * velY), wall, Color.white);
+                    }
+                    levelGenerator.PlaceDoor(posX, posY + velY *  Random.Range((thirdBound/2)+1,(thirdBound)-1));
+                }else if(interiorLayout == 3 && rightBound+leftBound>6 && rightBound > 2 && leftBound > 2){
+                    for(int i = 0; i<rightBound; i++){
+                        levelGenerator.PlaceWall(posX + i, posY + (velY*(thirdBound/2)), wall, Color.white);
+                    }
+                    for(int i = 0;i<thirdBound/2; i++){
+                        levelGenerator.PlaceWall(posX, (posY + ((thirdBound/2) * velY)) + (i * velY), wall, Color.white);
+                    }
+                    levelGenerator.PlaceDoor(posX, posY + velY *  Random.Range((thirdBound/2)+1,(thirdBound)-1));
+                }
 
 
                 //levelGenerator.PlaceStreet(posX + ((rightBound - leftBound)/2), posY, street);  
@@ -266,6 +280,41 @@ public class RoomPlopper {
                     }
 
                 }
+
+
+                int interiorLayout = Random.Range(0,4);
+
+                //place interior walls
+                if(interiorLayout == 1 && upBound+downBound>6 ){ //line accross
+                    for(int i = 0; i<downBound; i++){
+                        levelGenerator.PlaceWall(posX + (velX*(thirdBound/2)), posY - i, wall, Color.white);
+                     }
+                    for(int i = 0; i<upBound; i++){
+                         levelGenerator.PlaceWall(posX + (velX*(thirdBound/2)), posY + i , wall, Color.white);
+                    }
+                    levelGenerator.PlaceDoor(posX + (velX*(thirdBound/2)), Random.Range(posY - downBound + 3, posY + upBound-2));
+                }else if(interiorLayout == 2 && upBound+downBound>6 && downBound > 2 && upBound > 2){
+                    for(int i = 0; i<downBound; i++){
+                        levelGenerator.PlaceWall(posX + (velX*(thirdBound/2)), posY - i , wall, Color.white);
+                    }
+                    for(int i = 0;i<thirdBound/2; i++){
+                        levelGenerator.PlaceWall((posX + ((thirdBound/2) * velX)) + (i * velX), posY, wall, Color.white);
+                    }
+                    levelGenerator.PlaceDoor(posX + velX *  Random.Range((thirdBound/2)+1,(thirdBound)-1), posY);
+                }else if(interiorLayout == 3 && upBound+downBound>6 && upBound > 2 && downBound > 2){
+                    for(int i = 0; i<upBound; i++){
+                        levelGenerator.PlaceWall(posX + (velX*(thirdBound/2)), posY + i, wall, Color.white);
+                    }
+                     for(int i = 0;i<thirdBound/2; i++){
+                        levelGenerator.PlaceWall((posX + ((thirdBound/2) * velX)) + (i * velX), posY, wall, Color.white);
+                    }
+                     levelGenerator.PlaceDoor(posX + velX *  Random.Range((thirdBound/2)+1,(thirdBound)-1), posY);
+                }
+
+
+
+
+
                 //levelGenerator.PlaceStreet(posX, posY + ((upBound - downBound) / 2), street);
                 if(levelGenerator.SpaceIsFree(posX-1, posY + ((upBound - downBound) / 2))){
                     levelGenerator.PlaceStreet(posX-1, posY + ((upBound - downBound) / 2), street);

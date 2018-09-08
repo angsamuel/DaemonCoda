@@ -14,47 +14,62 @@ public class FOW : MonoBehaviour {
 	void FixedUpdate(){
 		//FindVisiblePlayer();
 		
-		FindVisibleTargets();
+		if(routineReady){
+				StartCoroutine(FindVisibleTargets());
+		}
 	}
+	bool routineReady = true;
 
-	void FindVisibleTargets() {
-        Collider2D[] targetsInViewRadius = Physics2D.OverlapCircleAll(transform.position, viewRadius, targetMask);
-		//Debug.Log(targetsInViewRadius.Length);
 
-        Physics2D.autoSyncTransforms = false;
+	void FVT(int i, ref Collider2D[] targetsInViewRadius){
+		Transform target = targetsInViewRadius[i].transform;
+        bool isInFOV = false;
 
-        /* check normal field of view */
-        for (int i = 0; i < targetsInViewRadius.Length; i++) {
-            Transform target = targetsInViewRadius[i].transform;
-            bool isInFOV = false;
-
-            //check if hideable should be hidden or not
-            Vector3 dirToTarget = (target.position - transform.position).normalized;
-            if (Vector3.Angle(transform.right, dirToTarget) < viewAngle / 2) {
-                float dstToTarget = Vector3.Distance(transform.position, target.position);
-                if (!Physics2D.Raycast(transform.position, dirToTarget, dstToTarget, obstacleMask)) {
-                    isInFOV = true;
-                }
-            } else if (hasPeripheralVision) {
-                float dstToTarget = Vector3.Distance(transform.position, target.position);
-                // here we have to check the distance to the target since the peripheral vision may have a different radius than the normal field of view
-                if (dstToTarget < viewRadiusPeripheralVision && !Physics2D.Raycast(transform.position, dirToTarget, dstToTarget, obstacleMask)) {
-                    isInFOV = true;
-                }
+        //check if hideable should be hidden or not
+         Vector3 dirToTarget = (target.position - transform.position).normalized;
+        if (Vector3.Angle(transform.right, dirToTarget) < viewAngle / 2) {
+            float dstToTarget = Vector3.Distance(transform.position, target.position);
+            if (!Physics2D.Raycast(transform.position, dirToTarget, dstToTarget, obstacleMask)) {
+               isInFOV = true;
             }
-
-            //apply effect to IHideable
-            IHideable hideable = target.GetComponent<IHideable>();
-            if (hideable != null) {
-                if (isInFOV) {
-                    target.GetComponent<IHideable>().OnFOVEnter();
-                } else {
-                    target.GetComponent<IHideable>().OnFOVLeave();
-                }
+        } else if (hasPeripheralVision) {
+            float dstToTarget = Vector3.Distance(transform.position, target.position);
+            // here we have to check the distance to the target since the peripheral vision may have a different radius than the normal field of view
+             if (dstToTarget < viewRadiusPeripheralVision && !Physics2D.Raycast(transform.position, dirToTarget, dstToTarget, obstacleMask)) {
+                    isInFOV = true;
             }
         }
 
+        //apply effect to IHideable
+        IHideable hideable = target.GetComponent<IHideable>();
+        if (hideable != null) {
+            if (isInFOV) {
+                StartCoroutine(target.GetComponent<IHideable>().FOVEnterRoutine());
+            } else {
+             	StartCoroutine(target.GetComponent<IHideable>().FOVLeaveRoutine());
+            }
+         }
+	}
+
+
+	IEnumerator FindVisibleTargets() {
+		routineReady = false;
+        Collider2D[] targetsInViewRadius = Physics2D.OverlapCircleAll(transform.position, viewRadius, targetMask);
+		
+        Physics2D.autoSyncTransforms = false;
+		
+        /* check normal field of view */
+		int kmax = 4;
+		for(int k = 0; k<kmax; k++){
+			for (int i = (targetsInViewRadius.Length * k)/4; i < (targetsInViewRadius.Length * (k+1) )/4; i++) {
+            	FVT(i, ref targetsInViewRadius);
+        	}
+		}
+
         Physics2D.autoSyncTransforms = true;
+		yield return null;
+		routineReady = true;
+
     }
 
 	void FindVisiblePlayer(){
@@ -82,7 +97,6 @@ public class FOW : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
-		
 	}
 	
 	// Update is called once per frame

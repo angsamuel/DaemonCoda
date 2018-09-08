@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading;
+
 
 public class FOWMesh : MonoBehaviour {
 
@@ -16,8 +18,8 @@ public class FOWMesh : MonoBehaviour {
 	void Start () {
 		mesh = GetComponent<MeshFilter>().mesh;
 		fow = GetComponentInParent<FOW>();
+		
 	}
-	
 	void LateUpdate(){
 		MakeMesh();
 	}
@@ -58,8 +60,4 @@ public class FOWMesh : MonoBehaviour {
 		mesh.RecalculateNormals();
 	}
 
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour {
     public string team;
+	public int armoryIndex;
 	public GameObject blood;
 	public SpriteRenderer healOverlay;
 	public GameObject wave;
@@ -28,6 +29,7 @@ public class Unit : MonoBehaviour {
 	Weapon pickup;
 	public TrailRenderer tr;
 	public GameObject body;
+	SpriteRenderer sr;
 
     float scanRange = 3.0f;
 
@@ -39,6 +41,7 @@ public class Unit : MonoBehaviour {
     int mealPaks = 0;
 
     void Start(){
+		sr = GetComponent<SpriteRenderer>();
 		damageSources = new List<int> ();
 		//Time.timeScale = 0.1f;
 		StartCoroutine (WaveRoutine ());
@@ -53,9 +56,12 @@ public class Unit : MonoBehaviour {
 		}
 
 		//spawn new weapon for playerUnit
-		if(isPlayerUnit && weapon == null){
+		if(weapon == null){
 			//spawn weapon according to index
-			int armoryIndex = PlayerPrefs.GetInt(PlayerPrefs.GetString("profile") + "armoryIndex");
+			if(isPlayerUnit){
+				armoryIndex = PlayerPrefs.GetInt(PlayerPrefs.GetString("profile") + "armoryIndex");
+				medPaks = PlayerPrefs.GetInt(PlayerPrefs.GetString("profile"));
+			}
 			if(armoryIndex != -1){
 				Armory armory = GameObject.Find("Armory").GetComponent<Armory>();
 				GameObject newWeapon = Instantiate(armory.weapons[armoryIndex], transform);
@@ -68,6 +74,11 @@ public class Unit : MonoBehaviour {
 			PlayerPrefs.SetInt(PlayerPrefs.GetString("profile") + "armoryIndex", weapon.armoryIndex);
 		}else if(isPlayerUnit){
 			PlayerPrefs.SetInt(PlayerPrefs.GetString("profile") + "armoryIndex", -1);
+		}
+
+		if(isPlayerUnit){
+			mealPaks = PlayerPrefs.GetInt(PlayerPrefs.GetString("profile") + "mealPaks");
+			medPaks = PlayerPrefs.GetInt(PlayerPrefs.GetString("profile") + "medPaks");
 		}
 	}
 	public bool WeaponRested(){
@@ -288,11 +299,13 @@ public class Unit : MonoBehaviour {
                 Destroy(other.gameObject);
 				StartCoroutine(GetMedPakTimer());
                 medPaks += 1;
+				PlayerPrefs.SetInt(PlayerPrefs.GetString("profile") + "medPaks", medPaks);
             }else if(other.gameObject.tag == "meal pak" && canPickupMealPak)
             {
                 Destroy(other.gameObject);
 				StartCoroutine(GetMealPakTimer());
                 mealPaks += 1;
+				PlayerPrefs.SetInt(PlayerPrefs.GetString("profile") + "mealPaks", mealPaks);
             }
         }
 
@@ -333,7 +346,7 @@ public class Unit : MonoBehaviour {
 	public void Die(){
 		DequipWeapon ();
 
-		body.GetComponent<SpriteRenderer>().color = Color.red;
+		sr.color = Color.red;
 		dead = true;
 		BoxCollider2D[] myColliders = gameObject.GetComponents<BoxCollider2D>();
 

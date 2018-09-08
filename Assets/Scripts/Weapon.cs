@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour {
+	public GameObject blade;
 	Rigidbody2D rb;
 	public int armoryIndex;
 	public BoxCollider2D bc;
@@ -32,37 +33,55 @@ public class Weapon : MonoBehaviour {
 		return rested;
 	}
 
-	public virtual void StartSwingOld(){
+	public virtual void StartSwing(){
 		rested = false;
 	}
 
 	Coroutine swingRoutine;
 	bool swinging = false;
-	public virtual void StartSwing(){
-		if(!swinging && !disabled){
-			swingRoutine = StartCoroutine(SwingRoutine());
-		}
-	}
+	// public virtual void StartSwingNew(){
+	// 	if(!swinging && !disabled){
+	// 		swingRoutine = StartCoroutine(SwingRoutine());
+	// 	}
+	// }
 		
-	IEnumerator SwingRoutine(){
-		swinging = true;
-		rb.angularVelocity = 360 / timeToSwing;
-		yield return new WaitForSeconds(timeToSwing/4);
-		bc.enabled = true;
-		yield return new WaitForSeconds(timeToSwing/2);
-		bc.enabled = false;
-		yield return new WaitForSeconds(timeToSwing/4);
-		swinging = false;
-		rb.angularVelocity = 0;
-	}
+	// IEnumerator SwingRoutine(){
+	// 	swinging = true;
+		
+	// 	//yield return new WaitForSeconds(timeToSwing/4);
+
+	// 	float t = 0;
+	// 	while(t<timeToSwing/4){
+	// 		yield return null;
+	// 		t+=Time.deltaTime;
+	// 		rb.angularVelocity = (360 / timeToSwing) * (t / (timeToSwing/4));
+	// 	}
+
+	// 	bc.enabled = true;
+	// 	rb.angularVelocity = 360 / timeToSwing;
+
+	// 	yield return new WaitForSeconds(timeToSwing/2);
+
+	// 	bc.enabled = false;
+
+	// 	t = timeToSwing/4;
+	// 	while(t>0){
+	// 		yield return null;
+	// 		t-=Time.deltaTime;
+	// 		rb.angularVelocity = (360 / timeToSwing) * (t / (timeToSwing/4));
+	// 	}
+		
+	// 	swinging = false;
+	// 	rb.angularVelocity = 0;
+	// }
 
 	public void StopSwing(){
 		rested = true;
 		swingTracker = 0;
 
 		//new swing
-		rb.angularVelocity = 0;
-		swinging = false
+		//rb.angularVelocity = 0;
+		swinging = false;
 		bc.enabled = false;
 	}
 	

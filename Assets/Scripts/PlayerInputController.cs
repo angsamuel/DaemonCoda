@@ -60,7 +60,7 @@ public class PlayerInputController : MonoBehaviour {
 
 	// Update is called once per frame
 	bool blocking = false;
-	void Update () {
+	void LateUpdate () {
 		if(enabeled){
 		//Dash
 		if (!disabled && !playerUnit.healing) {
@@ -114,9 +114,6 @@ public class PlayerInputController : MonoBehaviour {
 				playerUnit.Heal();
 			}
 
-
-			
-
 		//	if (hpIndex > playerUnit.health - 1) {
 				//healthBar [hpIndex].transform.position = new Vector3 (-1000, -1000, -1000);
 				//hpIndex--;
@@ -127,11 +124,6 @@ public class PlayerInputController : MonoBehaviour {
 				PlayerPrefs.SetString(profile + "settlements saved", "");
 				PlayerPrefs.SetString("profile" + profile, "");
 				SceneManager.LoadScene ("MainMenu");
-
-
-
-
-
 			}
 		}
 	}

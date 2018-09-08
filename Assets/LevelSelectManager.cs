@@ -44,7 +44,6 @@ public class LevelSelectManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		LoadSettlements();
-		PlayerPrefs.SetInt(PlayerPrefs.GetString("profile") + "mealPaks", 3);
 		mealPaks = PlayerPrefs.GetInt(PlayerPrefs.GetString("profile") + "mealPaks");
 	}	
 	

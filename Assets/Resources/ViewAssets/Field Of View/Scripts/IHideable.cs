@@ -1,9 +1,18 @@
-﻿
-/// <summary>
-/// Interface that needs to be implemented by any object that gets affected by the Field of View of the player.
-/// </summary>
-public interface IHideable {
+﻿using UnityEngine;
+using System.Collections;
 
-    void OnFOVEnter();
-    void OnFOVLeave();
+public abstract class IHideable : MonoBehaviour {
+
+    public virtual void OnFOVEnter(){
+
+    }
+    public virtual void OnFOVLeave(){
+
+    }
+    public virtual  IEnumerator FOVEnterRoutine(){
+        yield return null;
+    }
+    public virtual IEnumerator FOVLeaveRoutine(){
+        yield return null;
+    }
 }

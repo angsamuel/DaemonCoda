@@ -1,8 +1,25 @@
 ﻿using UnityEngine;
+using System.Collections;
+public class ReverseHideable : IHideable {
+    SpriteRenderer sr;
+    public void Start(){
+        sr = GetComponent<SpriteRenderer>();
+    }
+    override public IEnumerator FOVEnterRoutine(){
+        yield return null;
+        if(sr != null){
+            sr.enabled = false;
+        }
+    }
 
-public class ReverseHideable : MonoBehaviour, IHideable {
+     override public IEnumerator FOVLeaveRoutine(){
+        yield return null;
+        if(sr != null){
+            sr.enabled = true;
+        }
+    }
 
-    virtual public void OnFOVLeave() {
+    override public void OnFOVLeave() {
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
         if(sr != null){
             sr.enabled = true;
@@ -20,7 +37,7 @@ public class ReverseHideable : MonoBehaviour, IHideable {
             }
         }
     }
-    virtual public void OnFOVEnter() {
+    override public void OnFOVEnter() {
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
         if(sr != null){
             sr.enabled = false;
