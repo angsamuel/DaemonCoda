@@ -7,7 +7,9 @@ public class LevelPopulator : MonoBehaviour {
 	public List<float> enemyProbs;
 	public GameObject patrolUnit;
 	public LevelGenerator lg;
+	public GameObject challengeEnemy;
 	public float enemySpawnChance = 0.005f;
+	public float challengeEnemySpawnChance = 0.01f;
 	// Use this for initialization
 	void Start () {
 		
@@ -40,6 +42,20 @@ public class LevelPopulator : MonoBehaviour {
 				}
 			}
 		}
+
+		for(int x = 15; x<lg.level_grid_size - 15; x++){
+			for(int y = 15; y<lg.level_grid_size - 15; y++){
+				if(lg.GetTileTag(x,y) == "floor"){
+					if(Random.Range(0.0f, 1.0f) < challengeEnemySpawnChance){
+						GameObject newCN = Instantiate(challengeEnemy, transform);
+						newCN.transform.position = lg.levelGrid[x,y].transform.position + new Vector3(Random.Range(-0.25f, 0.25f),Random.Range(-0.25f, 0.25f));
+					}
+				}
+			}
+		}
+
+		//GameObject ce = Instantiate(challengeEnemy, transform);
+		//ce.transform.position = lg.levelGrid[lg.level_grid_size/2,lg.level_grid_size/2].transform.position + new Vector3(Random.Range(-0.25f, 0.25f),Random.Range(-0.25f, 0.25f));
 		CreateSquads();
 		Random.seed = System.Environment.TickCount;
 	}

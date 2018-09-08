@@ -19,7 +19,7 @@ public class Unit : MonoBehaviour {
     float waveDelay;
 	public float dashMultiplier = 1.5f;
 	public int health;
-	bool invincible, dashLocked, inWater, waveRoutineLock = false;
+	[HideInInspector] public bool invincible, dashLocked, inWater, waveRoutineLock = false;
 	bool canTouchAttack = true;
 	public Weapon weapon;
 	public Shield shield;
@@ -41,7 +41,7 @@ public class Unit : MonoBehaviour {
     int mealPaks = 0;
 
     void Start(){
-		sr = GetComponent<SpriteRenderer>();
+		sr = body.GetComponent<SpriteRenderer>();
 		damageSources = new List<int> ();
 		//Time.timeScale = 0.1f;
 		StartCoroutine (WaveRoutine ());
@@ -473,6 +473,12 @@ public class Unit : MonoBehaviour {
 	public void AimWeapon(Vector3 position){
 		if (weapon != null && !dead) {
 			weapon.Aim (position);
+		}
+	}
+
+	public void InstantAimWeapon(Vector3 position){
+		if (weapon != null && !dead) {
+			weapon.InstantAim (position);
 		}
 	}
 

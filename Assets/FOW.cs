@@ -22,33 +22,30 @@ public class FOW : MonoBehaviour {
 
 
 	void FVT(int i, ref Collider2D[] targetsInViewRadius){
-		Transform target = targetsInViewRadius[i].transform;
-        bool isInFOV = false;
+		if(targetsInViewRadius[i] != null){
+			Transform target = targetsInViewRadius[i].transform;
+			bool isInFOV = false;
 
-        //check if hideable should be hidden or not
-         Vector3 dirToTarget = (target.position - transform.position).normalized;
-        if (Vector3.Angle(transform.right, dirToTarget) < viewAngle / 2) {
-            float dstToTarget = Vector3.Distance(transform.position, target.position);
-            if (!Physics2D.Raycast(transform.position, dirToTarget, dstToTarget, obstacleMask)) {
-               isInFOV = true;
-            }
-        } else if (hasPeripheralVision) {
-            float dstToTarget = Vector3.Distance(transform.position, target.position);
-            // here we have to check the distance to the target since the peripheral vision may have a different radius than the normal field of view
-             if (dstToTarget < viewRadiusPeripheralVision && !Physics2D.Raycast(transform.position, dirToTarget, dstToTarget, obstacleMask)) {
-                    isInFOV = true;
-            }
-        }
+			//apply effect to IHideable
+			IHideable hideable = target.GetComponent<IHideable>();
+			
 
-        //apply effect to IHideable
-        IHideable hideable = target.GetComponent<IHideable>();
-        if (hideable != null) {
-            if (isInFOV) {
-                StartCoroutine(target.GetComponent<IHideable>().FOVEnterRoutine());
-            } else {
-             	StartCoroutine(target.GetComponent<IHideable>().FOVLeaveRoutine());
-            }
-         }
+			//check if hideable should be hidden or not
+			Vector3 dirToTarget = (target.position - transform.position).normalized;
+			float dstToTarget = Vector3.Distance(transform.position, target.position);
+			if (!Physics2D.Raycast(transform.position, dirToTarget, dstToTarget, obstacleMask)) {
+				isInFOV = true;
+			}
+			
+			if (hideable != null) {
+				if (isInFOV) {
+					StartCoroutine(hideable.FOVEnterRoutine());
+					//Debug.Log("ENTER");
+				} else {
+					StartCoroutine(hideable.FOVLeaveRoutine());
+				}
+			}
+		}
 	}
 
 
@@ -59,15 +56,16 @@ public class FOW : MonoBehaviour {
         Physics2D.autoSyncTransforms = false;
 		
         /* check normal field of view */
-		int kmax = 4;
+		int kmax = 2;
 		for(int k = 0; k<kmax; k++){
-			for (int i = (targetsInViewRadius.Length * k)/4; i < (targetsInViewRadius.Length * (k+1) )/4; i++) {
+			for (int i = (targetsInViewRadius.Length * k)/kmax; i < (targetsInViewRadius.Length * (k+1) )/kmax; i++) {
             	FVT(i, ref targetsInViewRadius);
         	}
+			yield return new WaitForSeconds(0.02f);
 		}
 
         Physics2D.autoSyncTransforms = true;
-		yield return null;
+		
 		routineReady = true;
 
     }

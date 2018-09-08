@@ -10,7 +10,7 @@ public class UnitController : MonoBehaviour {
 	public float strikingDistance;
 	public int seeingDistance;
 	protected bool playerSeen = false;
-    float wanderSpeed = 3.5f;
+    float wanderSpeed = 2f;
     float attackSpeed = 0;
     protected List<Vector2> breadCrumbs;
 
@@ -27,12 +27,11 @@ public class UnitController : MonoBehaviour {
         if(!husked){
 		    levelController.AddEnemyController (this);
         }
-		playerUnit = GameObject.Find ("PlayerInputController").GetComponent<PlayerInputController> ().playerUnit;
+		playerUnit = levelController.playerUnit;
         StartCoroutine(BreadCrumb());
         StartCoroutine(BreadCrumbCleanup());
         StartCoroutine(ProximityCheck());
         attackSpeed = unit.speed;
-        unit.speed = wanderSpeed;
 	}
 	
 	// Update is called once per frame
@@ -69,6 +68,7 @@ public class UnitController : MonoBehaviour {
     Vector3 patrolPosition;
     void  Patrol(){
             unit.AimWeapon(pr.checkpoints[prIndex].transform.position);
+            unit.speed = wanderSpeed;
             if(canPatrol && pr != null){
                 //get new patrol position
 
@@ -103,11 +103,12 @@ public class UnitController : MonoBehaviour {
 
         if (!unit.dead && scanEnabeled)
         {
-            //CheckForPlayer ();
+            CheckForPlayer ();
             if(pr == null && !canSeeTarget){
                 StartCoroutine(WanderRoutine());
             }
             if(!husked){
+                Debug.Log("locking target");
                 LockTarget();
             }
         }
@@ -153,17 +154,17 @@ public class UnitController : MonoBehaviour {
     }
 
     bool proximityCheckEnabeled = true;
-    float proximityWaitTime = 1.5f;
+    float proximityWaitTime = 2f;
 
     bool scanEnabeled = false;
 
     IEnumerator ProximityCheck()
     {
-        
         while (proximityCheckEnabeled)
         {
-            
-            
+        
+           // Debug.Log("prox check");
+
             scanEnabeled = false;
 
             //check player
@@ -172,7 +173,7 @@ public class UnitController : MonoBehaviour {
                 if (Vector3.Distance(playerUnit.transform.position, unit.transform.position) < scanRange * 4f)
                 {
                     scanEnabeled = true;
-                    //Debug.Log("enabling scan");
+                    Debug.Log("enabling scan");
                 }
             }
 
@@ -241,9 +242,10 @@ public class UnitController : MonoBehaviour {
 		playerSeen = true;
 	}
 
-    float linecastOffsetY = 0.395f;
-    float linecastOffsetX = .145f;
-
+    //float linecastOffsetY = 0.395f;
+    //float linecastOffsetX = .145f;
+    float linecastOffsetY = 0.350f;
+    float linecastOffsetX = .1f;
 
     public bool scanning = false;
     public bool canSeeTarget = false;
@@ -285,6 +287,13 @@ public class UnitController : MonoBehaviour {
         }
         
         
+    protected bool TargetInSight(Unit newTarget, float range){
+        if(Vector3.Distance(transform.position, newTarget.transform.position)<=range){
+           target = newTarget;
+           return LinecastTarget(0, 0);
+        }
+        return false;
+    }
 
     void LockTarget(){
         
@@ -357,7 +366,7 @@ public class UnitController : MonoBehaviour {
                         Debug.DrawLine(unit.transform.position, scanPos, Color.green);
                     }
                 }
-                else
+                else 
                 {
                     Debug.DrawLine(unit.transform.position, scanPos, Color.red);
                 }
@@ -390,10 +399,12 @@ public class UnitController : MonoBehaviour {
     bool wandering = false;
     Vector3 wanderPos;
     Vector3 aimPos;
-    IEnumerator WanderRoutine()
+    protected IEnumerator WanderRoutine()
     {
         yield return null;
         if(!wandering){
+            unit.speed = wanderSpeed;
+
             wandering = true;
             wanderPos = transform.position + new Vector3(Random.Range(-100,100), Random.Range(-100,100));
             aimPos = transform.position + new Vector3(Random.Range(-100,100), Random.Range(-100,100));

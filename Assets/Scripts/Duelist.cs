@@ -18,7 +18,6 @@ public class Duelist : UnitController {
 	    yield return null;
 		//Debug.Log("action");
 		if (!unit.dead && target != null) {
-            Debug.Log("not dead");
 			
 			inSpecialAction = true;
 			unit.Stop ();
@@ -50,7 +49,7 @@ public class Duelist : UnitController {
 	IEnumerator DashRandom(){
 		Vector2 dashLocation = new Vector2 (transform.position.x + Random.Range (-100.0f, 100.0f), transform.position.y + Random.Range (-100.0f, 100.0f));
 		unit.MoveToward (dashLocation);
-		yield return new WaitForSeconds (.2f);
+		yield return new WaitForSeconds (.4f);
 		unit.Dash ();
 		unit.MoveToward (dashLocation);
 	}
@@ -70,7 +69,7 @@ public class Duelist : UnitController {
 	void LateUpdate () {
 		base.LateUpdate ();
 	}
-	float weaponCooldown = 1f;
+	float weaponCooldown = 2f;
 
 	bool canAttack = true;
 

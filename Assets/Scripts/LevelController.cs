@@ -12,7 +12,7 @@ public class LevelController : MonoBehaviour {
     public Hashtable teamTable;
 
     public PlayerInputController pic;
-    Unit playerUnit;
+    [HideInInspector]public Unit playerUnit;
     float leaveLevelDistance = 0;
 	void Awake(){
 		enemyControllers = new List<UnitController> ();

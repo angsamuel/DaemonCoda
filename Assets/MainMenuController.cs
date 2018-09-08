@@ -11,7 +11,7 @@ public class MainMenuController : MonoBehaviour {
 	void Start () {
 		PlayerPrefs.SetString("profile", "");
 
-		//PlayerPrefs.DeleteAll();
+		PlayerPrefs.DeleteAll();
 		//PlayerPrefs.SetString("profile0", "");
 		//PlayerPrefs.SetString("profile1", "");
 		//PlayerPrefs.SetString("profile2", "");

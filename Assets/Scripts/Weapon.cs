@@ -106,15 +106,11 @@ public class Weapon : MonoBehaviour {
 		if (!rested && !disabled) {
 			if (swingTracker > 90) {
 				if(bc!=null){bc.enabled = true;}
-				if (GetComponent<BoxCollider2D> () != null) {
-					GetComponent<BoxCollider2D> ().enabled = false;
-				}
+
 			}
 			if (swingTracker > 270) {
 				if(bc!=null){bc.enabled = false;}
-				if (GetComponent<BoxCollider2D> () != null) {
-					GetComponent<BoxCollider2D> ().enabled = true;
-				}
+
 			}
 
 			float swingTemp = Time.deltaTime * speed;
@@ -151,6 +147,13 @@ public class Weapon : MonoBehaviour {
 		}
 	}
 
+	virtual public void InstantAim(Vector3 target){
+		myTarget = target;
+		if (IsRested() && !swinging) {
+			Quaternion nRotation = Quaternion.LookRotation (Vector3.forward, target - transform.position);
+			transform.rotation = nRotation;
+		}
+	}
 
 
 	virtual public void Strike(){

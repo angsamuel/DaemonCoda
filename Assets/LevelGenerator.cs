@@ -42,8 +42,8 @@ public class LevelGenerator : MonoBehaviour {
     Coroutine currentPlop;
 
     float spawnHuskChance = 0.01f;
-    float spawnMedPakChance = 0.01f;
-    float spawnMealPakChance = 0.01f;
+    float spawnMedPakChance = 0.005f;
+    float spawnMealPakChance = 0.025f;
     float blockOffset = 1.12f;
     public LevelPopulator lp;
 
@@ -116,7 +116,7 @@ public class LevelGenerator : MonoBehaviour {
        }
    }
 
- 
+    int mealPaks = 0;
     float spawnFurnitureChance = 0.025f;
     public void FillWithLoot(){
         for(int y = 0; y < level_grid_size; y++)
@@ -133,6 +133,7 @@ public class LevelGenerator : MonoBehaviour {
                     }else{
                         if(roll <= spawnMealPakChance){
                             Instantiate(mealPak,levelGrid[x,y].transform.position, Quaternion.identity);
+                            mealPaks+=1;
                         }
                     }
                     if(roll < spawnFurnitureChance){
@@ -142,6 +143,10 @@ public class LevelGenerator : MonoBehaviour {
             }
 
         }
+        if(mealPaks < 3){
+            FillWithLoot();
+        }
+
     }
 
     public void NewVillage()
