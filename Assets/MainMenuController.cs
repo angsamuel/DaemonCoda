@@ -35,6 +35,9 @@ public class MainMenuController : MonoBehaviour {
 		panels[i].transform.position = centerPanel.transform.position;
 	}
 
+	public void PlayTutorial(){
+		SceneManager.LoadScene("Tutorial");
+	}
 
 
 	void LoadExistingGame(){

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class LevelIntroOutroHandler : MonoBehaviour {
+	public bool tutorial = false;
 	public Image fadeInMask;
 	public Text villageNameText;
 	public LevelGenerator lg;
@@ -22,15 +23,20 @@ public class LevelIntroOutroHandler : MonoBehaviour {
 		fadeInMask.color = new Color(0,0,0,1);
 		yield return new WaitForSeconds(0.5f);
 		villageNameText.color = new Color(1,1,1,0);
-		villageNameText.text = lg.villageName;
+		if(tutorial){
+			villageNameText.text = "Tutorial";
+		}else{
+			villageNameText.text = lg.villageName;
+		}
 		float t = 0.0f;
 		while(t<textFadeInTime){
 			t += Time.deltaTime;
 			villageNameText.color = new Color(1,1,1,t/textFadeInTime);
 			yield return null;
 		}
-		pic.transform.Translate(new Vector2(0,-1000));
-
+		if(!tutorial){
+			pic.transform.Translate(new Vector2(-1000,-1000));
+		}
 		t = 0.0f;
 		while(t<pauseTime){
 			t+= Time.deltaTime;
@@ -43,7 +49,9 @@ public class LevelIntroOutroHandler : MonoBehaviour {
 			yield return null;
 		}
 		pic.enabeled = true;
-		pic.transform.Translate(new Vector2(0,1000));
+		if(!tutorial){
+			pic.transform.Translate(new Vector2(1000,1000));
+		}
 		t = 0.0f;
 		while(t<fadeOutTime){
 			t += Time.deltaTime;
@@ -53,10 +61,12 @@ public class LevelIntroOutroHandler : MonoBehaviour {
 			yield return null;
 		}
 		fadeInMask.color = new Color(0,0,0, 0); 
+		fadeInMask.gameObject.SetActive(false);
 		yield return null;
 	}
 
 	IEnumerator Outro(){
+		fadeInMask.gameObject.SetActive(true);
 		fadeInMask.color = new Color(0,0,0,0);
 		float t = 0.0f;
 		while(t<fadeOutTime){
@@ -70,19 +80,21 @@ public class LevelIntroOutroHandler : MonoBehaviour {
 		pic.playerUnit.transform.position = new Vector3(10000,10000,10000);
 		yield return new WaitForSeconds(.5f);
 		//generate new menues in selection
+		if(tutorial){
+			SceneManager.LoadScene("MainMenu");
+		}else{
 
-		PlayerPrefs.SetString(PlayerPrefs.GetString("profile") + "settlements saved", ""); 
-		SceneManager.LoadScene("LevelSelect");
+			PlayerPrefs.SetString(PlayerPrefs.GetString("profile") + "settlements saved", ""); 
+			SceneManager.LoadScene("LevelSelect");
+		}
 		//change scene
 	}
 
 	public void LeaveLevel(){
-		Debug.Log("leaving level");
 		StartCoroutine(Outro());
 	}
 
 	void Start () {
-		
 		StartCoroutine(Intro());	
 	}
 	

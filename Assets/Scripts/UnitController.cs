@@ -108,7 +108,7 @@ public class UnitController : MonoBehaviour {
                 StartCoroutine(WanderRoutine());
             }
             if(!husked){
-                Debug.Log("locking target");
+                //Debug.Log("locking target");
                 LockTarget();
             }
         }
@@ -126,6 +126,7 @@ public class UnitController : MonoBehaviour {
         {
             if (target != null && breadCrumbs.Count > 0)
             {
+                 unit.speed = attackSpeed;
                 for (int i = 0; i < breadCrumbs.Count - 1; i++)
                 {
                     if (Vector3.Distance(unit.transform.position, target.transform.position) < Vector3.Distance(breadCrumbs[0], target.transform.position))
@@ -173,7 +174,7 @@ public class UnitController : MonoBehaviour {
                 if (Vector3.Distance(playerUnit.transform.position, unit.transform.position) < scanRange * 4f)
                 {
                     scanEnabeled = true;
-                    Debug.Log("enabling scan");
+                    //Debug.Log("enabling scan");
                 }
             }
 

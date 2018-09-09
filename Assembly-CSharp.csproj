@@ -147,6 +147,7 @@
      <Compile Include="Assets\Sparks.cs" />
      <Compile Include="Assets\Stalker.cs" />
      <Compile Include="Assets\TownGenerator.cs" />
+     <Compile Include="Assets\TutorialManager.cs" />
      <Compile Include="Assets\ViewHandler.cs" />
      <None Include="Assets\Resources\Words\village_nouns.txt" />
      <None Include="Assets\Realistic Glitches Lite\Assets\Shaders\Distortion2D__FullOnly.shader" />

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Unit : MonoBehaviour {
+	public bool loadFromPrefs = true;
     public string team;
 	public int armoryIndex;
 	public GameObject blood;
@@ -58,9 +59,11 @@ public class Unit : MonoBehaviour {
 		//spawn new weapon for playerUnit
 		if(weapon == null){
 			//spawn weapon according to index
-			if(isPlayerUnit){
+			if(isPlayerUnit && loadFromPrefs){
 				armoryIndex = PlayerPrefs.GetInt(PlayerPrefs.GetString("profile") + "armoryIndex");
 				medPaks = PlayerPrefs.GetInt(PlayerPrefs.GetString("profile"));
+			}else if (isPlayerUnit){
+				armoryIndex = 1;
 			}
 			if(armoryIndex != -1){
 				Armory armory = GameObject.Find("Armory").GetComponent<Armory>();
@@ -76,9 +79,12 @@ public class Unit : MonoBehaviour {
 			PlayerPrefs.SetInt(PlayerPrefs.GetString("profile") + "armoryIndex", -1);
 		}
 
-		if(isPlayerUnit){
+		if(isPlayerUnit && loadFromPrefs){
 			mealPaks = PlayerPrefs.GetInt(PlayerPrefs.GetString("profile") + "mealPaks");
 			medPaks = PlayerPrefs.GetInt(PlayerPrefs.GetString("profile") + "medPaks");
+		}else{
+			medPaks = 0;
+			mealPaks = 0;
 		}
 	}
 	public bool WeaponRested(){
