@@ -37,8 +37,8 @@ public class Stalker : UnitController {
 	bool inMachine = false;
 	string mode = "sleep";
 
-	float fastSpeed = 20;
-	float excitedSpeed = 3f;
+	float fastSpeed = 25;
+	float excitedSpeed = 2.5f;
 	float driftSpeed = 1.5f;
 	float dangerDistance = 6;
 	float excitedDistance = 20;

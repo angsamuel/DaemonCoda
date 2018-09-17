@@ -41,6 +41,8 @@ public class Unit : MonoBehaviour {
     int medPaks = 0;
     int mealPaks = 0;
 
+	public List<Spell> spells;
+
     void Start(){
 		sr = body.GetComponent<SpriteRenderer>();
 		damageSources = new List<int> ();
@@ -386,10 +388,11 @@ public class Unit : MonoBehaviour {
 	}
 	public void TakeDamage(){
 		if (!dead && !invincible) {
+			health--;
 			if (pic != null) {
 				pic.DamageEffect ();
+				PlayerPrefs.SetInt(PlayerPrefs.GetString("profile") + "health", health);
 			}
-			health--;
 			if(blood!=null){
 				Vector3 u = UBP (colliderPosition, transform.position);
 				Instantiate (blood, transform.position, Quaternion.Euler (new Vector3 (Random.Range (0, 360), 90, 0)));
@@ -606,8 +609,15 @@ public class Unit : MonoBehaviour {
 		if(health < 3){
 			health += 1;
 			medPaks -= 1;
+			PlayerPrefs.SetString(PlayerPrefs.GetString("profile") + "medPaks", medPaks.ToString());
 		}
 		healOverlay.enabled = false;
+	}
+
+	public void CastSpell(Vector2 position){
+		if(spells.Count > 0){
+			spells[0].CastSpellOnLocation(this,position);
+		}
 	}
 
 

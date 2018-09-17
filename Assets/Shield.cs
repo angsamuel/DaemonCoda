@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Shield : MonoBehaviour {
-	float staminaCost = 30;
+	float staminaCost = 15;
 	protected Vector3 myTarget;
 	public GameObject plate;
 	public GameObject sparks;
@@ -13,7 +13,7 @@ public class Shield : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+		plate.GetComponent<SpriteRenderer>().color = owner.body.GetComponent<SpriteRenderer>().color;
 	}
 	
 	// Update is called once per frame

@@ -11,6 +11,7 @@ public class NameWizard : MonoBehaviour
 	string[] femaleNamesArr;
 	string[] lastNamesArr;
 	string[] villageEndingsArr;
+	string[] nounsArr;
 
 
 	void Awake()
@@ -60,6 +61,9 @@ public class NameWizard : MonoBehaviour
 	public string RandomVillageEnding(){
 		return villageEndingsArr[Random.Range(0, villageEndingsArr.Length)];
 	}
+	public string RandomNoun(){
+		return nounsArr[Random.Range(0,nounsArr.Length)];
+	}
 
 	private void loadWordLists()
 	{
@@ -81,10 +85,13 @@ public class NameWizard : MonoBehaviour
 		femaleNamesArr = femaleNamesAsset.text.Split(archDelim, System.StringSplitOptions.RemoveEmptyEntries);
 		lastNamesArr = lastNamesAsset.text.Split(archDelim, System.StringSplitOptions.RemoveEmptyEntries);
 		villageEndingsArr = villageEndingsAsset.text.Split(archDelim, System.StringSplitOptions.RemoveEmptyEntries);
+		nounsArr = nounsAsset.text.Split(archDelim, System.StringSplitOptions.RemoveEmptyEntries);
+		
 	}
 
 	private void destroyWordLists()
 	{
+		nounsArr = new string[0];
 		namesArr = new string[0];
 		adjectiveArr = new string[0];
 		villageNounArr = new string[0];
@@ -97,7 +104,7 @@ public class NameWizard : MonoBehaviour
 
 	public string GenerateVillageName()
 	{
-		int f = Random.Range(0, 9);
+		int f = Random.Range(0, 12);
 		string name = "";
 		switch (f)
 		{
@@ -108,7 +115,7 @@ public class NameWizard : MonoBehaviour
 			name = RandomName() + RandomVillageEnding();
 			break;
 		case 2:
-			name = RandomName() + " " + RandomName();
+			name = RandomNoun() + " " + RandomVillageEnding();
 			break;
 		case 3:
 			name = RandomName() + "\'s " + RandomVillageNoun();
@@ -117,7 +124,7 @@ public class NameWizard : MonoBehaviour
 			name = RandomName();
 			break;
 		case 5:
-			name = RandomVillageNoun() + " " + RandomAdjective();
+			name = RandomAdjective() + " " + RandomNoun();;
 			break;
 		case 6:
 			name = RandomVillageNoun() + " of " + RandomAdjective();
@@ -127,6 +134,15 @@ public class NameWizard : MonoBehaviour
 			break;
 		case 8:
 			name = RandomAdjective() + " " + RandomName();
+			break;
+		case 9:
+			name = RandomVillageNoun() + " of " + RandomNoun();
+			break;
+		case 10:
+			name = RandomNoun() + " of " + RandomName();
+			break;
+		case 11:
+			name = RandomAdjective() + " " + RandomNoun();
 			break;
 		default:
 			name = "";

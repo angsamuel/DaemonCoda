@@ -6,11 +6,14 @@ public class Blade : MonoBehaviour {
 	float bounceCost = 30f;
 	public int id;
 	Weapon weapon;
+	public bool onWeapon = true;
 
 	// Use this for initialization
 	void Start () {
 		id = Random.Range(-2000000000,2000000000);
-		weapon = transform.parent.GetComponent<Weapon>();
+		if(onWeapon){
+			weapon = transform.parent.GetComponent<Weapon>();
+		}
 	}
 	
 	// Update is called once per frame
@@ -19,9 +22,11 @@ public class Blade : MonoBehaviour {
 	}
 
 	public void Bounce(){
-		weapon.Bounce();
-		weapon.Disable(1.5f);
-		StartCoroutine(NoDamage());
+		if(onWeapon){
+			weapon.Bounce();
+			weapon.Disable(1.5f);
+			StartCoroutine(NoDamage());
+		}
 	}
 
 	IEnumerator NoDamage(){

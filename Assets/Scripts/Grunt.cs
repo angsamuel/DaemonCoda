@@ -29,8 +29,8 @@ public class Grunt : UnitController {
         {
 
             if(firstAgro){
-                unit.PauseMovement(1f);
-                unit.PauseAttack(1f);
+                unit.PauseMovement(.5f);
+                unit.PauseAttack(.5f);
                 firstAgro = false;
             }
 

@@ -10,11 +10,11 @@ public class UnitController : MonoBehaviour {
 	public float strikingDistance;
 	public int seeingDistance;
 	protected bool playerSeen = false;
-    float wanderSpeed = 2f;
+    float wanderSpeed = 3f;
     float attackSpeed = 0;
     protected List<Vector2> breadCrumbs;
 
-
+    public bool canWander = true;
     PatrolRoute pr;
     public int prIndex;
 
@@ -104,7 +104,7 @@ public class UnitController : MonoBehaviour {
         if (!unit.dead && scanEnabeled)
         {
             CheckForPlayer ();
-            if(pr == null && !canSeeTarget){
+            if(pr == null && !canSeeTarget && canWander){
                 StartCoroutine(WanderRoutine());
             }
             if(!husked){
@@ -260,7 +260,8 @@ public class UnitController : MonoBehaviour {
                 if (hits[i].transform.tag == "weapon" || hits[i].transform.tag == "damage source" ||  hits[i].transform.tag == "floor" ||  hits[i].transform.tag == "Untagged"
                 ||  hits[i].transform.tag == "med pak"
                 ||  hits[i].transform.tag == "meal pak"
-                ||  hits[i].transform.tag == "street")
+                ||  hits[i].transform.tag == "street"
+                ||  hits[i].transform.tag == "shield")
                 {
                     hits.RemoveAt(i);
                     i = i - 1;
@@ -296,23 +297,31 @@ public class UnitController : MonoBehaviour {
         return false;
     }
 
+    IEnumerator LockTargetWait(){
+        lockWait = true;
+        yield return new WaitForSeconds(.5f);
+        lockWait = false;
+    }
+    bool lockWait = false;
     void LockTarget(){
-        
-        if(targetEnabled && target != null && !scanning && !target.dead)
-        {
+        if(!lockWait){
+            StartCoroutine(LockTargetWait());
+            if(targetEnabled && target != null && !scanning && !target.dead)
+            {
 
-          canSeeTarget = LinecastTarget(linecastOffsetX, linecastOffsetY) && LinecastTarget(-linecastOffsetX, linecastOffsetY) && LinecastTarget(linecastOffsetX, -linecastOffsetY) && LinecastTarget(-linecastOffsetX, -linecastOffsetY);
+            canSeeTarget = LinecastTarget(linecastOffsetX, linecastOffsetY) && LinecastTarget(-linecastOffsetX, linecastOffsetY) && LinecastTarget(linecastOffsetX, -linecastOffsetY) && LinecastTarget(-linecastOffsetX, -linecastOffsetY);
 
 
-        }else if(targetEnabled && !scanning)
-        {
-            if(!scanning){
-                StartCoroutine(ScanRoutine());
+            }else if(targetEnabled && !scanning)
+            {
+                if(!scanning){
+                    StartCoroutine(ScanRoutine());
+                }
             }
         }
     }
     
-    float scanRange = 7;
+    public float scanRange = 7;
     IEnumerator ScanRoutine()
     {
         if(!scanning){
@@ -343,7 +352,7 @@ public class UnitController : MonoBehaviour {
                 for (int h = 0; h < hits.Count; h++)
                 {
                     //remove not valid blockers
-                    if (hits[h].transform.tag == "weapon" || hits[h].transform.tag == "damage source" || hits[h].transform.tag == "floor" || hits[h].transform.tag == "Untagged" || hits[h].transform.tag == "street")
+                    if (hits[h].transform.tag == "weapon" || hits[h].transform.tag == "damage source" || hits[h].transform.tag == "floor" || hits[h].transform.tag == "Untagged" || hits[h].transform.tag == "street" || hits[h].transform.tag == "shield")
                     {
                         hits.RemoveAt(h);
                         h = h - 1;
@@ -369,7 +378,7 @@ public class UnitController : MonoBehaviour {
                 }
                 else 
                 {
-                    Debug.DrawLine(unit.transform.position, scanPos, Color.red);
+                     Debug.DrawLine(unit.transform.position, scanPos, Color.red);
                 }
 
 
@@ -391,7 +400,7 @@ public class UnitController : MonoBehaviour {
                 
             }
 
-            yield return new WaitForSeconds(Random.Range(.25f, .5f));
+            yield return new WaitForSeconds(Random.Range(.2f, .3f));
             scanning = false;
         }
     }

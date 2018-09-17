@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class LevelIntroOutroHandler : MonoBehaviour {
 	public bool tutorial = false;
+	public bool capital = false;
 	public Image fadeInMask;
 	public Text villageNameText;
 	public LevelGenerator lg;
@@ -25,6 +26,8 @@ public class LevelIntroOutroHandler : MonoBehaviour {
 		villageNameText.color = new Color(1,1,1,0);
 		if(tutorial){
 			villageNameText.text = "Tutorial";
+		}else if(capital){
+			villageNameText.text = "The Capital";
 		}else{
 			villageNameText.text = lg.villageName;
 		}

@@ -16,6 +16,7 @@ public class LevelSelectManager : MonoBehaviour {
 	
 	public Text distanceLabel;
 	public Text distanceText;
+	public Text distCapText;
 
 	public Text signText;
 
@@ -39,12 +40,14 @@ public class LevelSelectManager : MonoBehaviour {
 	Vector3 travelPosition;
 	Vector3 framePosition;
 	Vector3 coverPosition;
-
+	int distToCap;
 
 	// Use this for initialization
 	void Start () {
 		LoadSettlements();
 		mealPaks = PlayerPrefs.GetInt(PlayerPrefs.GetString("profile") + "mealPaks");
+		distToCap = PlayerPrefs.GetInt(PlayerPrefs.GetString("profile") + "distance to capital");
+		distCapText.text = distToCap.ToString();
 	}	
 	
 	// Update is called once per frame
@@ -105,7 +108,8 @@ public class LevelSelectManager : MonoBehaviour {
 
 	public void FinalizeTravel(){
 		mealPaks -= s.distance;
-		
+		distToCap -= s.distance;
+		PlayerPrefs.SetInt(PlayerPrefs.GetString("profile") + "distance to capital", distToCap);		
 		//save mealpaks
 		PlayerPrefs.SetInt(PlayerPrefs.GetString("profile") + "mealPaks", mealPaks);
 		entirePanel.transform.position = new Vector3(1000,1000,1000);

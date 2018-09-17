@@ -68,9 +68,11 @@
      <Compile Include="Assets\LevelPopulator.cs" />
      <Compile Include="Assets\LevelSelectManager.cs" />
      <Compile Include="Assets\MainMenuController.cs" />
+     <Compile Include="Assets\Matilda.cs" />
      <Compile Include="Assets\MealPakPanel.cs" />
      <Compile Include="Assets\MedPakPanel.cs" />
      <Compile Include="Assets\PatrolRoute.cs" />
+     <Compile Include="Assets\PeasantQueen.cs" />
      <Compile Include="Assets\Realistic Glitches Lite\Assets\Scripts\BWEffect.cs" />
      <Compile Include="Assets\Realistic Glitches Lite\Assets\Scripts\DiyEffect__FullOnly.cs" />
      <Compile Include="Assets\Realistic Glitches Lite\Assets\Scripts\ShaderEffect_BleedingColors.cs" />
@@ -86,6 +88,8 @@
      <Compile Include="Assets\Resources\ViewAssets\Field Of View\Scripts\IHideable.cs" />
      <Compile Include="Assets\Resources\ViewAssets\RotateToMouse.cs" />
      <Compile Include="Assets\ReverseHideable.cs" />
+     <Compile Include="Assets\RinPetal.cs" />
+     <Compile Include="Assets\RinPetalProjectile.cs" />
      <Compile Include="Assets\RotationFollowMouse.cs" />
      <Compile Include="Assets\Route.cs" />
      <Compile Include="Assets\SaverLoader.cs" />
@@ -126,6 +130,7 @@
      <Compile Include="Assets\Scripts\Scythe.cs" />
      <Compile Include="Assets\Scripts\Settlement.cs" />
      <Compile Include="Assets\Scripts\Spear.cs" />
+     <Compile Include="Assets\Scripts\Spell.cs" />
      <Compile Include="Assets\Scripts\StaminaDisplay.cs" />
      <Compile Include="Assets\Scripts\StreetCrawler.cs" />
      <Compile Include="Assets\Scripts\Sword.cs" />
@@ -146,6 +151,7 @@
      <Compile Include="Assets\Shield.cs" />
      <Compile Include="Assets\Sparks.cs" />
      <Compile Include="Assets\Stalker.cs" />
+     <Compile Include="Assets\StarvationMenuController.cs" />
      <Compile Include="Assets\TownGenerator.cs" />
      <Compile Include="Assets\TutorialManager.cs" />
      <Compile Include="Assets\ViewHandler.cs" />

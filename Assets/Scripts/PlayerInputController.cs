@@ -10,7 +10,7 @@ public class PlayerInputController : MonoBehaviour {
 	public float pulseTime;
 	public Camera mainCamera;
 	public bool aim_enabled = true;
-	bool dashLock, disabled, canAttack, canPickup = false;
+	bool dashLock, disabled, canAttack, canPickup, canCastSpell = false;
 
 	public GameObject staminaBar;
 	public HPDisplay hpDisplay;
@@ -34,6 +34,7 @@ public class PlayerInputController : MonoBehaviour {
 			float r = PlayerPrefs.GetFloat(profile + "R");
 			float g = PlayerPrefs.GetFloat(profile + "G");
 			float b = PlayerPrefs.GetFloat(profile + "B");
+			playerUnit.health = PlayerPrefs.GetInt(profile + "health");
 			playerUnit.body.GetComponent<SpriteRenderer>().color = new Color(r,g,b);
 		}
 	}
@@ -110,6 +111,13 @@ public class PlayerInputController : MonoBehaviour {
 				blocking = false;
 			}
 
+			if(Input.GetAxisRaw("CastSpell") != 0 && canCastSpell){
+				playerUnit.CastSpell(Camera.main.ScreenToWorldPoint (Input.mousePosition));
+				canCastSpell = false;
+			}else if(Input.GetAxisRaw("CastSpell") == 0){
+				canCastSpell = true;
+			}
+
 			//healing
 			if(Input.GetAxisRaw("Heal") != 0){
 				playerUnit.Heal();
@@ -124,6 +132,7 @@ public class PlayerInputController : MonoBehaviour {
 				string profile = PlayerPrefs.GetString("profile");
 				PlayerPrefs.SetString(profile + "settlements saved", "");
 				PlayerPrefs.SetString("profile" + profile, "");
+				PlayerPrefs.DeleteAll();
 				SceneManager.LoadScene ("MainMenu");
 			}
 		}
