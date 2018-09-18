@@ -46,8 +46,17 @@ public class LevelSelectManager : MonoBehaviour {
 	void Start () {
 		LoadSettlements();
 		mealPaks = PlayerPrefs.GetInt(PlayerPrefs.GetString("profile") + "mealPaks");
+		if(mealPaks < 3){
+			SceneManager.LoadScene("Starvation");
+		}
+
+
 		distToCap = PlayerPrefs.GetInt(PlayerPrefs.GetString("profile") + "distance to capital");
 		distCapText.text = distToCap.ToString();
+
+		if(distToCap<=0){
+			SceneManager.LoadScene("MatildaBoss");
+		}
 	}	
 	
 	// Update is called once per frame
@@ -200,9 +209,16 @@ public class LevelSelectManager : MonoBehaviour {
 	}
 
 	void GenerateNewSelections(){
+		int j = Random.Range(0,4);
 		for(int i = 0; i<3; i++){
 			Settlement newSett = sg.GenerateSettlement();
-			newSett.distance = Random.Range(i+1, (i+1)*3);
+
+			if(j == i){
+				newSett.distance = 3;
+			}else{
+				newSett.distance = Random.Range(3, 9);
+			}
+			
 			settlements.Add(newSett);
 			SaveSettlement(newSett, i);
 		}

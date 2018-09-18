@@ -7,9 +7,9 @@ public class RinPetalProjectile : MonoBehaviour {
 	public SpriteRenderer sr;
 	public BoxCollider2D bc;
 	public GameObject explosion;
-	float powerUpTime = .5f;
-	float wait1Time = 0.15f;
-	float wait2Time = .15f;
+	float powerUpTime = .7f;
+	float wait1Time = 0.3f;
+	float wait2Time = .3f;
 	float speed = 15;
 	// Use this for initialization
 	void Start () {

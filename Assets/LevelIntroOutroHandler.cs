@@ -19,7 +19,9 @@ public class LevelIntroOutroHandler : MonoBehaviour {
 	// Use this for initialization
 
 	IEnumerator Intro(){
-		pic.enabeled = false;
+		if(pic!=null){
+			pic.enabeled = false;
+		}
 		villageNameText.color = new Color(1,1,1,0);
 		fadeInMask.color = new Color(0,0,0,1);
 		yield return new WaitForSeconds(0.5f);
@@ -31,15 +33,18 @@ public class LevelIntroOutroHandler : MonoBehaviour {
 		}else{
 			villageNameText.text = lg.villageName;
 		}
+
+		if(!tutorial){
+			pic.transform.Translate(new Vector2(-1000,-1000));
+		}
+
 		float t = 0.0f;
 		while(t<textFadeInTime){
 			t += Time.deltaTime;
 			villageNameText.color = new Color(1,1,1,t/textFadeInTime);
 			yield return null;
 		}
-		if(!tutorial){
-			pic.transform.Translate(new Vector2(-1000,-1000));
-		}
+
 		t = 0.0f;
 		while(t<pauseTime){
 			t+= Time.deltaTime;
@@ -51,7 +56,9 @@ public class LevelIntroOutroHandler : MonoBehaviour {
 			t+= Time.deltaTime;
 			yield return null;
 		}
-		pic.enabeled = true;
+		if(pic!=null){
+			pic.enabeled = true;
+		}
 		if(!tutorial){
 			pic.transform.Translate(new Vector2(1000,1000));
 		}
@@ -86,7 +93,7 @@ public class LevelIntroOutroHandler : MonoBehaviour {
 		if(tutorial){
 			SceneManager.LoadScene("MainMenu");
 		}else{
-
+			
 			PlayerPrefs.SetString(PlayerPrefs.GetString("profile") + "settlements saved", ""); 
 			SceneManager.LoadScene("LevelSelect");
 		}
@@ -95,9 +102,12 @@ public class LevelIntroOutroHandler : MonoBehaviour {
 
 	public void LeaveLevel(){
 		StartCoroutine(Outro());
+		PlayerPrefs.SetInt(PlayerPrefs.GetString("profile") + "medPaks", pic.playerUnit.GetMedPaks());
+		PlayerPrefs.SetInt(PlayerPrefs.GetString("profile") + "mealPaks", pic.playerUnit.GetMealPaks());
 	}
 
 	void Start () {
+		transform.localScale = new Vector3(25,25,25);
 		StartCoroutine(Intro());	
 	}
 	

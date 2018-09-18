@@ -315,13 +315,35 @@ public class UnitController : MonoBehaviour {
             }else if(targetEnabled && !scanning)
             {
                 if(!scanning){
-                    StartCoroutine(ScanRoutine());
+                    //StartCoroutine(ScanRoutine());
+                    StartCoroutine(ScanForPlayerRoutine());
                 }
             }
         }
     }
     
     public float scanRange = 7;
+
+    IEnumerator ScanForPlayerRoutine(){
+        if(!scanning){
+            if(Vector3.Distance(transform.position, levelController.playerUnit.transform.position) <= scanRange){
+                    scanning = true;
+                    target = levelController.playerUnit;
+                    canSeeTarget = LinecastTarget(linecastOffsetX, linecastOffsetY) && LinecastTarget(-linecastOffsetX, linecastOffsetY) && LinecastTarget(linecastOffsetX, -linecastOffsetY) && LinecastTarget(-linecastOffsetX, -linecastOffsetY);
+                    if(!canSeeTarget){
+                        target= null;
+                    }    
+            }
+        }
+
+        yield return new WaitForSeconds(Random.Range(.2f, .3f));
+        scanning = false;
+
+    }
+
+
+
+
     IEnumerator ScanRoutine()
     {
         if(!scanning){
@@ -329,12 +351,12 @@ public class UnitController : MonoBehaviour {
 
             float nudge = Random.Range(0f, 360.0f);
             
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 16; i++)
             {
 
                 //yield return new WaitForSeconds(.04f);
-                float scanX = unit.transform.position.x + scanRange * Mathf.Cos(Mathf.Deg2Rad * (i+nudge) * 45);
-                float scanY = unit.transform.position.y + scanRange * Mathf.Sin(Mathf.Deg2Rad * (i+nudge) * 45);
+                float scanX = unit.transform.position.x + scanRange * Mathf.Cos(Mathf.Deg2Rad * (i+nudge) * 22.5f);
+                float scanY = unit.transform.position.y + scanRange * Mathf.Sin(Mathf.Deg2Rad * (i+nudge) * 22.5f);
                 Vector2 scanPos = new Vector2(scanX, scanY);
 
             

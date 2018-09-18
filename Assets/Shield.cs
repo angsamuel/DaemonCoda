@@ -13,12 +13,16 @@ public class Shield : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		plate.GetComponent<SpriteRenderer>().color = owner.body.GetComponent<SpriteRenderer>().color;
+		
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
+	}
+
+	public void StealOwnerColor(){
+		plate.GetComponent<SpriteRenderer>().color = owner.body.GetComponent<SpriteRenderer>().color;
 	}
 
 	public bool IsRested(){
@@ -44,7 +48,7 @@ public class Shield : MonoBehaviour {
 		if(other.tag == "damage source" || other.tag == "disabled damage source"){
 			//Debug.Log("USING STAMINA");
 			owner.UseStamina(staminaCost);
-			Instantiate(sparks, plate.transform);
+			Instantiate(sparks, plate.transform.position, plate.transform.rotation);
 		}
 	}
 

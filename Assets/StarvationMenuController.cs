@@ -8,6 +8,7 @@ public class StarvationMenuController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		StartCoroutine(StarvationRoutine());
+		PlayerPrefs.DeleteAll();
 	}
 	
 	// Update is called once per frame
@@ -16,7 +17,7 @@ public class StarvationMenuController : MonoBehaviour {
 	}
 
 	IEnumerator StarvationRoutine(){
-		yield return new WaitForSeconds(2);
+		yield return new WaitForSeconds(3);
 		SceneManager.LoadScene("MainMenu");
 	}
 }

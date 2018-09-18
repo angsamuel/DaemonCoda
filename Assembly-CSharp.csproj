@@ -54,9 +54,11 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Armory.cs" />
+     <Compile Include="Assets\BossMonitor.cs" />
      <Compile Include="Assets\Chest.cs" />
      <Compile Include="Assets\CrestGenerator.cs" />
      <Compile Include="Assets\CustomizationPanelHandler.cs" />
+     <Compile Include="Assets\DemoEnder.cs" />
      <Compile Include="Assets\FOW.cs" />
      <Compile Include="Assets\FOWMesh.cs" />
      <Compile Include="Assets\Greenery.cs" />

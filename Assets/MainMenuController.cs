@@ -14,8 +14,8 @@ public class MainMenuController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		PlayerPrefs.SetString("profile", "");
-
 		PlayerPrefs.DeleteAll();
+		//PlayerPrefs.DeleteAll();
 		cursorTargets  = new List<GameObject>(GameObject.FindGameObjectsWithTag("cursor target"));
 
 		//PlayerPrefs.SetString("profile0", "");

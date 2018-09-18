@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour {
 	public bool loadFromPrefs = true;
+	public bool matchWeaponToBody = false;
     public string team;
 	public int armoryIndex;
 	public GameObject blood;
@@ -43,7 +44,13 @@ public class Unit : MonoBehaviour {
 
 	public List<Spell> spells;
 
-    void Start(){
+
+	void Start(){
+		if(weapon!=null && matchWeaponToBody){
+			weapon.blade.GetComponent<SpriteRenderer>().color = body.GetComponent<SpriteRenderer>().color;
+		}
+	}
+    void Awake(){
 		sr = body.GetComponent<SpriteRenderer>();
 		damageSources = new List<int> ();
 		//Time.timeScale = 0.1f;
@@ -64,6 +71,7 @@ public class Unit : MonoBehaviour {
 			if(isPlayerUnit && loadFromPrefs){
 				armoryIndex = PlayerPrefs.GetInt(PlayerPrefs.GetString("profile") + "armoryIndex");
 				medPaks = PlayerPrefs.GetInt(PlayerPrefs.GetString("profile"));
+				health = PlayerPrefs.GetInt(PlayerPrefs.GetString("profile") + "health");
 			}else if (isPlayerUnit){
 				armoryIndex = 1;
 			}
@@ -197,6 +205,10 @@ public class Unit : MonoBehaviour {
 			StartCoroutine(PauseMovementRoutine(time));
 		}
 	}
+
+	public void UnpauseMovement(){
+		canMove = true;
+	}
 	IEnumerator PauseMovementRoutine(float time){
 		float t = 0;
 		canMove = false;
@@ -235,6 +247,21 @@ public class Unit : MonoBehaviour {
 			return true;
 		}
 		return false;
+	}
+
+	public void Dashes(int num){
+		StartCoroutine(DashesRoutine(num));
+	}
+
+	IEnumerator DashesRoutine(int num){
+		int i = 0;
+		while(i<num){
+			yield return null;
+			if(dashLocked == false){
+				i++;
+				Dash();
+			}
+		}
 	}
 
 	float trMaxTime = 0.5f;
@@ -307,13 +334,12 @@ public class Unit : MonoBehaviour {
                 Destroy(other.gameObject);
 				StartCoroutine(GetMedPakTimer());
                 medPaks += 1;
-				PlayerPrefs.SetInt(PlayerPrefs.GetString("profile") + "medPaks", medPaks);
+				
             }else if(other.gameObject.tag == "meal pak" && canPickupMealPak)
             {
                 Destroy(other.gameObject);
 				StartCoroutine(GetMealPakTimer());
                 mealPaks += 1;
-				PlayerPrefs.SetInt(PlayerPrefs.GetString("profile") + "mealPaks", mealPaks);
             }
         }
 
@@ -615,7 +641,7 @@ public class Unit : MonoBehaviour {
 	}
 
 	public void CastSpell(Vector2 position){
-		if(spells.Count > 0){
+		if(spells.Count > 0 && !dead){
 			spells[0].CastSpellOnLocation(this,position);
 		}
 	}

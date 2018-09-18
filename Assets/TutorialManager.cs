@@ -43,12 +43,21 @@ public class TutorialManager : MonoBehaviour {
 		}else if(tutorialIndex == 17){
 			medPak.SetActive(true);
 			mealPak.SetActive(true);
+			medPak.GetComponent<SpriteRenderer>().enabled = false;
+			mealPak.GetComponent<SpriteRenderer>().enabled = false;
+			StartCoroutine(Dumbo());
 			button.SetActive(false);
 			StartCoroutine(WaitForPakPickup());
 		}else if(tutorialIndex == messages.Count-1){
 			button.SetActive(false);
 			LeaveTutorial();
 		}
+	}
+
+	IEnumerator Dumbo(){
+		yield return new WaitForSeconds(.2f);
+		medPak.GetComponent<SpriteRenderer>().enabled = true;
+		mealPak.GetComponent<SpriteRenderer>().enabled = true;
 	}
 
 	void LeaveTutorial(){

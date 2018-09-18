@@ -19,7 +19,7 @@ public class PlayerInputController : MonoBehaviour {
 
     public bool enabeled;
 
-	bool loadColor = false;
+	public bool loadColor = true;
 
 
 	// Use this for initialization
@@ -36,6 +36,7 @@ public class PlayerInputController : MonoBehaviour {
 			float b = PlayerPrefs.GetFloat(profile + "B");
 			playerUnit.health = PlayerPrefs.GetInt(profile + "health");
 			playerUnit.body.GetComponent<SpriteRenderer>().color = new Color(r,g,b);
+			playerUnit.shield.StealOwnerColor();
 		}
 	}
 
