@@ -251,9 +251,13 @@ public class UnitController : MonoBehaviour {
     public bool scanning = false;
     public bool canSeeTarget = false;
 
-    bool LinecastTarget(float offsetX, float offsetY){
+    bool LinecastTarget(float offsetX, float offsetY, Unit u){
+        if(u == null){
+            u = target;
+        }
+
         List<RaycastHit2D> hits;
-         hits = new List<RaycastHit2D>(Physics2D.LinecastAll(unit.transform.position + new Vector3(offsetX, offsetY), target.transform.position + new Vector3(offsetX, offsetY)));
+        hits = new List<RaycastHit2D>(Physics2D.LinecastAll(unit.transform.position + new Vector3(offsetX, offsetY), u.transform.position + new Vector3(offsetX, offsetY)));
         bool rayReachedTarget = false;
          for (int i = 0; i < hits.Count; i++)
             {
@@ -274,14 +278,14 @@ public class UnitController : MonoBehaviour {
 
             }
 
-            if (hits.Count > 0 && hits[0].transform.gameObject.GetComponent<Unit>() == target)
+            if (hits.Count > 0 && hits[0].transform.gameObject.GetComponent<Unit>() == u)
             { 
-                Debug.DrawLine(unit.transform.position + new Vector3(offsetX, offsetY), target.transform.position + new Vector3(offsetX, offsetY), Color.green);
+                Debug.DrawLine(unit.transform.position + new Vector3(offsetX, offsetY), u.transform.position + new Vector3(offsetX, offsetY), Color.green);
                 rayReachedTarget = true;
             }
             else
             {
-                Debug.DrawLine(unit.transform.position + new Vector3(offsetX, offsetY), target.transform.position + new Vector3(offsetX, offsetY), Color.red);
+                Debug.DrawLine(unit.transform.position + new Vector3(offsetX, offsetY), u.transform.position + new Vector3(offsetX, offsetY), Color.red);
                 rayReachedTarget = false;
             }
 
@@ -292,7 +296,7 @@ public class UnitController : MonoBehaviour {
     protected bool TargetInSight(Unit newTarget, float range){
         if(Vector3.Distance(transform.position, newTarget.transform.position)<=range){
            target = newTarget;
-           return LinecastTarget(0, 0);
+           return LinecastTarget(0, 0, null);
         }
         return false;
     }
@@ -309,7 +313,7 @@ public class UnitController : MonoBehaviour {
             if(targetEnabled && target != null && !scanning && !target.dead)
             {
 
-            canSeeTarget = LinecastTarget(linecastOffsetX, linecastOffsetY) && LinecastTarget(-linecastOffsetX, linecastOffsetY) && LinecastTarget(linecastOffsetX, -linecastOffsetY) && LinecastTarget(-linecastOffsetX, -linecastOffsetY);
+            canSeeTarget = LinecastTarget(linecastOffsetX, linecastOffsetY, null) && LinecastTarget(-linecastOffsetX, linecastOffsetY,null) && LinecastTarget(linecastOffsetX, -linecastOffsetY,null) && LinecastTarget(-linecastOffsetX, -linecastOffsetY, null);
 
 
             }else if(targetEnabled && !scanning)
@@ -328,10 +332,11 @@ public class UnitController : MonoBehaviour {
         if(!scanning){
             if(Vector3.Distance(transform.position, levelController.playerUnit.transform.position) <= scanRange){
                     scanning = true;
-                    target = levelController.playerUnit;
-                    canSeeTarget = LinecastTarget(linecastOffsetX, linecastOffsetY) && LinecastTarget(-linecastOffsetX, linecastOffsetY) && LinecastTarget(linecastOffsetX, -linecastOffsetY) && LinecastTarget(-linecastOffsetX, -linecastOffsetY);
+                    canSeeTarget = LinecastTarget(linecastOffsetX, linecastOffsetY,levelController.playerUnit) && LinecastTarget(-linecastOffsetX, linecastOffsetY,levelController.playerUnit) && LinecastTarget(linecastOffsetX, -linecastOffsetY,levelController.playerUnit) && LinecastTarget(-linecastOffsetX, -linecastOffsetY,levelController.playerUnit);
                     if(!canSeeTarget){
                         target= null;
+                    }else{
+                        target = levelController.playerUnit;
                     }    
             }
         }

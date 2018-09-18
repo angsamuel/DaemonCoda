@@ -46,16 +46,20 @@ public class LevelSelectManager : MonoBehaviour {
 	void Start () {
 		LoadSettlements();
 		mealPaks = PlayerPrefs.GetInt(PlayerPrefs.GetString("profile") + "mealPaks");
+		distToCap = PlayerPrefs.GetInt(PlayerPrefs.GetString("profile") + "distance to capital");
+
+		if(mealPaks >= distToCap){
+			SceneManager.LoadScene("MatildaBoss");
+		}
 		if(mealPaks < 3){
 			SceneManager.LoadScene("Starvation");
 		}
 
 
-		distToCap = PlayerPrefs.GetInt(PlayerPrefs.GetString("profile") + "distance to capital");
 		distCapText.text = distToCap.ToString();
 
 		if(distToCap<=0){
-			SceneManager.LoadScene("MatildaBoss");
+			
 		}
 	}	
 	
@@ -77,8 +81,6 @@ public class LevelSelectManager : MonoBehaviour {
 			newSett.weather = PlayerPrefs.GetString(profile + i.ToString() + "weather");
 			newSett.crestSeed = PlayerPrefs.GetInt(profile + i.ToString() + "crestSeed");
 			newSett.distance = PlayerPrefs.GetInt(profile + i.ToString() + "distance");
-
-
 			settlements.Add(newSett);
 		}
 	}
@@ -209,7 +211,7 @@ public class LevelSelectManager : MonoBehaviour {
 	}
 
 	void GenerateNewSelections(){
-		int j = Random.Range(0,4);
+		int j = Random.Range(0,3);
 		for(int i = 0; i<3; i++){
 			Settlement newSett = sg.GenerateSettlement();
 

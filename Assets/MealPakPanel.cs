@@ -15,6 +15,8 @@ public class MealPakPanel : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		numText.text = playerUnit.GetMealPaks().ToString() + "x";
+		if(playerUnit!=null){
+			numText.text = playerUnit.GetMealPaks().ToString() + "x";
+		}
 	}
 }

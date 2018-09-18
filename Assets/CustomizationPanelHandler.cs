@@ -34,6 +34,7 @@ public class CustomizationPanelHandler : MonoBehaviour {
 		PlayerPrefs.SetInt(PlayerPrefs.GetString("profile") + "mealPaks", 3);
 		PlayerPrefs.SetInt(PlayerPrefs.GetString("profile") + "distance to capital", 9);
 		PlayerPrefs.SetInt(PlayerPrefs.GetString("profile") + "health", 3);
+		PlayerPrefs.SetInt(PlayerPrefs.GetString("profile") + "armoryIndex",1);
 		//Debug.Log(PlayerPrefs.GetString("profile"));
 		SceneManager.LoadScene("LevelSelect");	
 	}

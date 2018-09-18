@@ -17,9 +17,9 @@ public class Matilda : UnitController {
     void Update()
     {
         //base.Update();
-        //if(target!=null){
-        //    Debug.Log("has target");
-        //}
+        if(target!=null){
+           Debug.Log("has target");
+        }
     }
 
     void LateUpdate(){

@@ -34,7 +34,7 @@ public class LevelIntroOutroHandler : MonoBehaviour {
 			villageNameText.text = lg.villageName;
 		}
 
-		if(!tutorial){
+		if(!tutorial && pic!=null){
 			pic.transform.Translate(new Vector2(-1000,-1000));
 		}
 

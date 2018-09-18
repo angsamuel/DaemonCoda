@@ -31,12 +31,7 @@ public class PlayerInputController : MonoBehaviour {
 		//set player color
 		string profile = PlayerPrefs.GetString("profile");
 		if(loadColor){
-			float r = PlayerPrefs.GetFloat(profile + "R");
-			float g = PlayerPrefs.GetFloat(profile + "G");
-			float b = PlayerPrefs.GetFloat(profile + "B");
-			playerUnit.health = PlayerPrefs.GetInt(profile + "health");
-			playerUnit.body.GetComponent<SpriteRenderer>().color = new Color(r,g,b);
-			playerUnit.shield.StealOwnerColor();
+			
 		}
 	}
 

@@ -108,6 +108,7 @@ a44114bd4fa541174f78b4bb92bacb48 UnityEngine.UI.dll:UnityEngine.EventSystems.Sta
 e90403eeda069970e0b9de1533de13a6 UnityEngine.UI.dll:UnityEngine.UI.ToggleGroup
 2d58ca16854b99daea8c45e9c0f367b7 UnityEngine.UI.dll:UnityEngine.EventSystems.TouchInputModule
 16da51d1b62ef6d4ee1849350434023b UnityEngine.UI.dll:UnityEngine.UI.VerticalLayoutGroup
+49ffb37b380b4e4015c1f7a3852e92ae Assembly-CSharp.dll:.BossMonitor
 2e17108aab85d8c411b44afac000cf38 Assembly-CSharp.dll:.BWEffect
 2f1c786cc4638a946327a8686329fe2b Assembly-CSharp.dll:.Archer
 41b67ab63367c9b3b19a83316e0a8d85 Assembly-CSharp.dll:.Chest
@@ -218,6 +219,7 @@ e033f131358cea5a0eabf9561e781deb UnityEngine.TestRunner.dll:UnityEngine.TestTool
 28a95668dd28649297d595834fe8417e UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioSoundfieldExtension
 28a95668dd28649297d595834fe8417e UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioSourceExtension
 dfbcd5ffb4d7343a4931f3406644c0dc Assembly-CSharp.dll:.Armory
+5db41e7d18db444c9e4a169524e57c1c Assembly-CSharp.dll:.DemoEnder
 1a90b221dc803408fbafa883c12bcab4 UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioListenerExtension
 70f7dc248db3379548a88e8d4fa049f8 UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioRoom
 28a95668dd28649297d595834fe8417e UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioSoundfieldExtension
@@ -268,5 +270,3 @@ afbee0bfbc1ccdf251666aa83f410b81 Assembly-CSharp.dll:.HPDisplay
 0cc0b1de4ca68863afcabc7abb66697f Assembly-CSharp.dll:.Arrow
 3806020074b0e10c354a4d8d651cf9b4 Assembly-CSharp.dll:.FOWMesh
 83e345fd81ffddda2775c01ebc120f43 Assembly-CSharp.dll:.ScrollScript
-49ffb37b380b4e4015c1f7a3852e92ae Assembly-CSharp.dll:.BossMonitor
-5db41e7d18db444c9e4a169524e57c1c Assembly-CSharp.dll:.DemoEnder

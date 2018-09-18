@@ -46,8 +46,17 @@ public class Unit : MonoBehaviour {
 
 
 	void Start(){
+		string profile = PlayerPrefs.GetString("profile");
 		if(weapon!=null && matchWeaponToBody){
 			weapon.blade.GetComponent<SpriteRenderer>().color = body.GetComponent<SpriteRenderer>().color;
+		}
+		if(isPlayerUnit && loadFromPrefs){
+			float r = PlayerPrefs.GetFloat(profile + "R");
+			float g = PlayerPrefs.GetFloat(profile + "G");
+			float b = PlayerPrefs.GetFloat(profile + "B");
+			health = PlayerPrefs.GetInt(profile + "health");
+			body.GetComponent<SpriteRenderer>().color = new Color(r,g,b);
+			shield.StealOwnerColor();
 		}
 	}
     void Awake(){
@@ -539,7 +548,7 @@ public class Unit : MonoBehaviour {
 
 	Vector3 UBP(Vector3 p1, Vector3 p2){
 		if((p1 == p2)){
-			new Vector3(0,0);
+			return new Vector3(0,0);
 		}
 		return (1f / (p1 - p2).magnitude) * (p1 - p2);
 	}
