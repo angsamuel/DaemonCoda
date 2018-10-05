@@ -71,7 +71,7 @@ public class StreetCrawler {
         for (int i = 0; i < speed; i++) {
            
             if (Build()) {
-                if(width > 1 && pr != null && ((moveCount < 1 && cycleCount < 1) || (width == 3 && moveCount == speed - 2) || (width == 5 && moveCount == speed - 3))){
+                if(width > 1 && pr != null && ((moveCount < 1 && cycleCount < 1) || (width == 3 && moveCount == speed - 2) || (width == 5 && moveCount == speed - 3) )){
                     levelGenerator.CreateCheckpoint(pr, (int)gridPos.x, (int)gridPos.y);
                 }
                 Move();

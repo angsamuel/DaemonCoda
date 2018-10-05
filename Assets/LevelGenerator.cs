@@ -109,11 +109,13 @@ public class LevelGenerator : MonoBehaviour {
    }
 
    public void CreateCheckpoint(PatrolRoute pr, int x, int y){
+    if(x > 0 && x < level_grid_size && y >= 0 && y < level_grid_size){
        if(levelGrid[x,y] !=null){
             GameObject newCheckPoint = Instantiate(checkpoint, levelGrid[x,y].transform);
             newCheckPoint.transform.localPosition = new Vector3(0,0,0);
             pr.checkpoints.Add(newCheckPoint);
        }
+    }
    }
 
     int mealPaks = 0;
@@ -303,12 +305,12 @@ public class LevelGenerator : MonoBehaviour {
 
     public GameObject PlaceStreet(int x, int y, GameObject block)
     {
-        return PlaceStreet(x, y, block, Color.black);
+        return PlaceStreet(x, y, block, streetColor);
     }
 
     public GameObject PlaceStreet(int x, int y, GameObject block, Color c)
     {
-       return PlaceBlock(x,y,block,streetColor);
+       return PlaceBlock(x,y,block,c);
     }
 
 
