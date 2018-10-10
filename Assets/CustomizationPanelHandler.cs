@@ -10,13 +10,20 @@ public class CustomizationPanelHandler : MonoBehaviour {
 	public Scrollbar blue;
 	public Text nameText;
 	public Image playerImage;
+	SpriteRenderer playerSprite;
+	SpriteRenderer shieldSprite;
+	LevelController lc;
 	// Use this for initialization
 	void Start () {
+		lc = GameObject.Find("LevelController").GetComponent<LevelController>();
+		playerSprite = lc.playerUnit.body.GetComponent<SpriteRenderer>();
+		shieldSprite = lc.playerUnit.shield.plate.GetComponent<SpriteRenderer>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		playerImage.color = new Color(red.value, green.value, blue.value, 1);
+
 	}
 
 	public void UpdatePlayerColorInLevel(){
@@ -25,14 +32,18 @@ public class CustomizationPanelHandler : MonoBehaviour {
 		PlayerPrefs.SetFloat(profile +"G", green.value);
 		PlayerPrefs.SetFloat(profile +"B", blue.value);
 
-		LevelController lc = GameObject.Find("LevelController").GetComponent<LevelController>();
-		SpriteRenderer ps = lc.pic.playerUnit.body.GetComponent<SpriteRenderer>();
-		SpriteRenderer ss = lc.pic.playerUnit.shield.GetComponent<SpriteRenderer>();
-
-		ps.color = new Color(red.value, green.vaue, blue.value);
-		ss.color = new Color(red.value, green.vaue, blue.value);
+		playerSprite.color = new Color(red.value, green.value, blue.value);
+		shieldSprite.color = new Color(red.value, green.value, blue.value);
 
 	}
+	public void GrabPlayerColor(){
+		red.value = playerSprite.color.r;
+		green.value = playerSprite.color.g;
+		blue.value = playerSprite.color.b;
+	}
+
+
+
 
 
 	public void StartNewGame(){
