@@ -25,7 +25,7 @@ public class SettlementGenerator : MonoBehaviour {
 	public Settlement GenerateSettlement(){
 		Settlement s = new Settlement();
 		s.name = nameWizard.GenerateVillageName();
-		s.size = Random.Range(0,5);
+		s.size = Random.Range(0,4);
 		s.weather = "Clear";
 		s.crestSeed = Random.Range(-2000000000, 2000000000);
 		s.modifier = modifiers[Random.Range(0,modifiers.Count)];		

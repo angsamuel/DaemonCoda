@@ -5,8 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class LevelIntroOutroHandler : MonoBehaviour {
-	public bool tutorial = false;
-	public bool capital = false;
+	LevelSettings ls;
 	public Image fadeInMask;
 	public Text villageNameText;
 	public LevelGenerator lg;
@@ -26,15 +25,17 @@ public class LevelIntroOutroHandler : MonoBehaviour {
 		fadeInMask.color = new Color(0,0,0,1);
 		yield return new WaitForSeconds(0.5f);
 		villageNameText.color = new Color(1,1,1,0);
-		if(tutorial){
+		if(ls.tutorial){
 			villageNameText.text = "Tutorial";
-		}else if(capital){
+		}else if(ls.capital){
 			villageNameText.text = "The Capital";
-		}else{
+		}else if(ls.loadFromPrefs && lg!=null){
 			villageNameText.text = lg.villageName;
+		}else if(ls.menu){
+			villageNameText.text = "";
 		}
 
-		if(!tutorial && pic!=null){
+		if(!ls.tutorial && pic!=null){
 			pic.transform.Translate(new Vector2(-1000,-1000));
 		}
 
@@ -59,7 +60,7 @@ public class LevelIntroOutroHandler : MonoBehaviour {
 		if(pic!=null){
 			pic.enabeled = true;
 		}
-		if(!tutorial){
+		if(!ls.tutorial && !ls.menu){
 			pic.transform.Translate(new Vector2(1000,1000));
 		}
 		t = 0.0f;
@@ -90,7 +91,7 @@ public class LevelIntroOutroHandler : MonoBehaviour {
 		pic.playerUnit.transform.position = new Vector3(10000,10000,10000);
 		yield return new WaitForSeconds(.5f);
 		//generate new menues in selection
-		if(tutorial){
+		if(ls.tutorial){
 			SceneManager.LoadScene("MainMenu");
 		}else{
 			
@@ -107,8 +108,11 @@ public class LevelIntroOutroHandler : MonoBehaviour {
 	}
 
 	void Start () {
-		transform.localScale = new Vector3(25,25,25);
-		StartCoroutine(Intro());	
+		ls = GameObject.Find("LevelSettings").GetComponent<LevelSettings>();
+		if(ls.haveIntro){
+			transform.localScale = new Vector3(25,25,25);
+			StartCoroutine(Intro());
+		}	
 	}
 	
 	// Update is called once per frame

@@ -7,10 +7,14 @@ public class RoomPlopper {
     public GameObject room;
     public GameObject street;
     int gridSize = 0;
-    int maxSize = 12;
-    int minSize = 6;
+    int maxSize = 10;
+    int minSize = 5;
     GameObject floor;
     GameObject wall;
+
+    List<int> xs;
+    List<int> ys;
+    List<Vector2> coords;
 
 	// Use this for initialization
 	public RoomPlopper(LevelGenerator lg, GameObject f, GameObject w)
@@ -19,14 +23,25 @@ public class RoomPlopper {
         gridSize = levelGenerator.level_grid_size;
         floor = f;
         wall = w;
+        xs = new List<int>();
+        ys = new List<int>();
+        coords = new List<Vector2>();
+        for(int x = 0; x<gridSize; x++){
+            for(int y = 0; y<gridSize; y++){
+                coords.Add(new Vector2(x,y));
+            }
+        }
     }
 	
 	public void PlopRooms()
     {
         
         for(int i = 0; i<(gridSize*gridSize); i++){
-            int x = Random.Range(0,gridSize);
-            int y = Random.Range(0,gridSize);
+            int index = Random.Range(0,coords.Count);
+            //Debug.Log(xs.Count);
+            int x = (int)coords[index].x;
+            int y = (int)coords[index].y;
+
             if (Random.Range(0.0f, 1.0f) > 0.0f)
             {
                 if (!levelGenerator.SpaceIsFree(x, y) && levelGenerator.GetTileTag(x, y) == "street")

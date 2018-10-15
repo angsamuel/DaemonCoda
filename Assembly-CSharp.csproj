@@ -70,6 +70,7 @@
      <Compile Include="Assets\LevelIntroOutroHandler.cs" />
      <Compile Include="Assets\LevelPopulator.cs" />
      <Compile Include="Assets\LevelSelectManager.cs" />
+     <Compile Include="Assets\LevelSettings.cs" />
      <Compile Include="Assets\MainMenuController.cs" />
      <Compile Include="Assets\Matilda.cs" />
      <Compile Include="Assets\MealPakPanel.cs" />
@@ -153,8 +154,11 @@
      <Compile Include="Assets\ShadowMesher.cs" />
      <Compile Include="Assets\Shield.cs" />
      <Compile Include="Assets\Sparks.cs" />
+     <Compile Include="Assets\Splat.cs" />
+     <Compile Include="Assets\Splatter.cs" />
      <Compile Include="Assets\Stalker.cs" />
      <Compile Include="Assets\StarvationMenuController.cs" />
+     <Compile Include="Assets\StickToParent.cs" />
      <Compile Include="Assets\TownGenerator.cs" />
      <Compile Include="Assets\TutorialManager.cs" />
      <Compile Include="Assets\ViewHandler.cs" />

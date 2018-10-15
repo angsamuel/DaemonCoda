@@ -15,9 +15,12 @@ public class CustomizationPanelHandler : MonoBehaviour {
 	LevelController lc;
 	// Use this for initialization
 	void Start () {
-		lc = GameObject.Find("LevelController").GetComponent<LevelController>();
-		playerSprite = lc.playerUnit.body.GetComponent<SpriteRenderer>();
-		shieldSprite = lc.playerUnit.shield.plate.GetComponent<SpriteRenderer>();
+		if(GameObject.Find("LevelController")!= null){
+			lc = GameObject.Find("LevelController").GetComponent<LevelController>();
+			playerSprite = lc.playerUnit.body.GetComponent<SpriteRenderer>();
+			shieldSprite = lc.playerUnit.shield.plate.GetComponent<SpriteRenderer>();
+		}
+
 	}
 	
 	// Update is called once per frame

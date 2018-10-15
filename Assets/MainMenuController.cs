@@ -14,15 +14,7 @@ public class MainMenuController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		PlayerPrefs.SetString("profile", "");
-		PlayerPrefs.DeleteAll();
-		//PlayerPrefs.DeleteAll();
 		cursorTargets  = new List<GameObject>(GameObject.FindGameObjectsWithTag("cursor target"));
-
-		//PlayerPrefs.SetString("profile0", "");
-		//PlayerPrefs.SetString("profile1", "");
-		//PlayerPrefs.SetString("profile2", "");
-		//PlayerPrefs.SetString("profile3", "");
-		//PlayerPrefs.SetString("profile4", "");
 		StartCoroutine(CursorRoutine());
 	}
 	
@@ -66,9 +58,12 @@ public class MainMenuController : MonoBehaviour {
 		SceneManager.LoadScene("Tutorial");
 	}
 
-
 	void LoadExistingGame(){
 
+	}
+
+	public void QuitGame(){
+		Application.Quit();
 	}
 
 

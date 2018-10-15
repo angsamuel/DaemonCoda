@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class InLevelMenuController : MonoBehaviour {
 	bool canEscape = true;
@@ -44,6 +45,9 @@ public class InLevelMenuController : MonoBehaviour {
 		menus[index].transform.localScale = new Vector3(1,1,1);
 		pic.Disable();
 
+	}
+	public void QuitToMain(){
+		SceneManager.LoadScene("MainMenu");
 	}
 
 
