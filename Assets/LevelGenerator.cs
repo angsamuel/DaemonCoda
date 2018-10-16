@@ -10,7 +10,7 @@ public class LevelGenerator : MonoBehaviour {
     public GameObject leaveLevelBarrier;
 
     float blockScale = .14f;
-    float colorVariance = .0f;
+    float colorVariance = .05f;
     public LevelController levelController;
     public GameObject patrolRoute;
     [HideInInspector] public List<PatrolRoute> patrolRoutes = new List<PatrolRoute>();
@@ -257,7 +257,7 @@ public class LevelGenerator : MonoBehaviour {
             levelGrid[x, y] = newBlock;
             newBlock.GetComponent<SpriteRenderer>().color = wallColor;
 
-            float variance = Random.Range(-colorVariance, colorVariance);
+            float variance = 0f;// Random.Range(-colorVariance, colorVariance);
             newBlock.GetComponent<SpriteRenderer>().color = new Color(wallColor.r + variance, wallColor.g + variance, wallColor.b + variance, 1f);
             //newBlock.GetComponent<SpriteRenderer>().transform.localScale = new Vector2(Random.Range(.125f, .15f), Random.Range(.125f, .15f));
             newBlock.GetComponent<SpriteRenderer>().transform.localScale = new Vector2(blockScale, blockScale);
@@ -310,14 +310,22 @@ public class LevelGenerator : MonoBehaviour {
 
     public GameObject PlaceStreet(int x, int y, GameObject block, Color c)
     {
+        float v = Random.Range(-colorVariance, colorVariance);
+        c = new Color(c.r + v, c.g + v, c.b + v);
        return PlaceBlock(x,y,block,c);
     }
 
+    public void PlaceFloor(int x, int y, GameObject floor, GameObject ro)
+    {
+        PlaceFloor(x,y,floor,floorColor,ro);
+    }
 
     public void PlaceFloor(int x, int y, GameObject floor, Color c, GameObject ro)
     {
         Room r = ro.GetComponent<Room>();
-        GameObject newBlock = PlaceBlock(x,y,floor,floorColor);
+        float v = Random.Range(-colorVariance, colorVariance);
+        c = new Color(c.r + v, c.g + v, c.b + v);
+        GameObject newBlock = PlaceBlock(x,y,floor,c);
         newBlock.GetComponent<InteriorFloor>().room = r;
     }
 

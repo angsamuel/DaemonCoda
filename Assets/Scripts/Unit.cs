@@ -17,7 +17,7 @@ public class Unit : MonoBehaviour {
     bool inWaterLevel = false;
     public float speed, stamina, staminaMax, staminaRecharge, dashCost; 
 	float staminaDelayTime = 1.5f;
-	float staminaDepletionDelayTime = 3.0f;
+	float staminaDepletionDelayTime = 2.5f;
     float waveDelay;
 	public float dashMultiplier = 1.5f;
 	public int health;
@@ -646,6 +646,7 @@ public class Unit : MonoBehaviour {
 			medPaks -= 1;
 			PlayerPrefs.SetString(PlayerPrefs.GetString("profile") + "medPaks", medPaks.ToString());
 		}
+		PlayerPrefs.SetInt(PlayerPrefs.GetString("profile") + "health", health);
 		healOverlay.enabled = false;
 	}
 

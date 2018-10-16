@@ -157,7 +157,7 @@ public class RoomPlopper {
                         }
                         else
                         {
-                            levelGenerator.PlaceFloor(posX + i, posY + (velY * j), floor, Color.white, newRoom);
+                            levelGenerator.PlaceFloor(posX + i, posY + (velY * j), floor, newRoom);
                         }
                     }
 
@@ -172,7 +172,7 @@ public class RoomPlopper {
                         }
                         else
                         {
-                            levelGenerator.PlaceFloor(posX - i, posY + (velY * j), floor, Color.white, newRoom);
+                            levelGenerator.PlaceFloor(posX - i, posY + (velY * j), floor, newRoom);
                         }
                     }
                 }
@@ -273,7 +273,7 @@ public class RoomPlopper {
                         }
                         else
                         {
-                            levelGenerator.PlaceFloor(posX + (velX * j), posY + i, floor, Color.white, newRoom);
+                            levelGenerator.PlaceFloor(posX + (velX * j), posY + i, floor, newRoom);
                         }
 
                     }
@@ -288,7 +288,7 @@ public class RoomPlopper {
                         }
                         else
                         {
-                            levelGenerator.PlaceFloor(posX + (velX * j), posY - i, floor, Color.white, newRoom);
+                            levelGenerator.PlaceFloor(posX + (velX * j), posY - i, floor, newRoom);
                         }
 
                        
