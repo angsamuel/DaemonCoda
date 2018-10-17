@@ -64,7 +64,6 @@ public class PlayerInputController : MonoBehaviour {
 		if (!disabled && !playerUnit.healing) {
 			//weapon pickup
 			if (Input.GetAxisRaw ("Pickup") != 0 && canPickup) {
-				Debug.Log ("PICKUP");
 				EquipWeapon ();
 				canPickup = false;
 			} else if(Input.GetAxisRaw ("Pickup") == 0){

@@ -21,7 +21,12 @@ public class UnitController : MonoBehaviour {
     public Unit target;
     public bool husked = false;
 	// Use this for initialization
+    protected AudioSource audioSource;
+
+    public AudioClip aggro;
+    public AudioClip takeDamage;
 	public void Start () {
+        audioSource = GetComponent<AudioSource>();
         breadCrumbs = new List<Vector2>();
 		levelController = GameObject.Find ("LevelController").GetComponent<LevelController> ();
         if(!husked){
@@ -84,7 +89,17 @@ public class UnitController : MonoBehaviour {
         }
     }
 
+    protected float canVoiceWait = 2f;
+    protected IEnumerator CanVoiceCooldown(){
+        while(!canVoice){
+            yield return new WaitForSeconds(canVoiceWait);
+            if(target == null){
+                canVoice = true;
+            }
+        }
+    }
 
+    protected bool canVoice = true;
 	public void LateUpdate () {
         if(pr != null && target != null){
             for(int s = 0; s<pr.unitControllers.Count; s++){
@@ -120,6 +135,13 @@ public class UnitController : MonoBehaviour {
             {
                 unit.speed = attackSpeed;
                 CustomActions();
+                if(canVoice){
+                    audioSource.clip = aggro;
+                    audioSource.Play();
+                    canVoice = false;
+                    StartCoroutine(CanVoiceCooldown());
+                }
+
             }
         }
         else

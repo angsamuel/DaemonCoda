@@ -52,6 +52,13 @@ public class Stalker : UnitController {
 				yield return new WaitForSeconds(.5f);
 				unit.InstantAimWeapon(transform.position + new Vector3(0,-100,0));
 				if(TargetInSight(playerUnit,triggerDistance)){
+					if(canVoice){
+						audioSource.clip = aggro;
+                    	audioSource.Play();
+                    	canVoice = false;
+                    	StartCoroutine(CanVoiceCooldown());
+                	}
+
 					mode = "default";
 					vibrating = true;
 					unit.body.GetComponent<SpriteRenderer>().color = new Color(hostile.r,hostile.g,hostile.b,.5f);
