@@ -39,41 +39,49 @@ public class Weapon : MonoBehaviour {
 
 	Coroutine swingRoutine;
 	bool swinging = false;
-	// public virtual void StartSwingNew(){
-	// 	if(!swinging && !disabled){
-	// 		swingRoutine = StartCoroutine(SwingRoutine());
-	// 	}
-	// }
+	public virtual void StartSwingNew(){
+		if(!swinging && !disabled){
+			swingRoutine = StartCoroutine(SwingRoutine());
+		}
+	}
 		
-	// IEnumerator SwingRoutine(){
-	// 	swinging = true;
+	IEnumerator SwingRoutine(){
+		swinging = true;
 		
-	// 	//yield return new WaitForSeconds(timeToSwing/4);
+		//float speed = (360 / timeToSwing);
+		//rb.angularVelocity = speed * direction;
 
-	// 	float t = 0;
-	// 	while(t<timeToSwing/4){
-	// 		yield return null;
-	// 		t+=Time.deltaTime;
-	// 		rb.angularVelocity = (360 / timeToSwing) * (t / (timeToSwing/4));
-	// 	}
 
-	// 	bc.enabled = true;
-	// 	rb.angularVelocity = 360 / timeToSwing;
 
-	// 	yield return new WaitForSeconds(timeToSwing/2);
 
-	// 	bc.enabled = false;
+		float t = 0;
+		while(t<timeToSwing/2){
+			yield return null;
+			t+=Time.deltaTime;
+			speed = (360 / timeToSwing) * (t / (timeToSwing/2));
+			rb.angularVelocity =  speed * direction;
+		}
 
-	// 	t = timeToSwing/4;
-	// 	while(t>0){
-	// 		yield return null;
-	// 		t-=Time.deltaTime;
-	// 		rb.angularVelocity = (360 / timeToSwing) * (t / (timeToSwing/4));
-	// 	}
+		bc.enabled = true;
+		speed = (360 / timeToSwing);
+		rb.angularVelocity = speed * direction;
+
+		yield return new WaitForSeconds(timeToSwing/2);
+
+		bc.enabled = false;
+
+		t = timeToSwing/2;
+		while(t>0){
+			yield return null;
+			t-=Time.deltaTime;
+			speed = (360 / timeToSwing) * (t / (timeToSwing/2));
+			rb.angularVelocity = speed * direction;
+		}
 		
-	// 	swinging = false;
-	// 	rb.angularVelocity = 0;
-	// }
+		swinging = false;
+		rb.angularVelocity = 0;
+		ChangeDirections();
+	}
 
 	public void StopSwing(){
 		rested = true;
@@ -106,10 +114,12 @@ public class Weapon : MonoBehaviour {
 		if (!rested && !disabled) {
 			if (swingTracker > 90) {
 				if(bc!=null){bc.enabled = true;}
+				blade.GetComponent<SpriteRenderer>().color = Color.red;
 
 			}
 			if (swingTracker > 270) {
 				if(bc!=null){bc.enabled = false;}
+				blade.GetComponent<SpriteRenderer>().color = Color.white;
 
 			}
 
@@ -141,7 +151,16 @@ public class Weapon : MonoBehaviour {
 
 	virtual public void Aim(Vector3 target){
 		myTarget = target;
+		if(!swinging && rb != null){
+			
+			rb.velocity = new Vector2(0,0);
+			rb.angularVelocity = 0;
+			//blade.GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
+			//blade.GetComponent<Rigidbody2D>().angularVelocity = 0;
+		}
+
 		if (IsRested() && !swinging) {
+
 			Quaternion nRotation = Quaternion.LookRotation (Vector3.forward, target - transform.position);
 			transform.rotation = Quaternion.Slerp (transform.rotation, nRotation, Time.deltaTime * aimSpeed);
 		}

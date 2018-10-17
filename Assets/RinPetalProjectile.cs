@@ -53,10 +53,6 @@ public class RinPetalProjectile : MonoBehaviour {
 		Vector3 tLocation = new Vector3(targetLocation.x, targetLocation.y, 0);
 		
 		rb.velocity = UBP(tLocation, transform.position) * speed;
-		//Debug.Log(UBP(targetLocation, transform.position).magnitude * speed);
-		//Debug.Log((UBP(targetLocation, transform.position) * speed).magnitude );
-		//Debug.Log(UBP(targetLocation, transform.position));
-		//Debug.Log(UBP(targetLocation, transform.position) * speed);
 		StartCoroutine(Timer());
 	}
 

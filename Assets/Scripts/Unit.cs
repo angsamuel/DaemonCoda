@@ -3,17 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Unit : MonoBehaviour {
-	public bool loadFromPrefs = true;
+	GameObject wave;
 	public bool matchWeaponToBody = false;
     public string team;
 	public int armoryIndex;
 	public GameObject blood;
 	public SpriteRenderer healOverlay;
-	public GameObject wave;
 	Color waveColor = Color.white;
 	public PlayerInputController pic;
 	NPC npc;
-    public bool dead = false;
+    [HideInInspector] public bool dead = false;
     bool inWaterLevel = false;
     public float speed, stamina, staminaMax, staminaRecharge, dashCost; 
 	float staminaDelayTime = 1.5f;
@@ -29,7 +28,6 @@ public class Unit : MonoBehaviour {
 	Rigidbody2D rb;
 	List<int> damageSources;
 	Weapon pickup;
-	public TrailRenderer tr;
 	public GameObject body;
 	SpriteRenderer sr;
 
@@ -44,13 +42,15 @@ public class Unit : MonoBehaviour {
 
 	public List<Spell> spells;
 
-
+	LevelSettings levelSettings;
 	void Start(){
 		string profile = PlayerPrefs.GetString("profile");
 		if(weapon!=null && matchWeaponToBody){
 			weapon.blade.GetComponent<SpriteRenderer>().color = body.GetComponent<SpriteRenderer>().color;
 		}
-		if(isPlayerUnit && loadFromPrefs){
+
+
+		if(isPlayerUnit && levelSettings.loadFromPrefs){
 			float r = PlayerPrefs.GetFloat(profile + "R");
 			float g = PlayerPrefs.GetFloat(profile + "G");
 			float b = PlayerPrefs.GetFloat(profile + "B");
@@ -60,6 +60,9 @@ public class Unit : MonoBehaviour {
 		}
 	}
     void Awake(){
+		if(isPlayerUnit){
+			levelSettings = GameObject.Find("LevelSettings").GetComponent<LevelSettings>();
+		}
 		sr = body.GetComponent<SpriteRenderer>();
 		damageSources = new List<int> ();
 		//Time.timeScale = 0.1f;
@@ -70,14 +73,12 @@ public class Unit : MonoBehaviour {
 		rb = gameObject.GetComponent<Rigidbody2D> ();
 		staminaMax = stamina;
 		StartCoroutine (PickupDeletion ());
-		if (tr != null) {
-			tr.time = 0.0f;
-		}
+
 
 		//spawn new weapon for playerUnit
 		if(weapon == null){
 			//spawn weapon according to index
-			if(isPlayerUnit && loadFromPrefs){
+			if(isPlayerUnit && levelSettings.loadFromPrefs){
 				armoryIndex = PlayerPrefs.GetInt(PlayerPrefs.GetString("profile") + "armoryIndex");
 				medPaks = PlayerPrefs.GetInt(PlayerPrefs.GetString("profile"));
 				health = PlayerPrefs.GetInt(PlayerPrefs.GetString("profile") + "health");
@@ -98,7 +99,7 @@ public class Unit : MonoBehaviour {
 			PlayerPrefs.SetInt(PlayerPrefs.GetString("profile") + "armoryIndex", -1);
 		}
 
-		if(isPlayerUnit && loadFromPrefs){
+		if(isPlayerUnit && levelSettings.loadFromPrefs){
 			mealPaks = PlayerPrefs.GetInt(PlayerPrefs.GetString("profile") + "mealPaks");
 			medPaks = PlayerPrefs.GetInt(PlayerPrefs.GetString("profile") + "medPaks");
 		}else{
@@ -146,6 +147,7 @@ public class Unit : MonoBehaviour {
 
 	public void DequipWeapon(){
 		if (weapon != null) {
+			weapon.blade.GetComponent<SpriteRenderer>().color = Color.white;
 			weapon.StopSwing ();
 			weapon.GetComponent<BoxCollider2D> ().enabled = true;
 			weapon.equipped = false;
@@ -273,16 +275,6 @@ public class Unit : MonoBehaviour {
 		}
 	}
 
-	float trMaxTime = 0.5f;
-	float trailEndTime = 0.5f;
-	IEnumerator EndTrail(){
-		float t = trailEndTime;
-		while (t > 0) {
-			yield return null;
-			t -= Time.deltaTime;
-			tr.time = trMaxTime * (t/trailEndTime);
-		}
-	}
 
 	IEnumerator Spin(float timeToSpin){
 		float t = 0;
@@ -303,12 +295,6 @@ public class Unit : MonoBehaviour {
 	float dashTime = .5f;
 	IEnumerator DashRoutine(){
 		invincible = true;
-		if (tr != null) {
-			tr.time = trMaxTime;
-		}
-		if (tr != null) {
-			StartCoroutine (EndTrail ());
-		}
 		//speed = speed * dashMultiplier;
 		StartCoroutine(Spin(dashTime));
 		yield return new WaitForSeconds (dashTime);
@@ -621,7 +607,7 @@ public class Unit : MonoBehaviour {
 		return mealPaks;
 	}
 
-	public bool healing = false;
+	[HideInInspector] public bool healing = false;
 	float healTime = 2.0f;
 	public void Heal(){
 		if(!healing && medPaks > 0 && health < 3){

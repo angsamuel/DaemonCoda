@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class TutorialManager : MonoBehaviour {
 	public Text tutorialText;
-	public Text buttonText;
+	public Text notificationText;
 	public List<string> messages;
 	public GameObject wall;
 	public GameObject door;
@@ -13,47 +13,65 @@ public class TutorialManager : MonoBehaviour {
 	public GameObject medPak;
 	public GameObject mealPak;
 	int tutorialIndex = 0;
+	bool canClick = true;
 	// Use this for initialization
 	void Start () {
 		tutorialText.text = messages[tutorialIndex];
 		enemy.gameObject.SetActive(false);
 		medPak.SetActive(false);
 		mealPak.SetActive(false);
+		StartCoroutine(EnableClick());
+	}
+
+	IEnumerator EnableClick(){
+		canClick = false;
+		yield return new WaitForSeconds(3);
+		canClick = true;
+
 	}
 	
 	// Update is called once per frame
+	bool canEnter = true;
 	void Update () {
-		
-	}
-
-	public void TutorialClick(){
-		Debug.Log("clicc");
-		tutorialIndex += 1;
-		tutorialText.text = messages[tutorialIndex];
-		GameObject myEventSystem = GameObject.Find("EventSystem");
-     	myEventSystem.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(null);
-		button.SetActive(true);
-
-		if(tutorialIndex == 11){
-			door.SetActive(true);
-			wall.SetActive(false);
-			button.SetActive(false);
-			enemy.gameObject.SetActive(true);
-			StartCoroutine(WaitForEnemyToDie());
-		}else if(tutorialIndex == 17){
-			medPak.SetActive(true);
-			mealPak.SetActive(true);
-			medPak.GetComponent<SpriteRenderer>().enabled = false;
-			mealPak.GetComponent<SpriteRenderer>().enabled = false;
-			StartCoroutine(Dumbo());
-			button.SetActive(false);
-			StartCoroutine(WaitForPakPickup());
-		}else if(tutorialIndex == messages.Count-1){
-			button.SetActive(false);
-			LeaveTutorial();
+		if(Input.GetAxisRaw("Enter") != 0 && canEnter){
+			canEnter = false;
+			TutorialClick();
+		}else if(Input.GetAxisRaw("Enter") == 0){
+			canEnter = true;
 		}
 	}
 
+	public void TutorialClick(){
+		if(canClick){
+			notificationText.color = Color.white;
+			tutorialIndex += 1;
+			tutorialText.text = messages[tutorialIndex];
+			GameObject myEventSystem = GameObject.Find("EventSystem");
+			myEventSystem.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(null);
+
+			if(tutorialIndex == 11){
+				door.SetActive(true);
+				wall.SetActive(false);
+				canClick = false;
+				notificationText.color = Color.clear;
+				enemy.gameObject.SetActive(true);
+				StartCoroutine(WaitForEnemyToDie());
+			}else if(tutorialIndex == 17){
+				medPak.SetActive(true);
+				mealPak.SetActive(true);
+				medPak.GetComponent<SpriteRenderer>().enabled = false;
+				mealPak.GetComponent<SpriteRenderer>().enabled = false;
+				StartCoroutine(Dumbo());
+				canClick = false;
+				notificationText.color = Color.clear;
+				StartCoroutine(WaitForPakPickup());
+			}else if(tutorialIndex == messages.Count-1){
+				canClick = false;
+				notificationText.color = Color.clear;
+				LeaveTutorial();
+			}
+		}
+	}
 	IEnumerator Dumbo(){
 		yield return new WaitForSeconds(.2f);
 		medPak.GetComponent<SpriteRenderer>().enabled = true;
@@ -68,6 +86,7 @@ public class TutorialManager : MonoBehaviour {
 		while(!enemy.dead){
 			yield return new WaitForSeconds(.5f);
 		}
+		canClick = true;
 		TutorialClick();
 	}
 
@@ -75,6 +94,7 @@ public class TutorialManager : MonoBehaviour {
 		while(medPak != null || mealPak != null){
 			yield return new WaitForSeconds(.5f);
 		}
+		canClick = true;
 		TutorialClick();
 	}
 }

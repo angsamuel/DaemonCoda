@@ -18,7 +18,7 @@ public class MealPakPanel : MonoBehaviour {
 	bool canNotify = false;
 	// Use this for initialization
 	void Start () {
-		if(notificationText.text != null){
+		if(notificationText != null){
 			notificationText.text = "";
 		}
 		playerUnit = GameObject.Find("PlayerInputController").GetComponent<PlayerInputController>().playerUnit;
