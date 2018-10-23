@@ -1,6 +1,6 @@
 WindowsStandalone
 PlayerPath?
-C:/Users/ang/Documents/GitHub/DaemonCoda/Builds/Gimongous.exe
+D:/Projects/Unity/Gimongous/Builds/Gimongous.exe
 SceneListBegin?
 Assets/MainMenu.unity
 Assets/Tutorial.unity
@@ -14,7 +14,7 @@ Assets/Starvation.unity
 Assets/MatildaBoss.unity
 Assets/EndDemo.unity
 SceneListEnd?
-a39ae0b9ee2df043ecfd159fa56709cb Assembly-CSharp.dll:.Stalker
+2a230e2fe0e6252b4649c843fcd921d0 Assembly-CSharp.dll:.Stalker
 c422dd62785a6d0afa870fbd111886ce Unity.TextMeshPro.dll:TMPro.TMP_SelectionCaret
 7b803eb2910e9b4cd5e521ae07b9f7d6 Unity.TextMeshPro.dll:TMPro.TMP_Dropdown
 486cd95c82d8305219c352c06b776e1f Assembly-CSharp.dll:.StickToParent
@@ -112,7 +112,7 @@ e90403eeda069970e0b9de1533de13a6 UnityEngine.UI.dll:UnityEngine.UI.ToggleGroup
 16da51d1b62ef6d4ee1849350434023b UnityEngine.UI.dll:UnityEngine.UI.VerticalLayoutGroup
 49ffb37b380b4e4015c1f7a3852e92ae Assembly-CSharp.dll:.BossMonitor
 2e17108aab85d8c411b44afac000cf38 Assembly-CSharp.dll:.BWEffect
-2f1c786cc4638a946327a8686329fe2b Assembly-CSharp.dll:.Archer
+228bff98272a286ded69d33eb7d6121e Assembly-CSharp.dll:.Archer
 41b67ab63367c9b3b19a83316e0a8d85 Assembly-CSharp.dll:.Chest
 ed67bb7386b06da7dcb9312bdb75bf9e Assembly-CSharp.dll:.Spear
 486cd95c82d8305219c352c06b776e1f UnityEngine.Timeline.dll:UnityEngine.Timeline.ActivationPlayableAsset
@@ -128,7 +128,7 @@ c7dd12c15208b0447e101f80038706df UnityEngine.Timeline.dll:UnityEngine.Timeline.A
 0ddb2c46096a1e59e0dce07886ce4769 UnityEngine.Timeline.dll:UnityEngine.Timeline.PlayableTrack
 64f3a13c1277a7f1324321d93d0ec13b UnityEngine.Timeline.dll:UnityEngine.Timeline.TimelineAsset
 29fc1745dc5a3bd0ff04bc3bdbf080c8 Assembly-CSharp.dll:.Projectile
-0c0cc8c6cc3abfb49d7b12e640bfe6db Assembly-CSharp.dll:.TutorialManager
+2ad43a8043df0db12fe3e5685122c0bf Assembly-CSharp.dll:.TutorialManager
 66b3109aa5921cf800bec17926c6adba Unity.TextMeshPro.dll:TMPro.TMP_SubMeshUI
 486cd95c82d8305219c352c06b776e1f Assembly-CSharp.dll:.SaverLoader
 201273fb4f889724fb090164b7d6c657 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkAnimator
@@ -162,12 +162,12 @@ e1ea12ca952c81d81a9a21fdf34446ed UnityEngine.HoloLens.dll:UnityEngine.EventSyste
 dfd33ff9ae3ce8d7ca1f22b475ec2387 UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.SpatialMappingRenderer
 93bc675af5b65316d0d9aaf9ca38247f Assembly-CSharp.dll:.HarvestController
 96f3ea9f23b6f08e60710ebb4af49174 Unity.TextMeshPro.dll:TMPro.TMP_SpriteAsset
-bcb83b687f53b826252b362b8b1d0b95 Assembly-CSharp.dll:.Unit
+812246b743461ac44260721b769314bc Assembly-CSharp.dll:.Unit
 97370b1aeb80addfc41bff2de7629d99 Assembly-CSharp.dll:.ShaderEffect_Tint
 cba501211eab2a70a7638671a036dd5f Assembly-CSharp.dll:.NPC
 888cab32fda26bbe877a116eeee5e96d Assembly-CSharp.dll:.LevelSettings
 4b41ccc4efb534adc1aec8c3e2eda5f0 Assembly-CSharp.dll:.DontGoThroughThings
-1cca0dc3d260625a1433b2d00c77128d Assembly-CSharp.dll:.Grunt
+d5e982097d967400c46311f7003570d9 Assembly-CSharp.dll:.Grunt
 78f2eab0eb4f944affeabe9a44b62db1 Assembly-CSharp.dll:.SelectProfileHandler
 486cd95c82d8305219c352c06b776e1f Assembly-CSharp.dll:.Hideable
 8fa59e2b174495da12744ba4e6fba2d9 Assembly-CSharp.dll:.LevelPopulator
@@ -175,7 +175,7 @@ f16835701e71dd5d6fb1fed4b7aff1d8 Unity.TextMeshPro.dll:TMPro.TMP_Asset
 44aca9eaff9eaaf77cd5164f4ed56e21 Assembly-CSharp.dll:.MealPakPanel
 5d552c43241efdb0f923f3943a67bc3c Assembly-CSharp.dll:.Wave
 744772463191c31225a507c43753f08c Assembly-CSharp.dll:.TileGenerator
-8afaae1f9cff66a2356b240e57772f2e Assembly-CSharp.dll:.Berserker
+a946186616f744ea4710a357ee7e3cbf Assembly-CSharp.dll:.Berserker
 a4cdaba8554bd69eb5cfce8a04b3b34c Assembly-CSharp.dll:.Weapon
 b3f2ea0498e9bba200e73900735cd2d4 Assembly-CSharp.dll:.MainMenuController
 486cd95c82d8305219c352c06b776e1f Assembly-CSharp.dll:.ReverseHideable
@@ -235,12 +235,12 @@ d75dc834c5dec688db75a55a1724c90f UnityEngine.HoloLens.dll:UnityEngine.Audio.Audi
 e1ea12ca952c81d81a9a21fdf34446ed UnityEngine.HoloLens.dll:UnityEngine.EventSystems.HoloLensInputModule
 98d69a140ec0084cde3b6a5e09aea295 UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.SpatialMappingCollider
 dfd33ff9ae3ce8d7ca1f22b475ec2387 UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.SpatialMappingRenderer
-cfe1f44489a5949ed2fb62b707eb03b9 Assembly-CSharp.dll:.Commander
+f3ae12ccc6a388e409a0e6ba6a5c06b8 Assembly-CSharp.dll:.Commander
 97f9c34ccb1ed029a839ab426c3f2e20 Assembly-CSharp.dll:.ShaderEffect_CorruptedVram
 aac9c55ae7ba4b95b852a7d9c191acd1 Unity.TextMeshPro.dll:TMPro.TextMeshProUGUI
 f8f4799c59b08967c49cf6088b4c304c Assembly-CSharp.dll:.FieldOfView
 ac7c4521dd074f1405c9971014a0612f Assembly-CSharp.dll:.Mill
-d5edb0986db2b709bc24b40866af4cae Assembly-CSharp.dll:.UnitController
+a94f3afe1094b2d00ee9f2a1a7936e26 Assembly-CSharp.dll:.UnitController
 2dc84c68b7dda89a847a085c1604021e Assembly-CSharp.dll:.Room
 b290653752938a4ddc30f7f93749f6f6 Assembly-CSharp.dll:.WoodCuttingStation
 a4cdaba8554bd69eb5cfce8a04b3b34c Assembly-CSharp.dll:.GSword
@@ -249,8 +249,8 @@ a4cdaba8554bd69eb5cfce8a04b3b34c Assembly-CSharp.dll:.GSword
 486cd95c82d8305219c352c06b776e1f Assembly-CSharp.dll:.RotationFollowMouse
 32d628824b55dfd413d8be9bdb0b7d18 Assembly-CSharp.dll:.Blade
 e90669f9e732fb416837481aae09bc1b Assembly-CSharp.dll:.DialoguePanel
-d5edb0986db2b709bc24b40866af4cae Assembly-CSharp.dll:.Husk
-1455a62ec5c71f7587d73f13552a2bdb Assembly-CSharp.dll:.Duelist
+a94f3afe1094b2d00ee9f2a1a7936e26 Assembly-CSharp.dll:.Husk
+e61675a31c62c69d1728b9e17ce9c077 Assembly-CSharp.dll:.Duelist
 486cd95c82d8305219c352c06b776e1f Assembly-CSharp.dll:.DiyEffect__FullOnly
 486cd95c82d8305219c352c06b776e1f Assembly-CSharp.dll:.WoodCart
 486cd95c82d8305219c352c06b776e1f Assembly-CSharp.dll:.Route
@@ -258,7 +258,7 @@ d5edb0986db2b709bc24b40866af4cae Assembly-CSharp.dll:.Husk
 5a4ac859d97eae9a40ffdc0b286dfe45 Assembly-CSharp.dll:.LevelSelectManager
 486cd95c82d8305219c352c06b776e1f Assembly-CSharp.dll:.MusicBox
 e04611b8715e6833d2bd7010fc6be10b Unity.TextMeshPro.dll:TMPro.TMP_StyleSheet
-7758e6f719fbe587fc2e9751530f2f43 Assembly-CSharp.dll:.Matilda
+8c0b95e0bcca423b1ae6c316ab31979d Assembly-CSharp.dll:.Matilda
 7352cdeb00bf2da5a7729055715d4a75 Assembly-CSharp.dll:.LeaveLevelBarrier
 486cd95c82d8305219c352c06b776e1f Assembly-CSharp.dll:.Spell
 cb34f07c4f1029e6cfc6bc11f384ee3c Assembly-CSharp.dll:.ScreenFader

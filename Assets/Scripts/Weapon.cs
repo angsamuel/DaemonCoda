@@ -48,11 +48,6 @@ public class Weapon : MonoBehaviour {
 	IEnumerator SwingRoutine(){
 		swinging = true;
 		
-		//float speed = (360 / timeToSwing);
-		//rb.angularVelocity = speed * direction;
-
-
-
 
 		float t = 0;
 		while(t<timeToSwing/2){
@@ -120,8 +115,8 @@ public class Weapon : MonoBehaviour {
 			if (swingTracker > 270) {
 				if(bc!=null){bc.enabled = false;}
 				blade.GetComponent<SpriteRenderer>().color = Color.white;
-
 			}
+
 
 			float swingTemp = Time.deltaTime * speed;
 			swingTemp *= (.1f + Mathf.Pow(Mathf.Abs(Mathf.Sin (0.5f * (swingTracker*Mathf.PI / 180f))),1));
@@ -130,6 +125,7 @@ public class Weapon : MonoBehaviour {
 			swingTracker += swingTemp;
 			if (Mathf.Abs (swingTracker) > 360) {
 				rested = true;
+				blade.GetComponent<SpriteRenderer>().color = Color.white;
 				swingTracker = 0;
 				ChangeDirections ();
 			}
@@ -141,6 +137,7 @@ public class Weapon : MonoBehaviour {
 	public void Bounce(){
 		swingTracker = 0;
 		rested = true;
+		blade.GetComponent<SpriteRenderer>().color = Color.white;
 		ChangeDirections();
 	}
 
