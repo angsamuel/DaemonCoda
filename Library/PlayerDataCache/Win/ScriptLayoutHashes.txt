@@ -1,6 +1,6 @@
 WindowsStandalone
 PlayerPath?
-D:/Projects/Unity/Gimongous/Builds/Gimongous.exe
+D:/Projects/Unity/Gimongous/Builds/Build1/Gimongous.exe
 SceneListBegin?
 Assets/MainMenu.unity
 Assets/Tutorial.unity
@@ -112,6 +112,7 @@ e90403eeda069970e0b9de1533de13a6 UnityEngine.UI.dll:UnityEngine.UI.ToggleGroup
 16da51d1b62ef6d4ee1849350434023b UnityEngine.UI.dll:UnityEngine.UI.VerticalLayoutGroup
 49ffb37b380b4e4015c1f7a3852e92ae Assembly-CSharp.dll:.BossMonitor
 2e17108aab85d8c411b44afac000cf38 Assembly-CSharp.dll:.BWEffect
+5972735e4103dba2f4a3943d91876890 Assembly-CSharp.dll:.PlayerPiece
 228bff98272a286ded69d33eb7d6121e Assembly-CSharp.dll:.Archer
 41b67ab63367c9b3b19a83316e0a8d85 Assembly-CSharp.dll:.Chest
 ed67bb7386b06da7dcb9312bdb75bf9e Assembly-CSharp.dll:.Spear
@@ -248,6 +249,7 @@ a4cdaba8554bd69eb5cfce8a04b3b34c Assembly-CSharp.dll:.GSword
 0a006f3734181ba8b26758f0866152c0 UnityEngine.SpatialTracking.dll:UnityEngine.SpatialTracking.TrackedPoseDriver
 486cd95c82d8305219c352c06b776e1f Assembly-CSharp.dll:.RotationFollowMouse
 32d628824b55dfd413d8be9bdb0b7d18 Assembly-CSharp.dll:.Blade
+ee4f20040995bf7edf61115df231234a Assembly-CSharp.dll:.SettlementPiece
 e90669f9e732fb416837481aae09bc1b Assembly-CSharp.dll:.DialoguePanel
 a94f3afe1094b2d00ee9f2a1a7936e26 Assembly-CSharp.dll:.Husk
 e61675a31c62c69d1728b9e17ce9c077 Assembly-CSharp.dll:.Duelist
@@ -260,6 +262,7 @@ e61675a31c62c69d1728b9e17ce9c077 Assembly-CSharp.dll:.Duelist
 e04611b8715e6833d2bd7010fc6be10b Unity.TextMeshPro.dll:TMPro.TMP_StyleSheet
 8c0b95e0bcca423b1ae6c316ab31979d Assembly-CSharp.dll:.Matilda
 7352cdeb00bf2da5a7729055715d4a75 Assembly-CSharp.dll:.LeaveLevelBarrier
+b8e1f2ab6ce2c2d1cb9ac92dab72324b Assembly-CSharp.dll:.MapBuilder
 486cd95c82d8305219c352c06b776e1f Assembly-CSharp.dll:.Spell
 cb34f07c4f1029e6cfc6bc11f384ee3c Assembly-CSharp.dll:.ScreenFader
 486cd95c82d8305219c352c06b776e1f Assembly-CSharp.dll:.TownGenerator

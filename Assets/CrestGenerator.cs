@@ -20,6 +20,11 @@ public class CrestGenerator : MonoBehaviour {
 
 	public void GenerateCrest(int seed){
 
+		GenerateCrest(seed, new Color(Random.Range(.1f, 1f), Random.Range(.1f, 1f), Random.Range(.1f, 1f)));
+	}
+
+	public void GenerateCrest(int seed, Color c){
+
 		if(activePieces.Count > 0){
 			for(int i = 0; i<activePieces.Count; i++){
 				Destroy(activePieces[i]);
@@ -28,7 +33,7 @@ public class CrestGenerator : MonoBehaviour {
 
 		Random.seed = seed;
 
-		Color colorBase = new Color(Random.Range(.25f, 1f), Random.Range(.1f, 1f), Random.Range(.1f, 1f));
+		Color colorBase = c;
 
 		GameObject rim = Instantiate(rims[Random.Range(0,rims.Count)], transform);
 		
@@ -39,7 +44,7 @@ public class CrestGenerator : MonoBehaviour {
 		Vector3 rimRotation = new Vector3(0,0,1) * (45 * Random.Range(0,8));
 		rim.transform.Rotate(rimRotation);
 
-		int comNum = Random.Range(3, 5);
+		int comNum = Random.Range(2, 4);
 
 
 		for(int i = 0; i<comNum;i++){
@@ -55,4 +60,6 @@ public class CrestGenerator : MonoBehaviour {
 		}
 		Random.seed = System.Environment.TickCount;
 	}
+
+
 }
