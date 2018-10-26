@@ -119,7 +119,7 @@ public class LevelGenerator : MonoBehaviour {
    }
 
     int mealPaks = 0;
-    float spawnFurnitureChance = 0.025f;
+    float spawnFurnitureChance = 0.05f;
     public void FillWithLoot(){
         for(int y = 0; y < level_grid_size; y++)
         {
@@ -197,7 +197,7 @@ public class LevelGenerator : MonoBehaviour {
         rm.room = room;
         rm.PlopRooms();
         PlacePlants();
-        transform.localScale = new Vector2(1.2f, 1.2f);
+        //transform.localScale = new Vector2(1.2f, 1.2f);
 
         //Populate();
         FillWithLoot();

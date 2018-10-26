@@ -100,7 +100,7 @@ public class UnitController : MonoBehaviour {
     }
 
     protected bool canVoice = true;
-	public void LateUpdate () {
+	public void FixedUpdate () {
         if(pr != null && target != null){
             for(int s = 0; s<pr.unitControllers.Count; s++){
                 pr.unitControllers[s].target = target;

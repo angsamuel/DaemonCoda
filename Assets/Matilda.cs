@@ -22,8 +22,8 @@ public class Matilda : UnitController {
         }
     }
 
-    void LateUpdate(){
-        base.LateUpdate();
+    void FixedUpdate(){
+        base.FixedUpdate();
         unit.AimWeapon(playerUnit.transform.position);
     }
     bool canCastSpell = true;

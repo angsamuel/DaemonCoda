@@ -10,8 +10,8 @@ public class Husk : UnitController {
 	}
 	
 	// Update is called once per frame
-	void LateUpdate () {
-        	base.LateUpdate();
+	void FixedUpdate () {
+        	base.FixedUpdate();
 
 	}
 

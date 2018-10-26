@@ -20,8 +20,8 @@ public class Archer : UnitController {
 	
 	// Update is called once per frame
 
-	void LateUpdate () {
-		base.LateUpdate ();
+	void FixedUpdate () {
+		base.FixedUpdate ();
 		if(playerSeen){
 			if (!choosePosition && !choosing) {
 				StartCoroutine(ChoosePosition ());

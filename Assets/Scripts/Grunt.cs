@@ -19,8 +19,8 @@ public class Grunt : UnitController {
         //}
     }
 
-    void LateUpdate(){
-        base.LateUpdate();
+    void FixedUpdate(){
+        base.FixedUpdate();
     }
 
     override public void CustomActions()
